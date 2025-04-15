@@ -1,11 +1,14 @@
 #define GL_SILENCE_DEPRECATION
 
-#include "glad/glad.h"
+#include "../glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include "window/EngineWindow.h"
+#include "window/GlfwEngineWindow.h"
+
 
 // Вершинные данные куба (8 вершин, 3 координаты на каждую)
 float vertices[] = {
@@ -59,27 +62,8 @@ const char* fragmentShaderSource = R"(
 )";
 
 int main() {
-    // Инициализация GLFW
-    if (!glfwInit()) {
-        std::cerr << "Ошибка GLFW!" << std::endl;
-        return -1;
-    }
-
-    // Настройка OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Важно для macOS!
-
-    // Создание окна
-    GLFWwindow* window = glfwCreateWindow(800, 600, "3D Cube", NULL, NULL);
-    if (!window) {
-        std::cerr << "Ошибка создания окна!" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
+    EngineWindow* window = new GlfwEngineWindow();
+    window->initialize(800, 600, "3D Cube");
 
     // Инициализация GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -128,7 +112,7 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     // Цикл рендеринга
-    while (!glfwWindowShouldClose(window)) {
+    while (!window->shouldClose()) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -159,8 +143,8 @@ int main() {
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
         // Обмен буферов и обработка событий
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        window->swapBuffers();
+        window->pollEvents();
     }
 
     // Очистка
@@ -170,5 +154,6 @@ int main() {
     glDeleteProgram(shaderProgram);
 
     glfwTerminate();
+    delete window;
     return 0;
 }
