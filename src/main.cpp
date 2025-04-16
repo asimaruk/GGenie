@@ -106,7 +106,7 @@ int main() {
 
         // Вращение куба
         float time = glfwGetTime();
-        model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
@@ -134,7 +134,6 @@ int main() {
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
 
-    glfwTerminate();
     delete window;
     return 0;
 }
