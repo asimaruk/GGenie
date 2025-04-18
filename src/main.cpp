@@ -50,7 +50,7 @@ int main() {
 
     auto cubeMesh = new CubeMesh();
     auto vertices = cubeMesh->getVertices(); 
-    auto indices = cubeMesh->getIndexes();
+    auto indices = cubeMesh->getIndices();
 
     // Компиляция шейдеров
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);

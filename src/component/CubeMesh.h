@@ -1,9 +1,9 @@
 #include "Mesh.h"
-#include <vector>
+#include <span>
 
 class CubeMesh: public Mesh {
 public:
     CubeMesh();
-    std::vector<float> getVertices() override;
-    std::vector<unsigned int> getIndexes() override;
+    std::span<const float> getVertices() const noexcept override;
+    std::span<const unsigned int> getIndices() const noexcept override;
 };
