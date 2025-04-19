@@ -1,5 +1,4 @@
 #include "component/CubeMesh.h"
-#include <span>
 
 CubeMesh::CubeMesh(): Mesh(
     {

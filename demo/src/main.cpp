@@ -10,6 +10,7 @@
 #include "window/GlfwEngineWindow.h"
 #include "component/CubeMesh.h"
 #include "shaders/defaultshaders.h"
+#include "component/Shader.h"
 
 int main() {
     EngineWindow* window = new GlfwEngineWindow();
@@ -17,22 +18,24 @@ int main() {
 
     // Инициализация GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Ошибка GLAD!" << std::endl;
+        std::cerr << "GLAD error!" << std::endl;
         return -1;
     }
 
+    // Cube entity
     auto cubeMesh = new CubeMesh();
     auto vertices = cubeMesh->getVertices(); 
     auto indices = cubeMesh->getIndices();
+    auto shader = new Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT);
 
     // Компиляция шейдеров
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const char* vertexShaderSource = ShaderSource::DEFAULT_VERTEX.data();
+    const char* vertexShaderSource = shader->getVertex().data();
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* fragmentShaderSource = ShaderSource::DEFAULT_FRAGMENT.data();
+    const char* fragmentShaderSource = shader->getFragment().data();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
