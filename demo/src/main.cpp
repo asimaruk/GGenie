@@ -1,6 +1,6 @@
 #define GL_SILENCE_DEPRECATION
 
-#include "../glad/glad.h"
+#include "glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -9,34 +9,7 @@
 #include "window/EngineWindow.h"
 #include "window/GlfwEngineWindow.h"
 #include "component/CubeMesh.h"
-
-// Шейдеры (мини-программы для GPU)
-const char* vertexShaderSource = R"(
-    #version 330 core
-    layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec3 aColor;
-    
-    out vec3 ourColor;
-    uniform mat4 model;
-    uniform mat4 view;
-    uniform mat4 projection;
-    
-    void main() {
-        gl_Position = projection * view * model * vec4(aPos, 1.0);
-        ourColor = aColor;
-    }
-)";
-
-// Фрагментный шейдер
-const char* fragmentShaderSource = R"(
-    #version 330 core
-    in vec3 ourColor;
-    out vec4 FragColor;
-    
-    void main() {
-        FragColor = vec4(ourColor, 1.0);
-    }
-)";
+#include "shaders/defaultshaders.h"
 
 int main() {
     EngineWindow* window = new GlfwEngineWindow();
@@ -54,10 +27,12 @@ int main() {
 
     // Компиляция шейдеров
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const char* vertexShaderSource = ShaderSource::DEFAULT_VERTEX.data();
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const char* fragmentShaderSource = ShaderSource::DEFAULT_FRAGMENT.data();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 

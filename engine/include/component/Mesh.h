@@ -10,7 +10,13 @@ protected:
     Mesh(std::vector<float>&& v, std::vector<unsigned int>&& i)
         : vertices(std::move(v)), indices(std::move(i)) {}
 public:
-    virtual std::span<const float> getVertices() const noexcept = 0;
-    virtual std::span<const unsigned int> getIndices() const noexcept = 0;
+    std::span<const float> getVertices() const noexcept {
+        return vertices;
+    }
+
+    std::span<const unsigned int> getIndices() const noexcept {
+        return indices;
+    }
+
     virtual ~Mesh() = default;
 };

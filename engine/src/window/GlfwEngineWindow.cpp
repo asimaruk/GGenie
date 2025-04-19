@@ -1,5 +1,5 @@
 #include <GLFW/glfw3.h>
-#include "GlfwEngineWindow.h"
+#include "window/GlfwEngineWindow.h"
 
 GlfwEngineWindow::~GlfwEngineWindow() {
     glfwTerminate();

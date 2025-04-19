@@ -1,4 +1,4 @@
-#include "CubeMesh.h"
+#include "component/CubeMesh.h"
 #include <span>
 
 CubeMesh::CubeMesh(): Mesh(
@@ -22,11 +22,3 @@ CubeMesh::CubeMesh(): Mesh(
         0, 1, 5,  0, 5, 4   // нижняя грань
     }
 ) {}
-
-std::span<const float> CubeMesh::getVertices() const noexcept {
-    return vertices;
-}
-
-std::span<const unsigned int> CubeMesh::getIndices() const noexcept {
-    return indices;
-}

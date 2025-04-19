@@ -10,10 +10,16 @@ find_package(OpenGL REQUIRED)
 
 add_library(glad STATIC glad/glad.c)
 
+file(GLOB_RECURSE ENGINE_SOURCES 
+    "engine/src/**/*.cpp"
+)
+
 add_executable(engine3d 
-    src/main.cpp
-    src/window/GlfwEngineWindow.cpp
-    src/component/CubeMesh.cpp
-    src/component/Shader.cpp
+    ${CMAKE_SOURCE_DIR}/demo/src/main.cpp
+    ${ENGINE_SOURCES}
+)
+target_include_directories(engine3d PRIVATE
+    ${CMAKE_SOURCE_DIR}/glad
+    ${CMAKE_SOURCE_DIR}/engine/include
 )
 target_link_libraries(engine3d glfw OpenGL::GL glad)

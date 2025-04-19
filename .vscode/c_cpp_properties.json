@@ -4,6 +4,8 @@
         "name": "Mac",
         "includePath": [
           "${workspaceFolder}/**",
+          "${workspaceFolder}/glad",
+          "${workspaceFolder}/engine/include",
           "/opt/homebrew/Cellar/glfw/3.4/include",  // GLFW
           "/opt/homebrew/Cellar/glm/1.0.1/include/**", // GLM
         ],

@@ -1,6 +1,6 @@
 #include <string>
 
-class Shader {
+class Shader final {
 private:
     std::string vertexSource;
     std::string fragmentSource;
