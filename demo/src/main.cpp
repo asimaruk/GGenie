@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <cmath>
 #include "window/EngineWindow.h"
 #include "window/GlfwEngineWindow.h"
 #include "component/CubeMesh.h"
@@ -87,8 +88,8 @@ int main() {
 
         // Вращение куба
         float time = glfwGetTime();
-        // model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
         transform.setRotatation(time * glm::radians(50.0f), {0.5f, 1.0f, 0.0f});
+        transform.setScale(Vec3::ONE + Vec3::fill((1 + std::sin(time)) / 2.f));
         auto model = transform.getMatrix().getData();
         view = glm::translate(view, glm::vec3(0.0f, -1.0f, -5.0f));
         projection = glm::perspective(glm::radians(45.0f), static_cast<float>(windowWidth) / windowHeight, 0.1f, 100.0f);

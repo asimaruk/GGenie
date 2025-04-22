@@ -18,6 +18,12 @@ public:
     float z() const noexcept;
 
     float length() const;
+
+    static const Vec3 ONE;
+
+    static Vec3 fill(float value) noexcept;
+
+    Vec3 operator+(const Vec3& other) const noexcept;
 };
 
 namespace std {

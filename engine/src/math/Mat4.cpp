@@ -58,7 +58,7 @@ Mat4 Mat4::scale(const Vec3& v) noexcept {
     });
 }
 
-Mat4 Mat4::operator*(const Mat4& other) const {
+Mat4 Mat4::operator*(const Mat4& other) const noexcept {
     Mat4 result = Mat4(0);
     for (int col = 0; col < 4; ++col) {
         for (int row = 0; row < 4; ++row) {

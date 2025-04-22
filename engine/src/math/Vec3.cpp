@@ -5,6 +5,12 @@
 // Initialize vector with components
 Vec3::Vec3(float x, float y, float z) noexcept : data{x, y, z} {}
 
+const Vec3 Vec3::ONE = Vec3(1, 1, 1);
+
+Vec3 Vec3::fill(float value) noexcept {
+    return Vec3(value, value, value);
+}
+
 // Component getters
 float Vec3::x() const noexcept { return data[0]; }  // x is at index 0
 float Vec3::y() const noexcept { return data[1]; }  // y is at index 1
@@ -32,3 +38,7 @@ float get(const Vec3& v) {
 template float get<0>(const Vec3&);  // x-component
 template float get<1>(const Vec3&);  // y-component
 template float get<2>(const Vec3&);  // z-component
+
+Vec3 Vec3::operator+(const Vec3& other) const noexcept {
+    return Vec3(x() + other.x(), y() + other.y(), z() + other.z());
+}

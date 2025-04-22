@@ -16,7 +16,7 @@ public:
     static Mat4 rotation(const Quat& q) noexcept;
     static Mat4 scale(const Vec3& v) noexcept;
 
-    Mat4 operator*(const Mat4& other) const;
+    Mat4 operator*(const Mat4& other) const noexcept;
     
     const float* getData() const noexcept;
 };
