@@ -1,9 +1,10 @@
 #pragma once
 
+#include "ecs/Component.h"
 #include <vector>
 #include <span>
 
-class Mesh {
+class Mesh: public Component {
 private:
     const std::vector<float> vertices = {};
     const std::vector<unsigned int> indices = {};

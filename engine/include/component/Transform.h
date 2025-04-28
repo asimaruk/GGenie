@@ -1,10 +1,11 @@
 #pragma once
 
+#include "ecs/Component.h"
 #include "math/Vec3.h"
 #include "math/Quat.h"
 #include "math/Mat4.h"
 
-class Transform final {
+class Transform final : public Component {
 private:
     Vec3 translation;
     Quat rotation;

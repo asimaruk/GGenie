@@ -8,7 +8,7 @@ Mat4::Mat4(float fill) noexcept {
     std::fill(data.begin(), data.end(), fill);
 }
 
-constexpr Mat4 Mat4::identity() noexcept {
+Mat4 Mat4::identity() noexcept {
     return Mat4({
         1, 0, 0, 0,
         0, 1, 0, 0,

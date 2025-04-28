@@ -13,6 +13,7 @@
 #include "shaders/defaultshaders.h"
 #include "component/Shader.h"
 #include "component/Transform.h"
+#include "ecs/Entity.h"
 
 int main() {
     EngineWindow* window = new GlfwEngineWindow();
@@ -27,6 +28,7 @@ int main() {
     }
 
     // Cube entity
+    auto entity = Entity(1);
     auto cubeMesh = CubeMesh();
     auto vertices = cubeMesh.getVertices(); 
     auto indices = cubeMesh.getIndices();

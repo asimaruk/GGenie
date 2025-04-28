@@ -1,0 +1,15 @@
+#pragma once
+
+#include "ComponentRegistry.h"
+#include "Entity.h"
+#include "System.h"
+
+class World  {
+public:
+    virtual ~World();
+    
+    virtual Entity createEntity() noexcept = 0;
+    virtual void removeEntity(const Entity entity) noexcept = 0;
+    virtual void registerSystem(const std::unique_ptr<System> system) noexcept = 0;
+    virtual void update(float dt) noexcept = 0;
+};

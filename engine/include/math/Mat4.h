@@ -11,7 +11,7 @@ public:
     explicit Mat4(std::array<float, 16> data) noexcept;
     explicit Mat4(float fill) noexcept;
 
-    constexpr static Mat4 identity() noexcept;
+    static Mat4 identity() noexcept;
     static Mat4 translation(const Vec3& v) noexcept;
     static Mat4 rotation(const Quat& q) noexcept;
     static Mat4 scale(const Vec3& v) noexcept;
