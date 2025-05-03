@@ -5,11 +5,11 @@
 #include <unordered_map>
 
 template<typename T>
-class DefaultComponentStarage: public ComponentStorage {
+class DefaultComponentStorage: public ComponentStorage {
 private:
     std::vector<T> components;
-    std::unordered_map<Entity, size_t> entity_to_index;
-    std::vector<Entity> index_to_entity;
+    std::unordered_map<Entity, size_t> entity2index;
+    std::vector<Entity> index2entity;
 public:
     void add(Entity entity, const T& component) noexcept;
     T* get(Entity entity) noexcept;

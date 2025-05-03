@@ -12,14 +12,14 @@
 
 class DefaultWorld final : public World {
 private:
-    std::unique_ptr<ComponentRegistry> registry;
+    std::shared_ptr<ComponentRegistry> registry;
     Entity nextEntity = 0;
-    std::unordered_map<SystemID, std::unique_ptr<System>> systems;
+    std::unordered_map<SystemID, std::shared_ptr<System>> systems;
 public:
-    DefaultWorld(std::unique_ptr<ComponentRegistry> registry) noexcept;
+    DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept;
 
     Entity createEntity() noexcept override;
     void removeEntity(const Entity entity) noexcept override;
-    void registerSystem(std::unique_ptr<System> system) noexcept override;
+    void registerSystem(std::shared_ptr<System> system) noexcept override;
     void update(float dt) noexcept override;
 };

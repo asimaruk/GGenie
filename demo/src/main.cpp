@@ -1,19 +1,21 @@
 #define GL_SILENCE_DEPRECATION
 
+#include "component/CubeMesh.h"
+#include "component/Shader.h"
+#include "component/Transform.h"
+#include "ecs/ComponentRegistry.h"
+#include "ecs/DefaultWorld.h"
 #include "glad.h"
+#include "shaders/defaultshaders.h"
+#include "window/EngineWindow.h"
+#include "window/GlfwEngineWindow.h"
+#include <cmath>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include <cmath>
-#include "window/EngineWindow.h"
-#include "window/GlfwEngineWindow.h"
-#include "component/CubeMesh.h"
-#include "shaders/defaultshaders.h"
-#include "component/Shader.h"
-#include "component/Transform.h"
-#include "ecs/Entity.h"
+#include <memory>
 
 int main() {
     EngineWindow* window = new GlfwEngineWindow();
@@ -27,13 +29,18 @@ int main() {
         return -1;
     }
 
-    // Cube entity
-    auto entity = Entity(1);
+    // ECS world setup
+    auto registry = std::make_shared<ComponentRegistry>();
+    auto world = std::make_shared<DefaultWorld>(registry);
+    auto entity = world->createEntity();
     auto cubeMesh = CubeMesh();
     auto vertices = cubeMesh.getVertices(); 
     auto indices = cubeMesh.getIndices();
     auto shader = Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT);
     auto transform = Transform();
+    registry->add(entity, cubeMesh);
+    registry->add(entity, shader);
+    registry->add(entity, transform);
 
     // Компиляция шейдеров
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);

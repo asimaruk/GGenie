@@ -10,6 +10,6 @@ public:
     
     virtual Entity createEntity() noexcept = 0;
     virtual void removeEntity(const Entity entity) noexcept = 0;
-    virtual void registerSystem(const std::unique_ptr<System> system) noexcept = 0;
+    virtual void registerSystem(const std::shared_ptr<System> system) noexcept = 0;
     virtual void update(float dt) noexcept = 0;
 };

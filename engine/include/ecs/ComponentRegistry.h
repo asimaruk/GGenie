@@ -3,16 +3,15 @@
 #include "ComponentStorage.h"
 #include "DefaultComponentStorage.h"
 #include "Entity.h"
-
-#include <unordered_map>
 #include <typeindex>
+#include <unordered_map>
 
-class ComponentRegistry {
+class ComponentRegistry final {
 private:
-    std::unordered_map<std::type_index, std::unique_ptr<ComponentStorage>> storages;
+    std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>> storages;
 
     template<typename T>
-    DefaultComponentStarage<T>* getStorage() noexcept;
+    std::shared_ptr<DefaultComponentStorage<T>> getStorage() noexcept;
 public:
     template<typename T>
     void add(Entity e, const T& component) noexcept;

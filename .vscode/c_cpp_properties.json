@@ -1,21 +1,22 @@
 {
     "configurations": [
-      {
-        "name": "Mac",
-        "includePath": [
-          "${workspaceFolder}/**",
-          "${workspaceFolder}/glad",
-          "${workspaceFolder}/engine/include",
-          "/opt/homebrew/Cellar/glfw/3.4/include",  // GLFW
-          "/opt/homebrew/Cellar/glm/1.0.1/include/**", // GLM
-        ],
-        "defines": [],
-        "macFrameworkPath": [
-          "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-        ],
-        "cStandard": "c23",
-        "cppStandard": "c++23"
-      }
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/glad",
+                "${workspaceFolder}/engine/include",
+                "/opt/homebrew/Cellar/glfw/3.4/include",
+                "/opt/homebrew/Cellar/glm/1.0.1/include/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "compilerPath": "/usr/bin/clang++"
+        }
     ],
     "version": 4
-  }
+}

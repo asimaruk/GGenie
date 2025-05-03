@@ -3,7 +3,7 @@
 #include "ecs/Entity.h"
 #include "ecs/System.h"
 
-DefaultWorld::DefaultWorld(std::unique_ptr<ComponentRegistry> registry) noexcept : registry(std::move(registry)) {}
+DefaultWorld::DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept : registry(registry) {}
 
 Entity DefaultWorld::createEntity() noexcept {
     return nextEntity++;
@@ -13,7 +13,7 @@ void DefaultWorld::removeEntity(Entity entity) noexcept {
     registry->removeAll(entity);
 }
 
-void DefaultWorld::registerSystem(std::unique_ptr<System> system) noexcept {
+void DefaultWorld::registerSystem(std::shared_ptr<System> system) noexcept {
     systems[system->id] = std::move(system);
 }
 
