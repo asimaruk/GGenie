@@ -6,6 +6,4 @@ Mesh::Mesh(std::vector<float> &&v, std::vector<unsigned int> &&i) noexcept
 
 std::span<const float> Mesh::getVertices() const noexcept { return vertices; }
 
-std::span<const unsigned int> Mesh::getIndices() const noexcept {
-  return indices;
-}
+std::span<const unsigned int> Mesh::getIndices() const noexcept { return indices; }

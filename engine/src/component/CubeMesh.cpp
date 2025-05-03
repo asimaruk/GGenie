@@ -1,8 +1,10 @@
 #include "component/CubeMesh.h"
 
-CubeMesh::CubeMesh(): Mesh(
+CubeMesh::CubeMesh()
+    : Mesh(
+          // clang-format off
     {
-        // Позиции            // Цвета
+        // Позиции                        // Цвета
         -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
@@ -19,5 +21,5 @@ CubeMesh::CubeMesh(): Mesh(
         1, 5, 6,  1, 6, 2,  // правая грань
         3, 2, 6,  3, 6, 7,  // верхняя грань
         0, 1, 5,  0, 5, 4   // нижняя грань
-    }
-) {}
+    } // clang-format on
+      ) {}

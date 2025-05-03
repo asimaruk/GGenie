@@ -4,7 +4,7 @@
 
 namespace ShaderSource {
 
-    inline constexpr std::string_view DEFAULT_VERTEX = R"(
+inline constexpr std::string_view DEFAULT_VERTEX = R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
         layout (location = 1) in vec3 aColor;
@@ -20,7 +20,7 @@ namespace ShaderSource {
         }
     )";
 
-    inline constexpr std::string_view DEFAULT_FRAGMENT = R"(
+inline constexpr std::string_view DEFAULT_FRAGMENT = R"(
         #version 330 core
         in vec3 ourColor;
         out vec4 FragColor;
@@ -29,4 +29,4 @@ namespace ShaderSource {
             FragColor = vec4(ourColor, 1.0);
         }
     )";
-}
+} // namespace ShaderSource
