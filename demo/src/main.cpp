@@ -1,9 +1,10 @@
+#include "component/Mesh.h"
 #define GL_SILENCE_DEPRECATION
 
-#include "component/CubeMesh.h"
+#include "component/Mesh.h"
 #include "component/Shader.h"
 #include "component/Transform.h"
-#include "ecs/ComponentRegistry.h"
+#include "ecs/ComponentRegistry.hpp"
 #include "ecs/DefaultWorld.h"
 #include "glad.h"
 #include "shaders/defaultshaders.h"
@@ -32,24 +33,21 @@ int main() {
   // ECS world setup
   auto registry = std::make_shared<ComponentRegistry>();
   auto world = std::make_shared<DefaultWorld>(registry);
-  auto entity = world->createEntity();
-  auto cubeMesh = CubeMesh();
-  auto vertices = cubeMesh.getVertices();
-  auto indices = cubeMesh.getIndices();
-  auto shader = Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT);
-  auto transform = Transform();
-  registry->add(entity, cubeMesh);
-  registry->add(entity, shader);
-  registry->add(entity, transform);
+  auto cube = world->createEntity();
+  registry->add(cube, Mesh::cube());
+  registry->add(cube, Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT));
+  registry->add(cube, Transform());
+
+  auto shader = registry->get<Shader>(cube);
 
   // Компиляция шейдеров
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  const char *vertexShaderSource = shader.getVertex().data();
+  const char *vertexShaderSource = shader->getVertex().data();
   glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
   glCompileShader(vertexShader);
 
   unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  const char *fragmentShaderSource = shader.getFragment().data();
+  const char *fragmentShaderSource = shader->getFragment().data();
   glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
   glCompileShader(fragmentShader);
 
@@ -69,6 +67,10 @@ int main() {
   glGenBuffers(1, &EBO);
 
   glBindVertexArray(VAO);
+
+  auto cubeMesh = registry->get<Mesh>(cube);
+  auto vertices = registry->get<Mesh>(cube)->getVertices();
+  auto indices = cubeMesh->getIndices();
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
@@ -97,9 +99,10 @@ int main() {
 
     // Вращение куба
     float time = glfwGetTime();
-    transform.setRotatation(time * glm::radians(50.0f), {0.5f, 1.0f, 0.0f});
-    transform.setScale(Vec3::ONE + Vec3::fill((1 + std::sin(time)) / 2.f));
-    auto model = transform.getMatrix().getData();
+    auto transform = registry->get<Transform>(cube);
+    transform->setRotatation(time * glm::radians(50.0f), {0.5f, 1.0f, 0.0f});
+    transform->setScale(Vec3::ONE + Vec3::fill((1 + std::sin(time)) / 2.f));
+    auto model = transform->getMatrix().getData();
     view = glm::translate(view, glm::vec3(0.0f, -1.0f, -5.0f));
     projection = glm::perspective(glm::radians(45.0f), static_cast<float>(windowWidth) / windowHeight, 0.1f, 100.0f);
 

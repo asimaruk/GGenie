@@ -1,5 +1,4 @@
 {
-    "C_Cpp.default.compilerPath": "/usr/bin/clang++",
     "files.associations": {
         "__bit_reference": "cpp",
         "__hash_table": "cpp",

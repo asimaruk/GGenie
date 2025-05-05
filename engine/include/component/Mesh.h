@@ -11,6 +11,9 @@ private:
 
 public:
   Mesh(std::vector<float> &&v, std::vector<unsigned int> &&i) noexcept;
+
+  static Mesh cube() noexcept;
+
   virtual ~Mesh() = default;
 
   virtual std::span<const float> getVertices() const noexcept final;

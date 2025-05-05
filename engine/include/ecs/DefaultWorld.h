@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Component.h"
-#include "ComponentRegistry.h"
+#include "ComponentRegistry.hpp"
 #include "Entity.h"
 #include "System.h"
 #include "World.h"

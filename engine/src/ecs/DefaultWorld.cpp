@@ -1,5 +1,5 @@
 #include "ecs/DefaultWorld.h"
-#include "ecs/ComponentRegistry.h"
+#include "ecs/ComponentRegistry.hpp"
 #include "ecs/Entity.h"
 #include "ecs/System.h"
 
