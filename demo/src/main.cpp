@@ -6,15 +6,12 @@
 #include "ecs/DefaultWorld.h"
 #include "ecs/System.h"
 #include "glad.h"
-#include "shaders/defaultshaders.h"
-#include "system/RenderSystem.h"
+#include "system/render/defaultshaders.h"
+#include "system/render/RenderSystem.h"
 #include "window/EngineWindow.h"
 #include "window/GlfwEngineWindow.h"
+#include <__ostream/print.h>
 #include <GLFW/glfw3.h>
-#include <cmath>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <memory>
 
@@ -25,11 +22,11 @@ int main() {
   EngineWindow *window = new GlfwEngineWindow();
   auto windowWidth = 800;
   auto windowHeight = 600;
-  window->initialize(windowWidth, windowHeight, "3D Cube");
+  window->initialize(windowWidth, windowHeight, "GGenie");
 
   // Инициализация GLAD
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cerr << "GLAD error!" << std::endl;
+    std::println(std::cerr, "GLAD error!");
     return -1;
   }
 

@@ -1,4 +1,3 @@
-#include "system/RenderSystem.h"
 #include "component/Camera.h"
 #include "component/Mesh.h"
 #include "component/Shader.h"
@@ -7,6 +6,7 @@
 #include "ecs/System.h"
 #include "glad.h"
 #include "math/Quat.h"
+#include "system/render/RenderSystem.h"
 #include "utils/hash_utils.h"
 #include <__ostream/print.h>
 #include <cstddef>
