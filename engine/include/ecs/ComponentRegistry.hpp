@@ -8,8 +8,7 @@
 
 class ComponentRegistry final {
 private:
-  std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>>
-      storages;
+  std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>> storages;
 
   template <typename T>
   std::shared_ptr<DefaultComponentStorage<T>> getStorage() noexcept {
@@ -26,7 +25,7 @@ public:
   template <typename T> void add(Entity e, const T &component) noexcept {
     getStorage<T>()->add(e, component);
   }
-  template <typename T> T *get(Entity e) noexcept {
+  template <typename T> std::optional<std::reference_wrapper<T>> get(Entity e) noexcept {
     return getStorage<T>()->get(e);
   }
   template <typename T> void remove(Entity e) noexcept {
@@ -36,5 +35,8 @@ public:
     for (const auto &[_, storage] : storages) {
       storage->remove(e);
     }
+  }
+  template <typename T> EntityComponentRange<T> auto getAll() {
+    return getStorage<T>()->all();
   }
 };

@@ -1,8 +1,19 @@
 #pragma once
 
 #include "ComponentStorage.h"
+#include <optional>
+#include <ranges>
 #include <unordered_map>
 #include <vector>
+
+template <typename R, typename T>
+concept EntityComponentRange = std::ranges::input_range<R> && requires(
+                                                                  R range) {
+  // Проверяем, что элементы range - это пары [Entity, const T&]
+  {
+    *std::ranges::begin(range)
+  } -> std::convertible_to<std::pair<Entity, std::reference_wrapper<const T>>>;
+};
 
 template <typename T> class DefaultComponentStorage : public ComponentStorage {
 private:
@@ -18,12 +29,12 @@ public:
     components.push_back(component);
   }
 
-  T *get(Entity entity) noexcept {
+  std::optional<std::reference_wrapper<T>> get(Entity entity) noexcept {
     auto it = entity2index.find(entity);
     if (it == entity2index.end()) {
-      return nullptr;
+      return std::nullopt;
     }
-    return &components[it->second];
+    return components[it->second];
   }
 
   void remove(Entity entity) noexcept override {
@@ -45,5 +56,13 @@ public:
     components.pop_back();
     index2entity.pop_back();
     entity2index.erase(entity);
+  }
+
+  EntityComponentRange<T> auto all() const {
+    return std::views::iota(0u, components.size()) |
+           std::views::transform([this](size_t index) {
+             return std::pair{index2entity[index],
+                              std::cref(components[index])};
+           });
   }
 };
