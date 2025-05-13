@@ -7,4 +7,9 @@ struct Transform {
   Vec3 translation = Vec3::ZERO;
   Quat rotation = Quat::IDENTITY;
   Vec3 scale = Vec3::ONE;
+
+  Transform operator+(const Transform &other) const;
+  Transform operator-(const Transform &other) const;
+  Transform operator*(const float other) const;
+  Transform operator/(const float other) const;
 };

@@ -11,4 +11,12 @@ struct Quat {
   static Quat fromEuler(float pitch, float yaw, float roll) noexcept;
 
   Quat normalized() const;
+  Quat inverse() const;
+
+  Quat operator+(const Quat &other) const noexcept;
+  Quat operator-(const Quat &other) const noexcept;
+  Quat operator*(const Quat &other) const noexcept;
+  Quat operator/(const Quat &other) const noexcept;
+  Quat operator*(float value) const noexcept;
+  Quat operator/(float value) const noexcept;
 };

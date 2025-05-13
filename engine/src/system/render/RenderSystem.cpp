@@ -26,7 +26,7 @@ glm::vec3 toGlmVec3(const Vec3 &v3) { return glm::vec3(v3.x, v3.y, v3.z); }
 glm::quat toGlmQuat(const Quat &q) { return glm::quat(q.w, q.x, q.y, q.z); }
 
 RenderSystem::RenderSystem(SystemID id, int priority,
-                           std::shared_ptr<ComponentRegistry> registry)
+                           std::shared_ptr<ComponentRegistry> registry) noexcept
     : System(id, priority), registry(registry) {};
 
 RenderSystem::~RenderSystem() {
@@ -124,7 +124,7 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh,
                        camera.near, camera.far);
   model =
       glm::translate(model, toGlmVec3(transform.translation));   // translation
-  model = model * glm::mat4_cast(toGlmQuat(transform.rotation)); // rotation
+  model = model * glm::mat4_cast(toGlmQuat(transform.rotation.normalized())); // rotation
   model = glm::scale(model, toGlmVec3(transform.scale));         // scale
 
   // Передача матриц в шейдер

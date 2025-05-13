@@ -29,6 +29,11 @@ public:
     components.push_back(component);
   }
 
+  void replace(Entity entity, const T &component) noexcept {
+    remove(entity);
+    add(entity, component);
+  }
+
   std::optional<std::reference_wrapper<T>> get(Entity entity) noexcept {
     auto it = entity2index.find(entity);
     if (it == entity2index.end()) {

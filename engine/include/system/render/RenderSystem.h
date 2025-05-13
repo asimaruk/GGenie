@@ -31,7 +31,7 @@ public:
   static constexpr auto ID = "RenderSystemID";
 
   RenderSystem(SystemID id, int priority,
-               std::shared_ptr<ComponentRegistry> registry);
+               std::shared_ptr<ComponentRegistry> registry) noexcept;
   ~RenderSystem();
 
   void start() override;

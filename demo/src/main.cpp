@@ -6,12 +6,15 @@
 #include "ecs/DefaultWorld.h"
 #include "ecs/System.h"
 #include "glad.h"
-#include "system/render/defaultshaders.h"
+#include "math/Quat.h"
 #include "system/render/RenderSystem.h"
+#include "system/render/defaultshaders.h"
+#include "system/tween/Tween.hpp"
+#include "system/tween/TweenSystem.hpp"
 #include "window/EngineWindow.h"
 #include "window/GlfwEngineWindow.h"
-#include <__ostream/print.h>
 #include <GLFW/glfw3.h>
+#include <__ostream/print.h>
 #include <iostream>
 #include <memory>
 
@@ -33,21 +36,41 @@ int main() {
   // ECS world setup
   auto registry = std::make_shared<ComponentRegistry>();
   auto world = std::make_shared<DefaultWorld>(registry);
+
+  // Systems setup
   auto renderSystem = std::make_shared<RenderSystem>(
       RenderSystem::ID, System::PRIORITY_LOW, registry);
+  auto tweenSystem = std::make_shared<TweenSystem>(
+      TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
   world->registerSystem(renderSystem);
+  world->registerSystem(tweenSystem);
+
+  // Entities and component setup
   auto cube = world->createEntity();
   registry->add(cube, Mesh::cube());
   registry->add(cube, Shader(ShaderSource::DEFAULT_VERTEX,
                              ShaderSource::DEFAULT_FRAGMENT));
   registry->add(cube, Transform());
   auto camera = world->createEntity();
-  auto cameraTransform = Transform();
-  cameraTransform.translation = Vec3(0, -1, -5);
+  auto cameraTransform = Transform{.translation{0, -1, -5}};
   registry->add(camera, cameraTransform);
   registry->add(camera, Camera(windowWidth, windowHeight, 45, 0.1, 100));
 
   std::println("World setup");
+
+  auto cubeTransform = registry->get<Transform>(cube);
+  if (cubeTransform.has_value()) {
+    auto translateCube = std::make_shared<Tween<Transform>>(
+        5,
+        Transform{.scale = cubeTransform->get().scale,
+                  .translation = cubeTransform->get().translation,
+                  .rotation = cubeTransform->get().rotation},
+        Transform{.scale = cubeTransform->get().scale,
+                  .translation = cubeTransform->get().translation,
+                  .rotation =
+                      Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 1.99)});
+    tweenSystem->tween(cube, translateCube);
+  }
 
   float lastTime = glfwGetTime();
   while (!window->shouldClose()) {

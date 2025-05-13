@@ -25,17 +25,25 @@ public:
   template <typename T> void add(Entity e, const T &component) noexcept {
     getStorage<T>()->add(e, component);
   }
+
+  template <typename T> void replace(Entity e, const T &component) noexcept {
+    getStorage<T>()->replace(e, component);
+  }
+
   template <typename T> std::optional<std::reference_wrapper<T>> get(Entity e) noexcept {
     return getStorage<T>()->get(e);
   }
+
   template <typename T> void remove(Entity e) noexcept {
     return getStorage<T>()->remove(e);
   }
+
   void removeAll(Entity e) noexcept {
     for (const auto &[_, storage] : storages) {
       storage->remove(e);
     }
   }
+  
   template <typename T> EntityComponentRange<T> auto getAll() {
     return getStorage<T>()->all();
   }
