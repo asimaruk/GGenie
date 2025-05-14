@@ -2,15 +2,9 @@
 
 #include "easing.hpp"
 #include "math/Quat.h"
-#include <concepts>
+#include "math/lerp.hpp"
+#include <__ostream/print.h>
 #include <functional>
-
-template <typename T>
-concept Lerpable = requires(const T &a, const T &b, float t) {
-    { a + b } -> std::same_as<T>;
-    { a - b } -> std::same_as<T>;
-    { a * t } -> std::same_as<T>;
-};
 
 class Interpolator {
 private:
@@ -21,9 +15,19 @@ public:
 
   Interpolator(std::function<float(float)> ease) : ease(ease) {};
 
-  template <Lerpable T> T operator()(const T &start, const T &end, float t) const {
-    return start + (end - start) * ease(t);
+  template <math::Lerpable T>
+  T operator()(const T &a, const T &b, float t) const {
+    if constexpr (math::HasLerpMethod<T>) {
+      return a.lerp(b, ease(t));
+    } else {
+      return a + (b - a) * ease(t);
+    }
+  }
+
+  template <> Quat operator()(const Quat &a, const Quat &b, float t) const {
+    return math::slerp(a, b, ease(t));
   }
 };
 
-inline const Interpolator Interpolator::LinearInterpolator = Interpolator(Easing::LINEAR);
+inline const Interpolator Interpolator::LinearInterpolator =
+    Interpolator(easing::LINEAR);

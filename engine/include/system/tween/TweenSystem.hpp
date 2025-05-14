@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Interpolator.hpp"
 #include "Tween.hpp"
 #include "ecs/ComponentRegistry.hpp"
 #include "ecs/Entity.h"
@@ -14,7 +13,7 @@ private:
   std::shared_ptr<ComponentRegistry> registry;
   std::vector<std::pair<Entity, std::unique_ptr<TweenBase>>> tweens;
 
-  template <Lerpable T> struct TweenWrapper : public TweenBase {
+  template <math::Lerpable T> struct TweenWrapper : public TweenBase {
     const TweenSystem &system;
     const Entity entity;
     std::shared_ptr<Tween<T>> tween;
@@ -51,7 +50,7 @@ public:
     }
   }
 
-  template <Lerpable T>
+  template <math::Lerpable T>
   void tween(Entity entity, std::shared_ptr<Tween<T>> tween) {
     tweens.push_back(
         {entity, std::make_unique<TweenWrapper<T>>(*this, entity, tween)});

@@ -37,6 +37,10 @@ Quat Quat::inverse() const {
   return Quat{.w = w / norm, .x = -x / norm, .y = -y / norm, .z = -z / norm};
 }
 
+float Quat::dot(const Quat &q) const noexcept {
+  return w * q.w + x * q.x + y * q.y + z * q.z; 
+}
+
 Quat Quat::operator+(const Quat &q) const noexcept {
   return {.w = w + q.w, .x = x + q.x, .y = y + q.y, .z = z + q.z};
 }

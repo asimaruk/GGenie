@@ -1,4 +1,13 @@
 #include "component/Transform.h"
+#include "math/lerp.hpp"
+
+Transform Transform::lerp(const Transform& other, float t) const {
+  return {
+    .translation = math::lerp(translation, other.translation, t),
+    .rotation = math::slerp(rotation, other.rotation, t),
+    .scale = math::lerp(scale, other.scale, t)
+  };
+}
 
 Transform Transform::operator+(const Transform &other) const {
   return Transform{

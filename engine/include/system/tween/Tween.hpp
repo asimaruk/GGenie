@@ -10,7 +10,7 @@ public:
   virtual bool isComplete() const = 0;
 };
 
-template <Lerpable T> class Tween : public TweenBase {
+template <math::Lerpable T> class Tween : public TweenBase {
 private:
   const float duration;
   const T start, end;
