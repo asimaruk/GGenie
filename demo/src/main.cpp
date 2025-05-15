@@ -21,7 +21,13 @@
 #define GL_SILENCE_DEPRECATION
 
 int main() {
-  std::println("Very start");
+
+#ifdef NDEBUG
+  std::println("Release configuration!");
+#else
+  std::println("Debug configuration!");
+#endif
+
   EngineWindow *window = new GlfwEngineWindow();
   auto windowWidth = 800;
   auto windowHeight = 600;
