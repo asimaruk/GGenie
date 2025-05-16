@@ -1,0 +1,13 @@
+{
+    "version": "0.5",
+    "requires": [
+        "opengl/system#7c02ea6ef926fd04844af53622a30541%1730805494.23",
+        "glm/1.0.1#94392c53a527f7d830119b84fe80c754%1713951421.775",
+        "glfw/3.4#41cc24c744dc4c80571f5dd10dcd9cda%1732635892.515"
+    ],
+    "build_requires": [
+        "cmake/3.23.5#bade138816a8784849345fe0e9438fee%1678699428.729"
+    ],
+    "python_requires": [],
+    "config_requires": []
+}
