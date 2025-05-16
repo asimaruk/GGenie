@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(Engine3d)
+project(GGenie)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Обязательное требование
@@ -17,12 +17,12 @@ file(GLOB_RECURSE ENGINE_SOURCES
 
 message("Building with CMake version: ${CMAKE_VERSION}")
 
-add_executable(engine3d 
+add_executable(GGenie 
     ${CMAKE_SOURCE_DIR}/demo/src/main.cpp
     ${ENGINE_SOURCES}
 )
-target_include_directories(engine3d PRIVATE
+target_include_directories(GGenie PRIVATE
     ${CMAKE_SOURCE_DIR}/glad
     ${CMAKE_SOURCE_DIR}/engine/include
 )
-target_link_libraries(engine3d OpenGL::GL glfw glm::glm glad)
+target_link_libraries(GGenie OpenGL::GL glfw glm::glm glad)

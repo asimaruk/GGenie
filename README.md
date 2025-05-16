@@ -7,8 +7,7 @@ pyenv install 3
 or other way
 
 ## Install Conan 
-Take a look at full [Conan install guide](https://docs.conan.io/2/installation.html)\
-or
+[Conan install guide](https://docs.conan.io/2/installation.html)
 <details>
   
 <summary>pyenv-virtualenv install</summary>
@@ -25,19 +24,20 @@ pip install conan
 <summary>Global install</summary>
 
 <br/>
+
 ```
 pip install conan
 ```
 </details>
 
-## Run
+## Build
 ```
 conan install . -s build_type=Debug
 cmake --preset=conan-debug
 cmake --build --preset conan-debug 
 ```
 
-## Launch
+## Run
 ```
 build/engine3d
 ```

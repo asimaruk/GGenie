@@ -4,8 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/glad",
-                "${workspaceFolder}/engine/include"
+                "~/.conan2/p/**"
             ],
             "defines": [],
             "macFrameworkPath": [
