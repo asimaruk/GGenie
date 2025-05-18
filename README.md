@@ -17,7 +17,7 @@ or other way
   
 <summary>pyenv-virtualenv install</summary>
 
-<br/>Inside project directory
+**_Inside project directory_**
 ```
 pyenv virtualenv 3.13.3 ggenie_env
 pyenv local ggenie_env
@@ -27,8 +27,6 @@ pip install conan
 <details>
 
 <summary>Global install</summary>
-
-<br/>
 
 ```
 pip install conan
