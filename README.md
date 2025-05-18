@@ -1,4 +1,9 @@
-# GGenie build and run
+# GGenie
+This is a 3d engine using opengl and ECS architecture
+
+![UML of architecture](./engine.jpg)
+
+# Build and Run
 
 ## Install Python
 ```
