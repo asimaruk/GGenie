@@ -57,6 +57,9 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "cinttypes": "cpp",
+        "list": "cpp",
+        "numbers": "cpp"
     },
 }

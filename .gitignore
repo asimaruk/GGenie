@@ -2,6 +2,7 @@ build
 
 // draw.io
 *.drawio.bkp
+*.drawio.dtmp
 
 // clangd
 .cache

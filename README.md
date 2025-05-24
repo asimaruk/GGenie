@@ -42,5 +42,5 @@ cmake --build --preset conan-debug
 
 ## Run
 ```
-build/engine3d
+build/Debug/engine3d
 ```
