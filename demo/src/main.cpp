@@ -7,6 +7,7 @@
 #include "ecs/System.h"
 #include "glad.h"
 #include "math/Quat.h"
+#include "system/input/GLFWInputSystem.h"
 #include "system/render/RenderSystem.h"
 #include "system/render/defaultshaders.h"
 #include "system/tween/Tween.hpp"
@@ -18,7 +19,6 @@
 #include <iostream>
 #include <memory>
 
-#define GL_SILENCE_DEPRECATION
 
 int main() {
 
@@ -28,10 +28,10 @@ int main() {
   std::println("Debug configuration!");
 #endif
 
-  EngineWindow *window = new GlfwEngineWindow();
+  GlfwEngineWindow window = GlfwEngineWindow();
   auto windowWidth = 800;
   auto windowHeight = 600;
-  window->initialize(windowWidth, windowHeight, "GGenie");
+  window.initialize(windowWidth, windowHeight, "GGenie");
 
   // Инициализация GLAD
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -44,18 +44,18 @@ int main() {
   auto world = std::make_shared<DefaultWorld>(registry);
 
   // Systems setup
-  auto renderSystem = std::make_shared<RenderSystem>(
-      RenderSystem::ID, System::PRIORITY_LOW, registry);
-  auto tweenSystem = std::make_shared<TweenSystem>(
-      TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
+  auto renderSystem = std::make_shared<RenderSystem>(RenderSystem::ID, System::PRIORITY_LOW, registry);
+  auto tweenSystem = std::make_shared<TweenSystem>(TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
+  auto inputSystem =
+      std::make_shared<GLFWInputSystem>(GLFWInputSystem::ID, System::PRIORITY_HIGH, window.getGlfwWindow());
   world->registerSystem(renderSystem);
   world->registerSystem(tweenSystem);
+  world->registerSystem(inputSystem);
 
   // Entities and component setup
   auto cube = world->createEntity();
   registry->add(cube, Mesh::cube());
-  registry->add(cube, Shader(ShaderSource::DEFAULT_VERTEX,
-                             ShaderSource::DEFAULT_FRAGMENT));
+  registry->add(cube, Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT));
   registry->add(cube, Transform());
   auto camera = world->createEntity();
   auto cameraTransform = Transform{.translation{0, -1, -5}};
@@ -73,22 +73,19 @@ int main() {
                   .rotation = cubeTransform->get().rotation},
         Transform{.scale = cubeTransform->get().scale,
                   .translation = cubeTransform->get().translation,
-                  .rotation =
-                      Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 1.99)});
+                  .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 1.99)});
     tweenSystem->tween(cube, translateCube);
   }
 
   float lastTime = glfwGetTime();
-  while (!window->shouldClose()) {
+  while (!window.shouldClose()) {
     float time = glfwGetTime();
     float dt = time - lastTime;
     lastTime = time;
 
     world->update(dt);
-    window->swapBuffers();
-    window->pollEvents();
+    window.swapBuffers();
   }
 
-  delete window;
   return 0;
 }

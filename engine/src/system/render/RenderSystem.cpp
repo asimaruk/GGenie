@@ -17,13 +17,13 @@
 #include <print>
 #include <tuple>
 
-size_t shaderHash(const Shader &shader) {
+static size_t shaderHash(const Shader &shader) {
   return hash_combined(shader.getVertex(), shader.getFragment());
 }
 
-glm::vec3 toGlmVec3(const Vec3 &v3) { return glm::vec3(v3.x, v3.y, v3.z); }
+static glm::vec3 toGlmVec3(const Vec3 &v3) { return glm::vec3(v3.x, v3.y, v3.z); }
 
-glm::quat toGlmQuat(const Quat &q) { return glm::quat(q.w, q.x, q.y, q.z); }
+static glm::quat toGlmQuat(const Quat &q) { return glm::quat(q.w, q.x, q.y, q.z); }
 
 RenderSystem::RenderSystem(SystemID id, int priority,
                            std::shared_ptr<ComponentRegistry> registry) noexcept

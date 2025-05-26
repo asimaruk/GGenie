@@ -60,6 +60,7 @@
         "ranges": "cpp",
         "cinttypes": "cpp",
         "list": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "format": "cpp"
     },
 }

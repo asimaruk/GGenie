@@ -1,5 +1,6 @@
 #include "window/GlfwEngineWindow.h"
 #include <GLFW/glfw3.h>
+#include <memory>
 
 GlfwEngineWindow::~GlfwEngineWindow() { glfwTerminate(); }
 
@@ -16,17 +17,18 @@ void GlfwEngineWindow::initialize(int width, int height, const char *title) {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Важно для macOS!
 
   // Window creation
-  window = glfwCreateWindow(width, height, title, NULL, NULL);
+  window = std::shared_ptr<GLFWwindow>(glfwCreateWindow(width, height, title, NULL, NULL),
+                                       [](GLFWwindow *w) { glfwDestroyWindow(w); });
   if (!window) {
     glfwTerminate();
     throw "Window creation error!";
   }
 
-  glfwMakeContextCurrent(window);
+  glfwMakeContextCurrent(window.get());
 }
 
-void GlfwEngineWindow::pollEvents() { glfwPollEvents(); }
+void GlfwEngineWindow::swapBuffers() { glfwSwapBuffers(window.get()); }
 
-void GlfwEngineWindow::swapBuffers() { glfwSwapBuffers(window); }
+bool GlfwEngineWindow::shouldClose() { return glfwWindowShouldClose(window.get()); }
 
-bool GlfwEngineWindow::shouldClose() { return glfwWindowShouldClose(window); }
+std::shared_ptr<GLFWwindow> GlfwEngineWindow::getGlfwWindow() const { return window; }

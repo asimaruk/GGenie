@@ -8,9 +8,6 @@ public:
   // Initialize the window
   virtual void initialize(int width, int height, const char *title) = 0;
 
-  // Poll for events
-  virtual void pollEvents() = 0;
-
   // Swap buffers
   virtual void swapBuffers() = 0;
 
