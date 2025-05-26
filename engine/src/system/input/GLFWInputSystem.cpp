@@ -6,7 +6,7 @@
 #include <string_view>
 
 static std::string_view getActionName(int action) {
-    return action == GLFW_PRESS ? "PRESSED" : action == GLFW_REPEAT ? "REPEATED" : "RELEASED";
+  return action == GLFW_PRESS ? "PRESSED" : action == GLFW_REPEAT ? "REPEATED" : "RELEASED";
 }
 
 class GLFWInputSystem::Impl {
@@ -36,7 +36,7 @@ private:
   void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     auto keyName = glfwGetKeyName(key, scancode);
     if (keyName == NULL) {
-        keyName = std::format("token {} scancode {}", key, scancode).data();
+      keyName = std::format("token {} scancode {}", key, scancode).data();
     }
     auto actionName = getActionName(action);
     std::println("{}", std::format("GLFWInputSystem:: key {} {} with mods {}", keyName, actionName, mods));
@@ -64,6 +64,8 @@ public:
 
     glfwMakeContextCurrent(glfwWindowPtr);
     glfwSetWindowUserPointer(glfwWindowPtr, this);
+    glfwSetInputMode(glfwWindowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // hide cursor for infinite cursor moves
+
     glfwSetKeyCallback(glfwWindowPtr, Impl::keyCallbackWrapper);
     glfwSetMouseButtonCallback(glfwWindowPtr, Impl::mouseButtonCallbackWrapper);
     glfwSetCursorPosCallback(glfwWindowPtr, Impl::cursorPosCallbackWrapper);
