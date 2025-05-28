@@ -68,12 +68,17 @@ int main() {
   if (cubeTransform.has_value()) {
     auto translateCube = std::make_shared<Tween<Transform>>(
         5,
-        Transform{.scale = cubeTransform->get().scale,
-                  .translation = cubeTransform->get().translation,
-                  .rotation = cubeTransform->get().rotation},
-        Transform{.scale = cubeTransform->get().scale,
-                  .translation = cubeTransform->get().translation,
-                  .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 1.99)});
+        Transform{
+            .translation = cubeTransform->get().translation,
+            .rotation = cubeTransform->get().rotation,
+            .scale = cubeTransform->get().scale,
+        },
+        Transform{
+            .translation = cubeTransform->get().translation,
+            .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 1.99),
+            .scale = cubeTransform->get().scale,
+        }
+    );
     tweenSystem->tween(cube, translateCube);
   }
 

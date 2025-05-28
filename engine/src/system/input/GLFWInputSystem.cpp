@@ -72,14 +72,22 @@ public:
     glfwSetScrollCallback(glfwWindowPtr, Impl::scrollCallbackWrapper);
   }
 
-  ~Impl() { glfwSetWindowUserPointer(glfwWindow.get(), nullptr); }
+  ~Impl() {
+    glfwSetWindowUserPointer(glfwWindow.get(), nullptr);
+  }
 };
 
 GLFWInputSystem::GLFWInputSystem(SystemID id, int priority, std::shared_ptr<GLFWwindow> glfwWindow) noexcept
-    : System(id, priority), window(glfwWindow), pimpl(new Impl(glfwWindow)) {}
+    : System(id, priority)
+    , window(glfwWindow)
+    , pimpl(new Impl(glfwWindow)) {}
 
 GLFWInputSystem::~GLFWInputSystem() = default;
 
-void GLFWInputSystem::start() { std::println("GLFWInputSystem.start()"); }
+void GLFWInputSystem::start() {
+  std::println("GLFWInputSystem.start()");
+}
 
-void GLFWInputSystem::update(float dt) { glfwPollEvents(); }
+void GLFWInputSystem::update(float dt) {
+  glfwPollEvents();
+}

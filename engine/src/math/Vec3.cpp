@@ -1,7 +1,9 @@
 #include "math/Vec3.h"
 #include <cmath>
 
-float Vec3::length() const noexcept { return std::sqrt(x * x + y * y + z * z); }
+float Vec3::length() const noexcept {
+  return std::sqrt(x * x + y * y + z * z);
+}
 
 Vec3 Vec3::normalize() const noexcept {
   auto len = length();

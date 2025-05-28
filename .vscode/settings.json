@@ -61,6 +61,8 @@
         "cinttypes": "cpp",
         "list": "cpp",
         "numbers": "cpp",
-        "format": "cpp"
+        "format": "cpp",
+        "__config": "cpp",
+        "tuple": "cpp"
     },
 }

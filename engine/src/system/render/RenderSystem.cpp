@@ -1,3 +1,4 @@
+#include "system/render/RenderSystem.h"
 #include "component/Camera.h"
 #include "component/Mesh.h"
 #include "component/Shader.h"
@@ -6,7 +7,6 @@
 #include "ecs/System.h"
 #include "glad.h"
 #include "math/Quat.h"
-#include "system/render/RenderSystem.h"
 #include "utils/hash_utils.h"
 #include <__ostream/print.h>
 #include <cstddef>
@@ -21,13 +21,17 @@ static size_t shaderHash(const Shader &shader) {
   return hash_combined(shader.getVertex(), shader.getFragment());
 }
 
-static glm::vec3 toGlmVec3(const Vec3 &v3) { return glm::vec3(v3.x, v3.y, v3.z); }
+static glm::vec3 toGlmVec3(const Vec3 &v3) {
+  return glm::vec3(v3.x, v3.y, v3.z);
+}
 
-static glm::quat toGlmQuat(const Quat &q) { return glm::quat(q.w, q.x, q.y, q.z); }
+static glm::quat toGlmQuat(const Quat &q) {
+  return glm::quat(q.w, q.x, q.y, q.z);
+}
 
-RenderSystem::RenderSystem(SystemID id, int priority,
-                           std::shared_ptr<ComponentRegistry> registry) noexcept
-    : System(id, priority), registry(registry) {};
+RenderSystem::RenderSystem(SystemID id, int priority, std::shared_ptr<ComponentRegistry> registry) noexcept
+    : System(id, priority)
+    , registry(registry){};
 
 RenderSystem::~RenderSystem() {
   glDeleteVertexArrays(1, &VAO);
@@ -75,8 +79,7 @@ void RenderSystem::update(float dt) {
   }
 }
 
-std::tuple<std::optional<std::reference_wrapper<Shader>>,
-           std::optional<std::reference_wrapper<Transform>>>
+std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>>
 RenderSystem::getOtherComponents(Entity entity) {
   auto shader = registry->get<Shader>(entity);
   auto transform = registry->get<Transform>(entity);
@@ -88,8 +91,7 @@ void RenderSystem::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderSystem::render(const Camera &camera, const Mesh &mesh,
-                          const Shader &shader, const Transform &transform) {
+void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &shader, const Transform &transform) {
   if (!isCompiledShader(shader)) {
     compileShader(shader); // TODO: compile on another thread
   }
@@ -97,16 +99,13 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh,
   auto vertices = mesh.getVertices();
   auto indices = mesh.getIndices();
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(),
-               vertices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(),
-               indices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
   auto shaderProgram = compiledShaders[shaderHash(shader)];
@@ -118,14 +117,15 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh,
   glm::mat4 model = glm::mat4(1.0f);
 
   view = glm::translate(view, glm::vec3(0.0f, -1.0f, -5.0f));
-  projection =
-      glm::perspective(glm::radians(camera.fov),
-                       static_cast<float>(camera.width) / camera.height,
-                       camera.near, camera.far);
-  model =
-      glm::translate(model, toGlmVec3(transform.translation));   // translation
+  projection = glm::perspective(
+      glm::radians(camera.fov),
+      static_cast<float>(camera.width) / camera.height,
+      camera.near,
+      camera.far
+  );
+  model = glm::translate(model, toGlmVec3(transform.translation));            // translation
   model = model * glm::mat4_cast(toGlmQuat(transform.rotation.normalized())); // rotation
-  model = glm::scale(model, toGlmVec3(transform.scale));         // scale
+  model = glm::scale(model, toGlmVec3(transform.scale));                      // scale
 
   // Передача матриц в шейдер
   unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");

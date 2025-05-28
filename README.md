@@ -44,3 +44,38 @@ cmake --build --preset conan-debug
 ```
 build/Debug/engine3d
 ```
+
+# Lint and format
+## Setup
+clang-tidy and clang-format used for linting and formating
+They should be installed and available with commands `clang-tidy` and `clang-format`
+One way to get them is build from sources([Getting the Source Code and Building LLVM](https://llvm.org/docs/GettingStarted.html#getting-the-source-code-and-building-llvm)):
+1. Clone [llvm-project](https://github.com/llvm/llvm-project)
+2. Checkout the right version (as your local clang compiler if you have one). For example `git checkout llvmorg-17.0.6`
+3. Install [Ninja](https://ninja-build.org/)
+4. Build base llvm and install it to some local dir, for example $HOME/clang-tools
+    ```
+    cmake -S llvm -B build-llvm -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=$HOME/clang-tools
+    cd build-llvm
+    ninja install
+    cd ..
+    ```
+5. Build clang and clang-tools-extra and install them the same way
+    ```
+    cmake -S llvm -B build-tools -G Ninja                                                             
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
+    -DCMAKE_INSTALL_PREFIX=$HOME/clang-tools
+    cd build-tools
+    ninja install
+    cd ..
+    ```
+6. Add builded tools to your path. Add them to the end of PATH if you don't want to override system clang install
+    ```
+    export PATH="$PATH:$HOME/clang-tools/bin"
+    ```
+7. Also use this Perplexity [thread](https://www.perplexity.ai/search/kak-sobrat-iz-iskhodnikov-i-us-SPQWh9bMTpyArh4ZtVP.EA) if you have troubles building from source 
+## Usage
+Manual formatting: `cmake --build --preset conan-debug --target format`

@@ -7,16 +7,26 @@
 
 DefaultWorld::DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept : registry(registry) {}
 
-Entity DefaultWorld::createEntity() noexcept { return nextEntity++; }
+Entity DefaultWorld::createEntity() noexcept {
+  return nextEntity++;
+}
 
-void DefaultWorld::removeEntity(Entity entity) noexcept { registry->removeAll(entity); }
+void DefaultWorld::removeEntity(Entity entity) noexcept {
+  registry->removeAll(entity);
+}
 
 void DefaultWorld::registerSystem(std::shared_ptr<System> system) noexcept {
   std::println("Register system {}", system->id);
   systems[system->id] = system;
   sortedSystems.push_back(system);
-  std::sort(sortedSystems.begin(), sortedSystems.end(),
-            [](const auto &a, const auto &b) { return a->priority < b->priority; });
+  std::sort(
+      sortedSystems.begin(),
+      sortedSystems.end(),
+      [](const auto &a, const auto &b)
+      {
+        return a->priority < b->priority;
+      }
+  );
   system->start();
   std::println("System {} started", system->id);
 }
