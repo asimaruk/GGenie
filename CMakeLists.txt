@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(GGenie)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -24,7 +25,7 @@ if(CLANG_FORMAT)
     add_custom_target(
         format
         COMMAND ${CLANG_FORMAT} -i --style=file ${ENGINE_SOURCES}
-        COMMENT "Running clang-format on C++ sources"
+        COMMENT "Running clang-format on C++ files"
     )
 else()
     message("Missing clang-format, format target not added")
@@ -43,10 +44,16 @@ else()
 endif()
 
 if(CLANG_TIDY)
-    message("clang-tidy found")
+    message("Adding tidy target")
     set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})
+    add_custom_target(
+        tidy
+        COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running git clang-tidy on C++ files"
+    )
 else()
-    message("Missing clang-tidy, lint target not added")
+    message("Missing clang-tidy, tidy target not added")
 endif()
 
 message("Building with CMake version: ${CMAKE_VERSION}")

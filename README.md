@@ -79,3 +79,4 @@ One way to get them is build from sources([Getting the Source Code and Building 
 7. Also use this Perplexity [thread](https://www.perplexity.ai/search/kak-sobrat-iz-iskhodnikov-i-us-SPQWh9bMTpyArh4ZtVP.EA) if you have troubles building from source 
 ## Usage
 Manual formatting: `cmake --build --preset conan-debug --target format`
+Manual linting: `cmake --build --preset conan-debug --target tidy`
