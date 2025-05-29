@@ -2,12 +2,15 @@
 #include "ecs/ComponentRegistry.hpp"
 #include "ecs/Entity.h"
 #include "ecs/System.h"
-#include <__ostream/print.h>
 #include <algorithm>
+#include <memory>
+#include <optional>
+#include <print>
+#include <utility>
 
-DefaultWorld::DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept : registry(registry) {}
+DefaultWorld::DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept : registry(std::move(registry)) {}
 
-Entity DefaultWorld::createEntity() noexcept {
+auto DefaultWorld::createEntity() noexcept -> Entity {
   return nextEntity++;
 }
 
@@ -31,7 +34,7 @@ void DefaultWorld::registerSystem(std::shared_ptr<System> system) noexcept {
   std::println("System {} started", system->id);
 }
 
-std::optional<std::shared_ptr<System>> DefaultWorld::getSystem(SystemID systemId) const {
+auto DefaultWorld::getSystem(SystemID systemId) const -> std::optional<std::shared_ptr<System>> {
   if (systems.contains(systemId)) {
     return systems.at(systemId);
   }

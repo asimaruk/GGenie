@@ -1,16 +1,20 @@
 #include "component/Shader.h"
 #include <string>
+#include <string_view>
+#include <utility>
 
-Shader::Shader(std::string_view vs, std::string_view fs) noexcept : vertexSource(vs), fragmentSource(fs) {}
+Shader::Shader(std::string_view vertexSource, std::string_view fragmentSource) noexcept
+    : vertexSource(vertexSource)
+    , fragmentSource(fragmentSource) {}
 
-Shader::Shader(std::string &&vs, std::string &&fs) noexcept
-    : vertexSource(std::move(vs))
-    , fragmentSource(std::move(fs)) {}
+Shader::Shader(std::string &&vertexSource, std::string &&fragmentSource) noexcept
+    : vertexSource(std::move(vertexSource))
+    , fragmentSource(std::move(fragmentSource)) {}
 
-std::string_view Shader::getVertex() const {
+auto Shader::getVertex() const -> std::string_view {
   return vertexSource;
 }
 
-std::string_view Shader::getFragment() const {
+auto Shader::getFragment() const -> std::string_view {
   return fragmentSource;
 }

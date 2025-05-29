@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.23)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # clang-tidy needs compile_commands.json
 project(GGenie)
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Обязательное требование
-set(CMAKE_CXX_EXTENSIONS OFF)  # Отключаем расширения компилятора (например, GNU-расширения)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -12,6 +12,7 @@ find_package(glm REQUIRED)
 
 find_program(CLANG_FORMAT "clang-format")
 find_program(CLANG_TIDY "clang-tidy")
+find_program(CLANG_APPLY_REPLACEMENTS "clang-apply-replacements")
 find_program(GIT "git")
 
 add_library(glad STATIC glad/glad.c)
@@ -28,7 +29,7 @@ if(CLANG_FORMAT)
         COMMENT "Running clang-format on C++ files"
     )
 else()
-    message("Missing clang-format, format target not added")
+    message("clang-format not found, skip format target")
 endif()
 
 if(CLANG_FORMAT AND GIT)
@@ -40,20 +41,39 @@ if(CLANG_FORMAT AND GIT)
         COMMENT "Running git clang-format on changed C++ files"
     )
 else()
-    message("Missing clang-format or git, changed-format target not added")
+    message("clang-format or git not found, skip changed-format target")
 endif()
 
 if(CLANG_TIDY)
     message("Adding tidy target")
-    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})
+    endif()
     add_custom_target(
         tidy
         COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Running git clang-tidy on C++ files"
     )
+
+    add_custom_target(
+        tidy-report
+        COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES} --export-fixes=tidy-report.yaml
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running git clang-tidy with fixes reported in tidy-report.yaml"
+    )
+
+    if(CLANG_APPLY_REPLACEMENTS)
+        add_custom_target(
+            tidy-fix
+            COMMAND ${CLANG_APPLY_REPLACEMENTS} --style=file --ignore-insert-conflict .
+            DEPENDS tidy-report
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            COMMENT "Running clang-apply-replacements from tidy-report.yaml"
+        )
+    endif()
 else()
-    message("Missing clang-tidy, tidy target not added")
+    message("clang-tidy not found, skip tidy target")
 endif()
 
 message("Building with CMake version: ${CMAKE_VERSION}")

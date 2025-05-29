@@ -3,35 +3,50 @@
 #include "component/Mesh.h"
 #include "component/Shader.h"
 #include "component/Transform.h"
+#include "ecs/ComponentRegistry.hpp"
 #include "ecs/Entity.h"
 #include "ecs/System.h"
 #include "glad.h"
 #include "math/Quat.h"
+#include "math/Vec3.h"
 #include "utils/hash_utils.h"
-#include <__ostream/print.h>
 #include <cstddef>
 #include <cstdio>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <functional>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/vector_float3.hpp>
+#include <glm/fwd.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/trigonometric.hpp>
+#include <memory>
+#include <optional>
 #include <print>
 #include <tuple>
+#include <utility>
 
-static size_t shaderHash(const Shader &shader) {
+namespace {
+auto shaderHash(const Shader &shader) -> size_t {
   return hash_combined(shader.getVertex(), shader.getFragment());
 }
 
-static glm::vec3 toGlmVec3(const Vec3 &v3) {
-  return glm::vec3(v3.x, v3.y, v3.z);
+auto toGlmVec3(const Vec3 &vec3) -> glm::vec3 {
+  return {vec3.x, vec3.y, vec3.z};
 }
 
-static glm::quat toGlmQuat(const Quat &q) {
-  return glm::quat(q.w, q.x, q.y, q.z);
+auto toGlmQuat(const Quat &quat) -> glm::quat {
+  return {quat.w, quat.x, quat.y, quat.z};
 }
+} // namespace
 
 RenderSystem::RenderSystem(SystemID id, int priority, std::shared_ptr<ComponentRegistry> registry) noexcept
     : System(id, priority)
-    , registry(registry){};
+    , registry(std::move(registry))
+    , VBO{}
+    , VAO{}
+    , EBO{} {}
 
 RenderSystem::~RenderSystem() {
   glDeleteVertexArrays(1, &VAO);
@@ -56,7 +71,7 @@ void RenderSystem::start() {
   glEnable(GL_DEPTH_TEST);
 }
 
-void RenderSystem::update(float dt) {
+void RenderSystem::update(float /*dt*/) {
   clear();
   auto cameraIter = registry->getAll<Camera>();
   if (cameraIter.size() == 0) {
@@ -79,15 +94,15 @@ void RenderSystem::update(float dt) {
   }
 }
 
-std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>>
-RenderSystem::getOtherComponents(Entity entity) {
+auto RenderSystem::getOtherComponents(Entity entity)
+    -> std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>> {
   auto shader = registry->get<Shader>(entity);
   auto transform = registry->get<Transform>(entity);
   return std::make_tuple(shader, transform);
 }
 
 void RenderSystem::clear() {
-  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  glClearColor(0.2F, 0.3F, 0.3F, 1.0F); // NOLINT(readability-magic-numbers)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -103,7 +118,7 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
 
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)nullptr);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
@@ -112,11 +127,11 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
   glUseProgram(shaderProgram);
 
   // Матрицы преобразований
-  glm::mat4 view = glm::mat4(1.0f);
-  glm::mat4 projection = glm::mat4(1.0f);
-  glm::mat4 model = glm::mat4(1.0f);
+  auto view = glm::mat4(1.0F);
+  auto projection = glm::mat4(1.0F);
+  auto model = glm::mat4(1.0F);
 
-  view = glm::translate(view, glm::vec3(0.0f, -1.0f, -5.0f));
+  view = glm::translate(view, glm::vec3(0.0F, -1.0F, -5.0F)); // NOLINT(readability-magic-numbers)
   projection = glm::perspective(
       glm::radians(camera.fov),
       static_cast<float>(camera.width) / camera.height,
@@ -128,9 +143,9 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
   model = glm::scale(model, toGlmVec3(transform.scale));                      // scale
 
   // Передача матриц в шейдер
-  unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-  unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
-  unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
+  unsigned int const modelLoc = glGetUniformLocation(shaderProgram, "model");
+  unsigned int const viewLoc = glGetUniformLocation(shaderProgram, "view");
+  unsigned int const projLoc = glGetUniformLocation(shaderProgram, "projection");
 
   glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
@@ -138,21 +153,21 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
 
   // Отрисовка куба
   glBindVertexArray(VAO);
-  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
 }
 
 void RenderSystem::compileShader(const Shader &shader) {
-  unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  unsigned int const vertexShader = glCreateShader(GL_VERTEX_SHADER);
   const char *vertexShaderSource = shader.getVertex().data();
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
   glCompileShader(vertexShader);
 
-  unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  unsigned int const fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
   const char *fragmentShaderSource = shader.getFragment().data();
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
   glCompileShader(fragmentShader);
 
-  unsigned int shaderProgram = glCreateProgram();
+  unsigned int const shaderProgram = glCreateProgram();
   glAttachShader(shaderProgram, vertexShader);
   glAttachShader(shaderProgram, fragmentShader);
   glLinkProgram(shaderProgram);
@@ -164,7 +179,7 @@ void RenderSystem::compileShader(const Shader &shader) {
   compiledShaders[shaderHash(shader)] = shaderProgram;
 }
 
-bool RenderSystem::isCompiledShader(const Shader &shader) {
-  size_t hash = shaderHash(shader);
+auto RenderSystem::isCompiledShader(const Shader &shader) -> bool {
+  size_t const hash = shaderHash(shader);
   return compiledShaders.contains(hash);
 }

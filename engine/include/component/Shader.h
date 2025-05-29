@@ -9,8 +9,8 @@ private:
   std::string fragmentSource;
 
 public:
-  Shader(std::string_view vs, std::string_view fs) noexcept;
-  Shader(std::string &&vs, std::string &&fs) noexcept;
+  Shader(std::string_view vertexSource, std::string_view fragmentSource) noexcept;
+  Shader(std::string &&vertexSource, std::string &&fragmentSource) noexcept;
   std::string_view getVertex() const;
   std::string_view getFragment() const;
 };

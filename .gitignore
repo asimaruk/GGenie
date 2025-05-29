@@ -1,13 +1,10 @@
 build
 **/*.log
+tidy-report.yaml
 
 // draw.io
 *.drawio.bkp
 *.drawio.dtmp
-
-// clangd
-.cache
-compile_commands.json
 
 // pyenv
 .python-version

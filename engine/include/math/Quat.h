@@ -13,12 +13,12 @@ struct Quat {
   Quat normalized() const;
   Quat inverse() const;
   // dot product or scalar product https://en.wikipedia.org/wiki/Dot_product
-  float dot(const Quat &other) const noexcept;
+  float dot(const Quat &q) const noexcept;
 
-  Quat operator+(const Quat &other) const noexcept;
-  Quat operator-(const Quat &other) const noexcept;
-  Quat operator*(const Quat &other) const noexcept;
-  Quat operator/(const Quat &other) const noexcept;
+  Quat operator+(const Quat &q) const noexcept;
+  Quat operator-(const Quat &q) const noexcept;
+  Quat operator*(const Quat &q) const noexcept;
+  Quat operator/(const Quat &q) const noexcept;
   Quat operator*(float value) const noexcept;
   Quat operator/(float value) const noexcept;
 };

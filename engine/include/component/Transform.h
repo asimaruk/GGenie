@@ -12,6 +12,6 @@ struct Transform {
 
   Transform operator+(const Transform &other) const;
   Transform operator-(const Transform &other) const;
-  Transform operator*(const float other) const;
-  Transform operator/(const float other) const;
+  Transform operator*(const float value) const;
+  Transform operator/(const float value) const;
 };

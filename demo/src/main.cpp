@@ -8,17 +8,15 @@
 #include "glad.h"
 #include "math/Quat.h"
 #include "system/input/GLFWInputSystem.h"
-#include "system/render/RenderSystem.h"
 #include "system/render/defaultshaders.h"
+#include "system/render/RenderSystem.h"
 #include "system/tween/Tween.hpp"
 #include "system/tween/TweenSystem.hpp"
-#include "window/EngineWindow.h"
 #include "window/GlfwEngineWindow.h"
 #include <GLFW/glfw3.h>
-#include <__ostream/print.h>
 #include <iostream>
 #include <memory>
-
+#include <print>
 
 int main() {
 
@@ -84,8 +82,8 @@ int main() {
 
   float lastTime = glfwGetTime();
   while (!window.shouldClose()) {
-    float time = glfwGetTime();
-    float dt = time - lastTime;
+    const float time = glfwGetTime();
+    const float dt = time - lastTime;
     lastTime = time;
 
     world->update(dt);

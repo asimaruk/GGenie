@@ -1,3 +1,3 @@
 #include "ecs/World.h"
 
-World::~World() {}
+World::~World() = default;
