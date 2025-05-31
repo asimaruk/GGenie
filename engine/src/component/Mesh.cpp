@@ -1,16 +1,15 @@
 #include "component/Mesh.h"
-#include <span>
 #include <utility>
 #include <vector>
 
-Mesh::Mesh(std::vector<float> &&v, std::vector<unsigned int> &&i) noexcept
-    : vertices(std::move(v))
-    , indices(std::move(i)) {}
+Mesh::Mesh(std::vector<float> &&vertices, std::vector<unsigned int> &&indices) noexcept
+    : vertices(std::forward<std::vector<float>>(vertices))
+    , indices(std::forward<std::vector<unsigned int>>(indices)) {}
 
 auto Mesh::cube() noexcept -> Mesh {
+  // clang-format off
+  // NOLINTBEGIN(readability-magic-numbers)
   return Mesh(
-      // clang-format off
-    // NOLINTBEGIN(readability-magic-numbers)
     {
     // Positions          // Colors
     -0.5F, -0.5F, -0.5F,  1.0F, 0.0F, 0.0F,
@@ -30,15 +29,7 @@ auto Mesh::cube() noexcept -> Mesh {
     3, 2, 6,  3, 6, 7,  // top face
     0, 1, 5,  0, 5, 4   // bottom face
     } 
-    // NOLINTEND(readability-magic-numbers)
-        // clang-format on
   );
-}
-
-auto Mesh::getVertices() const noexcept -> std::span<const float> {
-  return vertices;
-}
-
-auto Mesh::getIndices() const noexcept -> std::span<const unsigned int> {
-  return indices;
+  // NOLINTEND(readability-magic-numbers)
+  // clang-format on
 }

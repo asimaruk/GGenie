@@ -29,7 +29,7 @@
 
 namespace {
 auto shaderHash(const Shader &shader) -> size_t {
-  return hash_combined(shader.getVertex(), shader.getFragment());
+  return hash_combined(shader.vertexSource, shader.fragmentSource);
 }
 
 auto toGlmVec3(const Vec3 &vec3) -> glm::vec3 {
@@ -111,8 +111,8 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
     compileShader(shader); // TODO: compile on another thread
   }
 
-  auto vertices = mesh.getVertices();
-  auto indices = mesh.getIndices();
+  auto vertices = mesh.vertices;
+  auto indices = mesh.indices;
 
   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
@@ -158,12 +158,12 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
 
 void RenderSystem::compileShader(const Shader &shader) {
   unsigned int const vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  const char *vertexShaderSource = shader.getVertex().data();
+  const char *vertexShaderSource = shader.vertexSource.data();
   glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
   glCompileShader(vertexShader);
 
   unsigned int const fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  const char *fragmentShaderSource = shader.getFragment().data();
+  const char *fragmentShaderSource = shader.fragmentSource.data();
   glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
   glCompileShader(fragmentShader);
 

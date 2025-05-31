@@ -63,6 +63,8 @@
         "numbers": "cpp",
         "format": "cpp",
         "__config": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "condition_variable": "cpp",
+        "set": "cpp"
     },
 }

@@ -10,11 +10,3 @@ Shader::Shader(std::string_view vertexSource, std::string_view fragmentSource) n
 Shader::Shader(std::string &&vertexSource, std::string &&fragmentSource) noexcept
     : vertexSource(std::move(vertexSource))
     , fragmentSource(std::move(fragmentSource)) {}
-
-auto Shader::getVertex() const -> std::string_view {
-  return vertexSource;
-}
-
-auto Shader::getFragment() const -> std::string_view {
-  return fragmentSource;
-}
