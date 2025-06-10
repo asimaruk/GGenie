@@ -25,17 +25,15 @@ public:
     const auto transform = registry->get<Transform>(controlledEntity);
     const auto move = registry->get<Move>(controlledEntity);
 
-    if (transform && move) {
-      if (direction.x != 0 || direction.y != 0 || direction.z != 0) {
-        registry->replace<Transform>(
-            controlledEntity,
-            Transform{
-                .translation = transform->get().translation + direction * move->get().speed * dt,
-                .rotation = transform->get().rotation,
-                .scale = transform->get().scale,
-            }
-        );
-      }
+    if (transform && move && direction != Vec3::ZERO) {
+      registry->replace<Transform>(
+          controlledEntity,
+          Transform{
+              .translation = transform->get().translation + direction * move->get().speed * dt,
+              .rotation = transform->get().rotation,
+              .scale = transform->get().scale,
+          }
+      );
     }
   }
 
@@ -58,33 +56,32 @@ public:
 
     Vec3 keyboardDirection = Vec3::ZERO;
     switch (event.key) {
-        case GLFW_KEY_W:
-        case GLFW_KEY_UP:
-            keyboardDirection = keyboardDirection + Vec3{ 0, 0, 1 };
-            break;
-        case GLFW_KEY_S:
-        case GLFW_KEY_DOWN:
-            keyboardDirection = keyboardDirection + Vec3{ 0, 0, -1 };
-            break;
-        case GLFW_KEY_A:
-        case GLFW_KEY_LEFT:
-            keyboardDirection = keyboardDirection + Vec3{ 1, 0, 0 };
-            break;
-        case GLFW_KEY_D:
-        case GLFW_KEY_RIGHT:
-            keyboardDirection = keyboardDirection + Vec3{ -1, 0, 0 };
-            break;
+    case GLFW_KEY_W:
+    case GLFW_KEY_UP:
+      keyboardDirection += Vec3{0, 0, 1};
+      break;
+    case GLFW_KEY_S:
+    case GLFW_KEY_DOWN:
+      keyboardDirection += Vec3{0, 0, -1};
+      break;
+    case GLFW_KEY_A:
+    case GLFW_KEY_LEFT:
+      keyboardDirection += Vec3{1, 0, 0};
+      break;
+    case GLFW_KEY_D:
+    case GLFW_KEY_RIGHT:
+      keyboardDirection += Vec3{-1, 0, 0};
+      break;
     }
 
-    switch (event.action)
-    {
+    switch (event.action) {
     case GLFW_PRESS:
-        direction = direction + keyboardDirection;
-        break;
+      direction += keyboardDirection;
+      break;
     case GLFW_RELEASE:
-        direction = direction - keyboardDirection;
-        break;
-    } 
+      direction -= keyboardDirection;
+      break;
+    }
   }
 
   void onGLFWMouseButtonEvent(const GLFWMouseButtonEvent &event) {
@@ -146,7 +143,7 @@ void FirstPersonViewControlSystem::setControlledEntity(Entity entity) noexcept {
 void FirstPersonViewControlSystem::start() {}
 
 void FirstPersonViewControlSystem::update(float dt) {
-    pimpl->update(dt);
+  pimpl->update(dt);
 }
 
 FirstPersonViewControlSystem::~FirstPersonViewControlSystem() {}
