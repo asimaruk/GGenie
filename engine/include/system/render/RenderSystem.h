@@ -18,11 +18,15 @@ private:
   std::unordered_map<size_t, unsigned int> compiledShaders;
   unsigned int VBO, VAO, EBO;
 
-  std::tuple<std::optional<std::reference_wrapper<Shader>>,
-             std::optional<std::reference_wrapper<Transform>>>
+  std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>>
   getOtherComponents(Entity entity);
-  void render(const Camera &camera, const Mesh &mesh, const Shader &shader,
-              const Transform &transform);
+  void render(
+      const Camera &camera,
+      const Transform &cameraTransform,
+      const Mesh &mesh,
+      const Shader &shader,
+      const Transform &transform
+  );
   void compileShader(const Shader &shader);
   bool isCompiledShader(const Shader &shader);
   void clear();
@@ -30,8 +34,7 @@ private:
 public:
   static constexpr auto ID = "RenderSystemID";
 
-  RenderSystem(SystemID id, int priority,
-               std::shared_ptr<ComponentRegistry> registry) noexcept;
+  RenderSystem(SystemID id, int priority, std::shared_ptr<ComponentRegistry> registry) noexcept;
   ~RenderSystem();
 
   void start() override;

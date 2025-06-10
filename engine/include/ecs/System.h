@@ -12,6 +12,7 @@ public:
   static constexpr auto PRIORITY_LOW = 10000;
   static constexpr auto PRIORITY_MEDIUM = 1000;
   static constexpr auto PRIORITY_HIGH = 100;
+  static constexpr auto NO_PRIORITY = -1;
   const SystemID id;
   const int priority;
   virtual ~System() = default;

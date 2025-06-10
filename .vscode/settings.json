@@ -65,6 +65,8 @@
         "__config": "cpp",
         "tuple": "cpp",
         "condition_variable": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "functional": "cpp",
+        "source_location": "cpp"
     },
 }

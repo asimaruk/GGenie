@@ -89,7 +89,7 @@ void RenderSystem::update(float /*dt*/) {
   for (const auto [entity, mesh] : registry->getAll<Mesh>()) {
     auto [shader, transform] = getOtherComponents(entity);
     if (shader.has_value() && transform.has_value()) {
-      render(camera, mesh, shader->get(), transform->get());
+      render(camera, cameraTransform->get(), mesh, shader->get(), transform->get());
     }
   }
 }
@@ -106,7 +106,13 @@ void RenderSystem::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &shader, const Transform &transform) {
+void RenderSystem::render(
+    const Camera &camera,
+    const Transform &cameraTransform,
+    const Mesh &mesh,
+    const Shader &shader,
+    const Transform &transform
+) {
   if (!isCompiledShader(shader)) {
     compileShader(shader); // TODO: compile on another thread
   }
@@ -131,7 +137,10 @@ void RenderSystem::render(const Camera &camera, const Mesh &mesh, const Shader &
   auto projection = glm::mat4(1.0F);
   auto model = glm::mat4(1.0F);
 
-  view = glm::translate(view, glm::vec3(0.0F, -1.0F, -5.0F)); // NOLINT(readability-magic-numbers)
+  view = glm::translate(
+      view,
+      glm::vec3(cameraTransform.translation.x, cameraTransform.translation.y, cameraTransform.translation.z)
+  );
   projection = glm::perspective(
       glm::radians(camera.fov),
       static_cast<float>(camera.width) / camera.height,
