@@ -22,3 +22,7 @@ struct GLFWScrollEvent {
   double xoffset;
   double yoffset;
 };
+
+struct GLFWCursorEnterEvent {
+  int entered;
+};

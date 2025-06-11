@@ -137,6 +137,7 @@ void RenderSystem::render(
   auto projection = glm::mat4(1.0F);
   auto model = glm::mat4(1.0F);
 
+  view = view * glm::mat4_cast(toGlmQuat(cameraTransform.rotation));
   view = glm::translate(
       view,
       glm::vec3(cameraTransform.translation.x, cameraTransform.translation.y, cameraTransform.translation.z)

@@ -25,6 +25,11 @@ private:
     self->mouseButtonCallback(window, button, action, mods);
   }
 
+  static void cursorEnterCallbackWrapper(GLFWwindow *window, int entered) {
+    auto *self = static_cast<Impl *>(glfwGetWindowUserPointer(window));
+    self->cursorEnterCallback(window, entered);
+  }
+
   static void cursorPosCallbackWrapper(GLFWwindow *window, double xpos, double ypos) {
     auto *self = static_cast<Impl *>(glfwGetWindowUserPointer(window));
     self->cursorPosCallback(window, xpos, ypos);
@@ -51,6 +56,10 @@ private:
     eventSystem->dispatch(GLFWCursorPositionEvent{.xpos = xpos, .ypos = ypos});
   }
 
+  void cursorEnterCallback(GLFWwindow *window, int entered) {
+    eventSystem->dispatch(GLFWCursorEnterEvent{.entered = entered});
+  }
+
   void scrollCallback(GLFWwindow * /*window*/, double xoffset, double yoffset) {
     eventSystem->dispatch(GLFWScrollEvent{.xoffset = xoffset, .yoffset = yoffset});
   }
@@ -68,6 +77,7 @@ public:
 
     glfwSetKeyCallback(glfwWindow, Impl::keyCallbackWrapper);
     glfwSetMouseButtonCallback(glfwWindow, Impl::mouseButtonCallbackWrapper);
+    glfwSetCursorEnterCallback(glfwWindow, Impl::cursorEnterCallbackWrapper);
     glfwSetCursorPosCallback(glfwWindow, Impl::cursorPosCallbackWrapper);
     glfwSetScrollCallback(glfwWindow, Impl::scrollCallbackWrapper);
   }
