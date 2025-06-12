@@ -1,5 +1,4 @@
-#include "math/Quat.h"
-#include "math/Vec3.h"
+#include "math/algebras.h"
 #include <cmath>
 
 const Quat Quat::IDENTITY = {.w = 1.0F, .x = 0.0F, .y = 0.0F, .z = 0.0F};

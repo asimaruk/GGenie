@@ -1,4 +1,4 @@
-#include "math/Vec3.h"
+#include "math/algebras.h"
 #include <cmath>
 
 auto Vec3::length() const noexcept -> float {
@@ -11,6 +11,11 @@ auto Vec3::normalize() const noexcept -> Vec3 {
     return *this;
   }
   return {.x = x / len, .y = y / len, .z = z / len};
+}
+
+auto Vec3::rotate(const Quat &quat) const noexcept -> Vec3 {
+  auto r = quat * Quat{.w = 0, .x = x, .y = y, .z = z} * quat.inverse();
+  return Vec3{.x = r.x, .y = r.y, .z = r.z};
 }
 
 auto Vec3::operator+(const Vec3 &other) const noexcept -> Vec3 {

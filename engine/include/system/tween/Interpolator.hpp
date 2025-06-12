@@ -1,7 +1,7 @@
 #pragma once
 
 #include "easing.hpp"
-#include "math/Quat.h"
+#include "math/algebras.h"
 #include "math/lerp.hpp"
 #include <__ostream/print.h>
 #include <functional>

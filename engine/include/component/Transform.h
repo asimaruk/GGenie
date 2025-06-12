@@ -1,7 +1,6 @@
 #pragma once
 
-#include "math/Quat.h"
-#include "math/Vec3.h"
+#include "math/algebras.h"
 
 struct Transform {
   Vec3 translation = Vec3::ZERO;

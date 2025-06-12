@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "math/Quat.h"
+#include "math/algebras.h"
 #include <algorithm>
 #include <cmath>
 #include <concepts>

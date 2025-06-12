@@ -2,7 +2,7 @@
 #include "component/Move.h"
 #include "component/Transform.h"
 #include "ecs/System.h"
-#include "math/Vec3.h"
+#include "math/algebras.h"
 #include "system/event/Event.h"
 #include "system/input/GLFWInputEvent.h"
 #include <GLFW/glfw3.h>
@@ -27,20 +27,27 @@ public:
   void update(float dt) {
     const auto transform = registry->get<Transform>(controlledEntity);
     const auto move = registry->get<Move>(controlledEntity);
-    const auto cursorPosDiff = cursorPosition - lastCursorPosition;
+    float cursorX = cursorPosition.x - lastCursorPosition.x;
+    float cursorY = cursorPosition.y - lastCursorPosition.y;
 
-    if (transform && move && (direction != Vec3::ZERO || cursorPosDiff != Vec3::ZERO)) {
-      registry->replace<Transform>(
-          controlledEntity,
-          Transform{
-              .translation = transform->get().translation + direction * move->get().speed * dt,
-              .rotation =
-                  transform->get().rotation * Quat::fromEuler(cursorPosDiff.x / 1000, 0, cursorPosDiff.y / 1000),
-              .scale = transform->get().scale,
-          }
-      );
-      lastCursorPosition = cursorPosition;
+    if (!transform || !move || (direction == Vec3::ZERO && cursorX == 0 && cursorY == 0)) {
+      return;
     }
+
+    auto yaw = Quat::fromAxisAngle(Vec3{0, 1, 0}, -cursorX * 0.001);
+    auto pitch = Quat::fromAxisAngle(Vec3{1, 0, 0}, -cursorY * 0.001);
+    auto rotation = yaw * transform->get().rotation * pitch;
+    auto moveVector = direction.normalize().rotate(rotation);
+    auto translation = transform->get().translation + moveVector * move->get().speed * dt;
+    registry->replace<Transform>(
+        controlledEntity,
+        Transform{
+            .translation = translation,
+            .rotation = rotation,
+            .scale = transform->get().scale,
+        }
+    );
+    lastCursorPosition = cursorPosition;
   }
 
   void onGLFWCursorEnterEvent(const GLFWCursorEnterEvent &event) {
@@ -75,19 +82,19 @@ public:
     switch (event.key) {
     case GLFW_KEY_W:
     case GLFW_KEY_UP:
-      keyboardDirection += Vec3{0, 0, 1};
+      keyboardDirection += Vec3{0, 0, -1};
       break;
     case GLFW_KEY_S:
     case GLFW_KEY_DOWN:
-      keyboardDirection += Vec3{0, 0, -1};
+      keyboardDirection += Vec3{0, 0, 1};
       break;
     case GLFW_KEY_A:
     case GLFW_KEY_LEFT:
-      keyboardDirection += Vec3{1, 0, 0};
+      keyboardDirection += Vec3{-1, 0, 0};
       break;
     case GLFW_KEY_D:
     case GLFW_KEY_RIGHT:
-      keyboardDirection += Vec3{-1, 0, 0};
+      keyboardDirection += Vec3{1, 0, 0};
       break;
     }
 

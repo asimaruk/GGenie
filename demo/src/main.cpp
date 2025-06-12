@@ -7,7 +7,7 @@
 #include "ecs/DefaultWorld.h"
 #include "ecs/System.h"
 #include "glad.h"
-#include "math/Quat.h"
+#include "math/algebras.h"
 #include "system/control/FirstPersonViewControlSystem.h"
 #include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputSystem.h"
@@ -71,7 +71,7 @@ int main() {
   registry->add(cube, Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT));
   registry->add(cube, Transform());
   auto camera = world->createEntity();
-  auto cameraTransform = Transform{.translation{0, -1, -5}};
+  auto cameraTransform = Transform{.translation{0, 1, 5}};
   registry->add(camera, cameraTransform);
   registry->add(camera, Camera(windowWidth, windowHeight, 45, 0.1, 100));
   registry->add(camera, Move{.speed = 10});

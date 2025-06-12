@@ -7,8 +7,7 @@
 #include "ecs/Entity.h"
 #include "ecs/System.h"
 #include "glad.h"
-#include "math/Quat.h"
-#include "math/Vec3.h"
+#include "math/algebras.h"
 #include "utils/hash_utils.h"
 #include <cstddef>
 #include <cstdio>
@@ -137,11 +136,12 @@ void RenderSystem::render(
   auto projection = glm::mat4(1.0F);
   auto model = glm::mat4(1.0F);
 
-  view = view * glm::mat4_cast(toGlmQuat(cameraTransform.rotation));
   view = glm::translate(
       view,
       glm::vec3(cameraTransform.translation.x, cameraTransform.translation.y, cameraTransform.translation.z)
   );
+  view = view * glm::mat4_cast(toGlmQuat(cameraTransform.rotation));
+  view = glm::inverse(view);
   projection = glm::perspective(
       glm::radians(camera.fov),
       static_cast<float>(camera.width) / camera.height,
