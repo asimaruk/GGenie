@@ -1,3 +1,4 @@
+#include "adapter/event/GLFWEventsAdapter.h"
 #include "component/Camera.h"
 #include "component/Mesh.h"
 #include "component/Move.h"
@@ -46,6 +47,8 @@ int main() {
 
   // Systems setup
   auto eventSystem = std::make_shared<EventSystem>();
+  auto glfwEventsEdapter = GLFWEventsAdapter();
+  glfwEventsEdapter.attach(eventSystem);
   auto renderSystem = std::make_shared<RenderSystem>(RenderSystem::ID, System::PRIORITY_LOW, registry);
   auto tweenSystem = std::make_shared<TweenSystem>(TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
   auto inputSystem = std::make_shared<GLFWInputSystem>(
