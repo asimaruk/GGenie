@@ -1,4 +1,5 @@
 #include "adapter/event/GLFWEventsAdapter.h"
+#include "math/algebras.h"
 #include "system/control/FPVEvent.h"
 #include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputEvent.h"
@@ -52,6 +53,8 @@ public:
     case GLFW_KEY_RIGHT:
       keyboardDirection += Vec3{1, 0, 0};
       break;
+    default:
+      break;
     }
 
     switch (event.action) {
@@ -60,6 +63,8 @@ public:
       break;
     case GLFW_RELEASE:
       direction -= keyboardDirection;
+      break;
+    default:
       break;
     }
 

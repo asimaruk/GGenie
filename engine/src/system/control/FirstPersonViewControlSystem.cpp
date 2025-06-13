@@ -1,12 +1,14 @@
 #include "system/control/FirstPersonViewControlSystem.h"
 #include "component/Move.h"
 #include "component/Transform.h"
+#include "ecs/ComponentRegistry.hpp"
+#include "ecs/Entity.h"
 #include "ecs/System.h"
 #include "math/algebras.h"
 #include "system/control/FPVEvent.h"
-#include "system/event/Event.h"
-#include <numbers>
-#include <print>
+#include "system/event/EventSystem.hpp"
+#include <memory>
+#include <utility>
 
 class FirstPersonViewControlSystem::Impl {
 private:
@@ -15,10 +17,12 @@ private:
   Vec3 direction = Vec3::ZERO;
   float xViewDiff = 0;
   float yViewDiff = 0;
-  float sensivity = 0.001;
+  float sensivity = DEFAULT_SESIVITY;
 
 public:
-  Impl(std::shared_ptr<ComponentRegistry> registry) : registry(registry) {}
+  static constexpr float DEFAULT_SESIVITY = 0.001;
+
+  explicit Impl(std::shared_ptr<ComponentRegistry> registry) : registry(registry) {}
 
   void setControlledEntity(Entity entity) noexcept {
     controlledEntity = entity;
@@ -91,4 +95,4 @@ void FirstPersonViewControlSystem::update(float dt) {
   pimpl->update(dt);
 }
 
-FirstPersonViewControlSystem::~FirstPersonViewControlSystem() {}
+FirstPersonViewControlSystem::~FirstPersonViewControlSystem() = default;

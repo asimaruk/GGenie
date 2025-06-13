@@ -1,15 +1,12 @@
 #include "system/input/GLFWInputSystem.h"
 #include "ecs/System.h"
-#include "system/event/Event.h"
+#include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputEvent.h"
-#include <cstddef>
 #include <format>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <memory>
 #include <print>
-#include <string_view>
-#include <utility>
 
 class GLFWInputSystem::Impl {
 private:
@@ -56,7 +53,7 @@ private:
     eventSystem->dispatch(GLFWCursorPositionEvent{.xpos = xpos, .ypos = ypos});
   }
 
-  void cursorEnterCallback(GLFWwindow *window, int entered) {
+  void cursorEnterCallback(GLFWwindow * /*window*/, int entered) {
     eventSystem->dispatch(GLFWCursorEnterEvent{.entered = entered});
   }
 

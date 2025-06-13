@@ -19,6 +19,7 @@
 #include <glm/fwd.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/matrix.hpp>
 #include <glm/trigonometric.hpp>
 #include <memory>
 #include <optional>

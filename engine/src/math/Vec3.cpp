@@ -14,8 +14,8 @@ auto Vec3::normalize() const noexcept -> Vec3 {
 }
 
 auto Vec3::rotate(const Quat &quat) const noexcept -> Vec3 {
-  auto r = quat * Quat{.w = 0, .x = x, .y = y, .z = z} * quat.inverse();
-  return Vec3{.x = r.x, .y = r.y, .z = r.z};
+  auto rotated = quat * Quat{.w = 0, .x = x, .y = y, .z = z} * quat.inverse();
+  return Vec3{.x = rotated.x, .y = rotated.y, .z = rotated.z};
 }
 
 auto Vec3::operator+(const Vec3 &other) const noexcept -> Vec3 {
