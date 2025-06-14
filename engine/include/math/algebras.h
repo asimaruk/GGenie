@@ -44,4 +44,6 @@ struct Quat {
   Quat operator/(const Quat &q) const noexcept;
   Quat operator*(float value) const noexcept;
   Quat operator/(float value) const noexcept;
+  bool operator==(const Quat &q) const noexcept;
+  bool operator!=(const Quat &q) const noexcept;
 };

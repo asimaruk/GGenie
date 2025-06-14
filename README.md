@@ -40,6 +40,11 @@ cmake --preset=conan-debug
 cmake --build --preset conan-debug 
 ```
 
+## Tests
+```
+build/Debug/tests
+```
+
 ## Run
 ```
 build/Debug/GGenie

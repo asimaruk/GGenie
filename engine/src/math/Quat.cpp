@@ -70,3 +70,10 @@ auto Quat::operator*(float v) const noexcept -> Quat {
 auto Quat::operator/(float v) const noexcept -> Quat {
   return *this * (1 / v);
 }
+
+auto Quat::operator==(const Quat &q) const noexcept -> bool {
+  return w == q.w && x == q.x && y == q.y && z == q.z;
+}
+auto Quat::operator!=(const Quat &q) const noexcept -> bool {
+  return !(*this == q);
+}

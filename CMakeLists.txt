@@ -9,6 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(Catch2 3 REQUIRED)
 
 find_program(CLANG_FORMAT "clang-format")
 find_program(CLANG_TIDY "clang-tidy")
@@ -21,11 +22,15 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "engine/src/**/*.cpp"
 )
 
+file(GLOB_RECURSE ENGINE_TESTS 
+    "engine/test/**/*.test.cpp"
+)
+
 if(CLANG_FORMAT)
     message("Adding format target")
     add_custom_target(
         format
-        COMMAND ${CLANG_FORMAT} -i --style=file ${ENGINE_SOURCES}
+        COMMAND ${CLANG_FORMAT} -i --style=file ${ENGINE_SOURCES} ${ENGINE_TESTS}
         COMMENT "Running clang-format on C++ files"
     )
 else()
@@ -78,21 +83,38 @@ endif()
 
 message("Building with CMake version: ${CMAKE_VERSION}")
 
-add_executable(GGenie 
-    ${CMAKE_SOURCE_DIR}/demo/src/main.cpp
-    ${ENGINE_SOURCES}
+add_library(ggenie_deps INTERFACE)
+target_link_libraries(ggenie_deps INTERFACE 
+    OpenGL::GL
+    glfw
+    glm::glm
+    glad
 )
 
-target_include_directories(GGenie PRIVATE
+add_library(ggenie_includes INTERFACE)
+target_include_directories(ggenie_includes INTERFACE
     ${CMAKE_SOURCE_DIR}/glad
     ${CMAKE_SOURCE_DIR}/engine/include
 )
 
+add_executable(GGenie 
+    ${CMAKE_SOURCE_DIR}/demo/src/main.cpp
+    ${ENGINE_SOURCES}
+)
 target_link_libraries(GGenie 
-    OpenGL::GL 
-    glfw 
-    glm::glm 
-    glad
+    ggenie_deps 
+    ggenie_includes
+)
+
+message("ENGINE_TESTS", ${ENGINE_TESTS})
+add_executable(tests 
+    ${ENGINE_SOURCES}
+    ${ENGINE_TESTS}
+)
+target_link_libraries(tests 
+    PRIVATE Catch2::Catch2WithMain
+    ggenie_deps
+    ggenie_includes
 )
 
 add_dependencies(GGenie changed-format)
