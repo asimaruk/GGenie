@@ -3,7 +3,12 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 
-using namespace Catch::literals;
+Catch::Approx operator""_a(long double val) {
+  return Catch::Approx(val).scale(1);
+}
+Catch::Approx operator""_a(unsigned long long val) {
+  return Catch::Approx(val).scale(1);
+}
 
 TEST_CASE("Quat equality and inequality", "[quat]") {
   Quat a{1, 2, 3, 4};
@@ -23,10 +28,19 @@ TEST_CASE("Quat fromAxisAngle 360 degrees returns identity", "[quat]") {
   Vec3 axis{0, 1, 0};
   float radians = 2 * M_PI;
   Quat q = Quat::fromAxisAngle(axis, radians);
-  REQUIRE(q.w == 1_a);
+  REQUIRE(q.w == -1_a);
   REQUIRE(q.x == 0_a);
   REQUIRE(q.y == 0_a);
   REQUIRE(q.z == 0_a);
+}
+
+TEST_CASE("Quats for axis of different lenghts", "[quat]") {
+  Vec3 axis1{0, 1, 0};
+  Vec3 axis2{0, 2, 0};
+  float radians = M_PI_2;
+  Quat q1 = Quat::fromAxisAngle(axis1, radians);
+  Quat q2 = Quat::fromAxisAngle(axis2, radians);
+  REQUIRE(q1 == q2);
 }
 
 TEST_CASE("Quat fromEuler", "[quat]") {

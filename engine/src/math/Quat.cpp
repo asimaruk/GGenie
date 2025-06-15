@@ -6,7 +6,8 @@ const Quat Quat::IDENTITY = {.w = 1.0F, .x = 0.0F, .y = 0.0F, .z = 0.0F};
 auto Quat::fromAxisAngle(const Vec3 &axis, float radians) noexcept -> Quat {
   auto halfAngle = radians / 2;
   auto sin = std::sin(halfAngle);
-  return {.w = std::cos(halfAngle), .x = axis.x * sin, .y = axis.y * sin, .z = axis.z * sin};
+  auto normalAxis = axis.normalize();
+  return {.w = std::cos(halfAngle), .x = normalAxis.x * sin, .y = normalAxis.y * sin, .z = normalAxis.z * sin};
 }
 
 auto Quat::fromEuler(float pitch, float yaw, float roll) noexcept -> Quat {
@@ -22,9 +23,9 @@ auto Quat::fromEuler(float pitch, float yaw, float roll) noexcept -> Quat {
   // Комбинирование вращений (Z-Y-X)
   return {
       .w = cr * cp * cy + sr * sp * sy,
-      .x = sr * cp * cy - cr * sp * sy,
-      .y = cr * sp * cy + sr * cp * sy,
-      .z = cr * cp * sy - sr * sp * cy
+      .x = cr * cy * sp - sr * sy * cp,
+      .y = cr * sy * cp + sr * cy * sp,
+      .z = sr * cy * cp - cr * sy * sp
   };
 }
 
