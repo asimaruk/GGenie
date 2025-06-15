@@ -1,13 +1,17 @@
 #include "math/algebras.h"
-#include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 
-Catch::Approx operator""_a(long double val) {
-  return Catch::Approx(val).scale(1);
-}
-Catch::Approx operator""_a(unsigned long long val) {
-  return Catch::Approx(val).scale(1);
+auto Approximately(const Quat &expected, float epsilon = std::numeric_limits<float>::epsilon() * 100) {
+  return Catch::Matchers::Predicate<Quat>(
+      [expected, epsilon](const Quat &actual)
+      {
+        return std::abs(actual.w - expected.w) < epsilon && std::abs(actual.x - expected.x) < epsilon &&
+               std::abs(actual.y - expected.y) < epsilon && std::abs(actual.z - expected.z) < epsilon;
+      },
+      "Approximately equals " + Catch::StringMaker<Quat>::convert(expected)
+  );
 }
 
 TEST_CASE("Quat equality and inequality", "[quat]") {
@@ -27,11 +31,7 @@ TEST_CASE("Quat identity constant", "[quat]") {
 TEST_CASE("Quat fromAxisAngle 360 degrees returns identity", "[quat]") {
   Vec3 axis{0, 1, 0};
   float radians = 2 * M_PI;
-  Quat q = Quat::fromAxisAngle(axis, radians);
-  REQUIRE(q.w == -1_a);
-  REQUIRE(q.x == 0_a);
-  REQUIRE(q.y == 0_a);
-  REQUIRE(q.z == 0_a);
+  REQUIRE_THAT(Quat::fromAxisAngle(axis, radians), Approximately({.w = -1, .x = 0, .y = 0, .z = 0}));
 }
 
 TEST_CASE("Quats for axis of different lenghts", "[quat]") {
@@ -48,36 +48,18 @@ TEST_CASE("Quat fromEuler", "[quat]") {
   Quat q = Quat::fromEuler(0, 0, 0);
   REQUIRE(q == Quat::IDENTITY);
   // 180 degree rotation around X
-  Quat qx = Quat::fromEuler(M_PI, 0, 0);
-  REQUIRE(qx.w == 0_a);
-  REQUIRE(qx.x == 1_a);
-  REQUIRE(qx.y == 0_a);
-  REQUIRE(qx.z == 0_a);
+  REQUIRE_THAT(Quat::fromEuler(M_PI, 0, 0), Approximately({.w = 0, .x = 1, .y = 0, .z = 0}));
   // 180 degree rotation around Y
-  Quat qy = Quat::fromEuler(0, M_PI, 0);
-  REQUIRE(qy.w == 0_a);
-  REQUIRE(qy.x == 0_a);
-  REQUIRE(qy.y == 1_a);
-  REQUIRE(qy.z == 0_a);
+  REQUIRE_THAT(Quat::fromEuler(0, M_PI, 0), Approximately({.w = 0, .x = 0, .y = 1, .z = 0}));
   // 180 degree rotation around Z
-  Quat qz = Quat::fromEuler(0, 0, M_PI);
-  REQUIRE(qz.w == 0_a);
-  REQUIRE(qz.x == 0_a);
-  REQUIRE(qz.y == 0_a);
-  REQUIRE(qz.z == 1_a);
+  REQUIRE_THAT(Quat::fromEuler(0, 0, M_PI), Approximately({.w = 0, .x = 0, .y = 0, .z = 1}));
 }
 
 TEST_CASE("Quat normalized", "[quat]") {
   REQUIRE(Quat{2, 0, 0, 0}.normalized() == Quat::IDENTITY);
   REQUIRE_THAT(
       Quat(3, 5, 4, 7).normalized(),
-      Catch::Matchers::Predicate<Quat>(
-          [](const Quat &q)
-          {
-            return q.w == 0.30151134_a && q.x == 0.50251891_a && q.y == 0.40201513_a && q.z == 0.70352647_a;
-          },
-          ""
-      )
+      Approximately({.w = 0.30151134, .x = 0.50251891, .y = 0.40201513f, .z = 0.70352647f})
   );
 }
 

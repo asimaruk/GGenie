@@ -67,6 +67,10 @@
         "condition_variable": "cpp",
         "set": "cpp",
         "functional": "cpp",
-        "source_location": "cpp"
+        "source_location": "cpp",
+        "csignal": "cpp",
+        "future": "cpp",
+        "regex": "cpp",
+        "type_traits": "cpp"
     },
 }
