@@ -71,7 +71,17 @@ int main() {
   // Entities and component setup
   auto cube = world->createEntity();
   registry->add(cube, Mesh::cube());
-  registry->add(cube, Shader(ShaderSource::DEFAULT_VERTEX, ShaderSource::DEFAULT_FRAGMENT));
+  registry->add(
+      cube,
+      Shader(
+          ShaderSource::DEFAULT_VERTEX,
+          ShaderSource::DEFAULT_FRAGMENT,
+          std::vector<Shader::Attributes>{
+              {0, 3, Shader::VertexType::FLOAT, false, 6 * sizeof(float), (void *)nullptr},
+              {1, 3, Shader::VertexType::FLOAT, false, 6 * sizeof(float), (void *)(3 * sizeof(float))}
+          }
+      )
+  );
   registry->add(cube, Transform());
   auto camera = world->createEntity();
   auto cameraTransform = Transform{.translation{0, 1, 5}};

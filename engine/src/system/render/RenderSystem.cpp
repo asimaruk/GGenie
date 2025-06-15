@@ -39,6 +39,25 @@ auto toGlmVec3(const Vec3 &vec3) -> glm::vec3 {
 auto toGlmQuat(const Quat &quat) -> glm::quat {
   return {quat.w, quat.x, quat.y, quat.z};
 }
+
+auto toGlType(const Shader::VertexType &type) {
+  switch (type) {
+  case Shader::VertexType::BYTE:
+    return GL_BYTE;
+  case Shader::VertexType::FLOAT:
+    return GL_FLOAT;
+  case Shader::VertexType::INT:
+    return GL_INT;
+  case Shader::VertexType::SHORT:
+    return GL_SHORT;
+  case Shader::VertexType::UNSIGNED_BYTE:
+    return GL_UNSIGNED_BYTE;
+  case Shader::VertexType::UNSIGNED_INT:
+    return GL_UNSIGNED_INT;
+  case Shader::VertexType::UNSIGNED_SHORT:
+    return GL_UNSIGNED_SHORT;
+  }
+}
 } // namespace
 
 RenderSystem::RenderSystem(SystemID id, int priority, std::shared_ptr<ComponentRegistry> registry) noexcept
@@ -124,10 +143,17 @@ void RenderSystem::render(
 
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)nullptr);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
+  for (const auto &attr : shader.attrs) {
+    glVertexAttribPointer(
+        attr.index,
+        attr.size,
+        toGlType(attr.type),
+        attr.normalized ? GL_TRUE : GL_FALSE,
+        attr.stride,
+        attr.pointer
+    );
+    glEnableVertexAttribArray(attr.index);
+  }
 
   auto shaderProgram = compiledShaders[shaderHash(shader)];
   glUseProgram(shaderProgram);
