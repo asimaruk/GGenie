@@ -10,8 +10,7 @@ class ComponentRegistry final {
 private:
   std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>> storages;
 
-  template <typename T>
-  std::shared_ptr<DefaultComponentStorage<T>> getStorage() noexcept {
+  template <typename T> std::shared_ptr<DefaultComponentStorage<T>> getStorage() noexcept {
     auto it = storages.find(typeid(T));
     if (it != storages.end()) {
       return std::dynamic_pointer_cast<DefaultComponentStorage<T>>(it->second);
@@ -43,8 +42,14 @@ public:
       storage->remove(e);
     }
   }
-  
+
   template <typename T> EntityComponentRange<T> auto getAll() {
     return getStorage<T>()->all();
+  }
+
+  void copyComponents(Entity source, Entity target) noexcept {
+    for (const auto &[type, storage] : storages) {
+      storage->copyComponent(source, target);
+    }
   }
 };

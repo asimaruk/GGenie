@@ -14,6 +14,12 @@ auto DefaultWorld::createEntity() noexcept -> Entity {
   return nextEntity++;
 }
 
+auto DefaultWorld::copyEntity(Entity source) noexcept -> Entity {
+  auto const entity = createEntity();
+  registry->copyComponents(source, entity);
+  return entity;
+}
+
 void DefaultWorld::removeEntity(Entity entity) noexcept {
   registry->removeAll(entity);
 }

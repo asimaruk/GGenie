@@ -7,12 +7,8 @@
 #include <vector>
 
 template <typename R, typename T>
-concept EntityComponentRange = std::ranges::input_range<R> && requires(
-                                                                  R range) {
-  // Проверяем, что элементы range - это пары [Entity, const T&]
-  {
-    *std::ranges::begin(range)
-  } -> std::convertible_to<std::pair<Entity, std::reference_wrapper<const T>>>;
+concept EntityComponentRange = std::ranges::input_range<R> && requires(R range) {
+  { *std::ranges::begin(range) } -> std::convertible_to<std::pair<Entity, std::reference_wrapper<const T>>>;
 };
 
 template <typename T> class DefaultComponentStorage : public ComponentStorage {
@@ -65,9 +61,18 @@ public:
 
   EntityComponentRange<T> auto all() const {
     return std::views::iota(0u, components.size()) |
-           std::views::transform([this](size_t index) {
-             return std::pair{index2entity[index],
-                              std::cref(components[index])};
-           });
+           std::views::transform(
+               [this](size_t index)
+               {
+                 return std::pair{index2entity[index], std::cref(components[index])};
+               }
+           );
+  }
+
+  void copyComponent(Entity source, Entity target) noexcept override {
+    auto comp = get(source);
+    if (comp.has_value()) {
+      add(target, comp.value());
+    }
   }
 };

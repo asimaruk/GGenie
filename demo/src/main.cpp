@@ -21,6 +21,7 @@
 #include <iostream>
 #include <memory>
 #include <print>
+#include <random>
 
 int main() {
 
@@ -83,6 +84,15 @@ int main() {
       )
   );
   registry->add(cube, Transform());
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<float> dist(-25.f, 25.f);
+  for (int i = 0; i < 100; ++i) {
+    auto cubeCopy = world->copyEntity(cube);
+    registry->replace(cubeCopy, Transform{.translation{dist(gen), dist(gen), dist(gen)}});
+  }
+
   auto camera = world->createEntity();
   auto cameraTransform = Transform{.translation{0, 1, 5}};
   registry->add(camera, cameraTransform);
