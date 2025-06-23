@@ -10,6 +10,7 @@ find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Catch2 3 REQUIRED)
+find_package(freetype REQUIRED)
 
 find_program(CLANG_FORMAT "clang-format")
 find_program(CLANG_TIDY "clang-tidy")
@@ -89,6 +90,7 @@ target_link_libraries(ggenie_deps INTERFACE
     glfw
     glm::glm
     glad
+    Freetype::Freetype
 )
 
 add_library(ggenie_includes INTERFACE)
@@ -118,3 +120,7 @@ target_link_libraries(tests
 )
 
 add_dependencies(GGenie changed-format)
+
+file(COPY "engine/resources/"
+    DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/resources"
+)

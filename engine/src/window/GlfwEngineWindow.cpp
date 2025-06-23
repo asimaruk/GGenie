@@ -39,7 +39,7 @@ void GlfwEngineWindow::swapBuffers() {
   }
 }
 
-auto GlfwEngineWindow::shouldClose() -> bool {
+auto GlfwEngineWindow::shouldClose() const -> bool {
   if (window == nullptr) {
     return true;
   }
@@ -48,4 +48,22 @@ auto GlfwEngineWindow::shouldClose() -> bool {
 
 auto GlfwEngineWindow::getGlfwWindow() const -> GLFWwindow * {
   return window;
+}
+
+auto GlfwEngineWindow::getWidth() const -> int {
+  if (window == nullptr) {
+    return 0;
+  }
+  int width;
+  glfwGetWindowSize(window, &width, NULL);
+  return width;
+}
+
+auto GlfwEngineWindow::getHeight() const -> int {
+  if (window == nullptr) {
+    return 0;
+  }
+  int height;
+  glfwGetWindowSize(window, NULL, &height);
+  return height;
 }

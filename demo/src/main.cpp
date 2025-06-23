@@ -4,6 +4,7 @@
 #include "component/Move.h"
 #include "component/Shader.h"
 #include "component/Transform.h"
+#include "config/Config.h"
 #include "ecs/ComponentRegistry.hpp"
 #include "ecs/DefaultWorld.h"
 #include "ecs/System.h"
@@ -14,16 +15,18 @@
 #include "system/input/GLFWInputSystem.h"
 #include "system/render/defaultshaders.h"
 #include "system/render/RenderSystem.h"
+#include "system/stats/StatsSystem.h"
 #include "system/tween/Tween.hpp"
 #include "system/tween/TweenSystem.hpp"
 #include "window/GlfwEngineWindow.h"
+#include <filesystem>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <memory>
 #include <print>
 #include <random>
 
-int main() {
+int main(int argc, char **argv) {
 
 #ifdef NDEBUG
   std::println("Release configuration!");
@@ -41,6 +44,13 @@ int main() {
     std::println(std::cerr, "GLAD error!");
     return -1;
   }
+
+  auto curPath = std::filesystem::current_path();
+  auto exePath = (curPath / argv[0] / "../resources").lexically_normal();
+  auto config = Config{
+      .resPath = exePath.string(),
+  };
+  std::println("Config {}", config);
 
   // ECS world setup
   auto registry = std::make_shared<ComponentRegistry>();
@@ -64,10 +74,12 @@ int main() {
       registry,
       eventSystem
   );
+  auto statsSystem = std::make_shared<StatsSystem>(StatsSystem::ID, System::PRIORITY_LOW + 1, config, window);
   world->registerSystem(renderSystem);
   world->registerSystem(tweenSystem);
   world->registerSystem(inputSystem);
   world->registerSystem(controlSystem);
+  world->registerSystem(statsSystem);
 
   // Entities and component setup
   auto cube = world->createEntity();

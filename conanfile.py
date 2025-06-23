@@ -10,6 +10,7 @@ class GgenieRecipe(ConanFile):
         self.requires("opengl/system")
         self.requires("glfw/3.4")
         self.requires("glm/1.0.1")
+        self.requires("freetype/2.13.3")
 
     def build_requirements(self):
         self.tool_requires("cmake/3.23.5")

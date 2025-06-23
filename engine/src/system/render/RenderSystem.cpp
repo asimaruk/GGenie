@@ -7,6 +7,7 @@
 #include "ecs/Entity.h"
 #include "ecs/System.h"
 #include "glad.h"
+#include "graphics/shader.h"
 #include "math/algebras.h"
 #include "utils/hash_utils.h"
 #include <cstddef>
@@ -83,10 +84,6 @@ void RenderSystem::start() {
   glGenBuffers(1, &VBO);
   glGenBuffers(1, &EBO);
 
-  glBindVertexArray(VAO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
   glEnable(GL_DEPTH_TEST);
 }
 
@@ -135,6 +132,10 @@ void RenderSystem::render(
   if (!isCompiledShader(shader)) {
     compileShader(shader); // TODO: compile on another thread
   }
+
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
   auto vertices = mesh.vertices;
   auto indices = mesh.indices;
@@ -194,25 +195,7 @@ void RenderSystem::render(
 }
 
 void RenderSystem::compileShader(const Shader &shader) {
-  unsigned int const vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  const char *vertexShaderSource = shader.vertexSource.data();
-  glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-  glCompileShader(vertexShader);
-
-  unsigned int const fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  const char *fragmentShaderSource = shader.fragmentSource.data();
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-  glCompileShader(fragmentShader);
-
-  unsigned int const shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
-  glLinkProgram(shaderProgram);
-
-  // Удаляем шейдеры (они уже в программе)
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
-
+  unsigned int const shaderProgram = graphics::compileShader(shader.vertexSource, shader.fragmentSource);
   compiledShaders[shaderHash(shader)] = shaderProgram;
 }
 
