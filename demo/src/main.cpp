@@ -62,12 +62,7 @@ int main(int argc, char **argv) {
   glfwEventsEdapter.attach(eventSystem);
   auto renderSystem = std::make_shared<RenderSystem>(RenderSystem::ID, System::PRIORITY_LOW, registry);
   auto tweenSystem = std::make_shared<TweenSystem>(TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
-  auto inputSystem = std::make_shared<GLFWInputSystem>(
-      GLFWInputSystem::ID,
-      System::PRIORITY_HIGH,
-      window.getGlfwWindow(),
-      eventSystem
-  );
+  auto inputSystem = std::make_shared<GLFWInputSystem>(GLFWInputSystem::ID, System::PRIORITY_HIGH, eventSystem);
   auto controlSystem = std::make_shared<FirstPersonViewControlSystem>(
       FirstPersonViewControlSystem::ID,
       System::PRIORITY_HIGH + 1,
@@ -84,17 +79,7 @@ int main(int argc, char **argv) {
   // Entities and component setup
   auto cube = world->createEntity();
   registry->add(cube, Mesh::cube());
-  registry->add(
-      cube,
-      Shader(
-          ShaderSource::DEFAULT_VERTEX,
-          ShaderSource::DEFAULT_FRAGMENT,
-          std::vector<Shader::Attributes>{
-              {0, 3, Shader::VertexType::FLOAT, false, 6 * sizeof(float), (void *)nullptr},
-              {1, 3, Shader::VertexType::FLOAT, false, 6 * sizeof(float), (void *)(3 * sizeof(float))}
-          }
-      )
-  );
+  registry->add(cube, Shader(shaders::DEFAULT_VERTEX, shaders::DEFAULT_FRAGMENT, shaders::DEFAULT_ATTRS));
   registry->add(cube, Transform());
 
   std::random_device rd;

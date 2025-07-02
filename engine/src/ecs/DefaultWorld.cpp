@@ -24,7 +24,7 @@ void DefaultWorld::removeEntity(Entity entity) noexcept {
   registry->removeAll(entity);
 }
 
-void DefaultWorld::registerSystem(std::shared_ptr<System> system) noexcept {
+void DefaultWorld::registerSystem(std::shared_ptr<System> system) {
   std::println("Register system {}", system->id);
   systems[system->id] = system;
   sortedSystems.push_back(system);
@@ -47,7 +47,7 @@ auto DefaultWorld::getSystem(SystemID systemId) const -> std::optional<std::shar
   return std::nullopt;
 }
 
-void DefaultWorld::update(float dt) noexcept {
+void DefaultWorld::update(float dt) {
   for (const auto &sys : sortedSystems) {
     sys->update(dt);
   }

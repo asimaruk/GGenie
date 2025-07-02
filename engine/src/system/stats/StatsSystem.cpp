@@ -5,20 +5,25 @@
 #include "graphics/shader.h"
 #include "math/algebras.h"
 #include "system/stats/Character.h"
+#include "utils/narrow.h"
 #include "window/EngineWindow.h"
+#include <__ostream/print.h>
+#include <array>
+#include <cstddef>
 #include <filesystem>
 #include <format>
 #include <freetype/freetype.h>
 #include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/matrix.hpp>
 #include <iostream>
 #include <map>
 #include <numeric>
-#include <print>
 #include <span>
 #include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 using namespace std::string_literals;
 
@@ -26,15 +31,21 @@ using namespace std::string_literals;
 class StatsSystem::Impl {
 public:
   Impl(const Config &config, const EngineWindow &window) : config(config), window(window) {}
+  Impl(const Impl &) = delete;
+  Impl(Impl &&) = delete;
+  ~Impl() = default;
 
-  int init() {
-    if (FT_Init_FreeType(&ft)) {
-      std::println(std::cerr, "FREETYPE: Could not init FreeType Library");
+  auto operator=(const Impl &) -> Impl & = delete;
+  auto operator=(Impl &&) -> Impl & = delete;
+
+  auto init() -> int {
+    if (auto error = FT_Init_FreeType(&ft) != 0) {
+      std::println(std::cerr, "FREETYPE: Could not init FreeType Library, error {}", error);
       return -1;
     }
     auto fontPath = std::filesystem::path(config.resPath) / "fonts/Michroma-Regular.ttf";
-    if (FT_New_Face(ft, fontPath.c_str(), 0, &face)) {
-      std::println(std::cerr, "FREETYPE: Failed to load font");
+    if (auto error = FT_New_Face(ft, fontPath.c_str(), 0, &face) != 0) {
+      std::println(std::cerr, "FREETYPE: Failed to load font, error {}", error);
       return -1;
     }
 
@@ -60,55 +71,60 @@ public:
 
     bindBuffers();
     glm::mat4 projection =
-        glm::ortho(0.0f, static_cast<float>(window.getWidth()), 0.0f, static_cast<float>(window.getHeight()));
+        glm::ortho(0.0F, static_cast<float>(window.getWidth()), 0.0F, static_cast<float>(window.getHeight()));
     glUseProgram(shaderProgram);
     glUniform3f(textColorUniformLoc, textColor.x, textColor.y, textColor.z);
     glUniformMatrix4fv(projectionUniformLoc, 1, GL_FALSE, glm::value_ptr(projection));
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
-    std::string lines[]{std::format("FPS: {}", getFPS())};
+    const std::array<const std::string, 1> lines{std::format("FPS: {}", getFPS())};
     renderStats(lines, PADDING, PADDING);
     unbindBuffers();
   }
 
-  int getFPS() {
+  auto getFPS() -> unsigned long {
     return frames.size();
   }
 
 private:
   static constexpr auto LINE_HEIGHT = 32;
-  static constexpr auto PADDING = 25.f;
+  static constexpr auto PADDING = 25.F;
+  static constexpr auto GLYPH_VERTS_NUMBER = 6;
+  static constexpr auto GLYPH_VBO_SIZE = 24;
+  static constexpr auto LINE_MULTIPLIER = 1.05F;
+  static constexpr auto CHARACTERS_COUNT = 128;
+  static constexpr auto MUL_64_SHIFT = 6U;
 
-  FT_Library ft;
-  FT_Face face;
+  FT_Library ft = nullptr;
+  FT_Face face = nullptr;
   const Config &config;
   const EngineWindow &window;
-  std::map<char, Character> characters;
-  unsigned int shaderProgram;
-  unsigned int textColorUniformLoc;
-  unsigned int projectionUniformLoc;
+  std::map<char, Character> characters{};
+  unsigned int shaderProgram = 0;
+  int textColorUniformLoc = 0;
+  int projectionUniformLoc = 0;
   unsigned int VAO{}, VBO{};
-  const Vec3 textColor = Vec3(1.0f, 1.0f, 1.0f);
-  std::vector<float> frames;
+  const Vec3 textColor = Vec3(1.0F, 1.0F, 1.0F);
+  std::vector<float> frames{};
 
   void createCharacters() {
-    for (unsigned char c = 0; c < 128; c++) {
+    for (unsigned char charCode = 0; charCode < CHARACTERS_COUNT; charCode++) {
       // load character glyph
-      if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
-        std::println(std::cerr, "FREETYTPE: Failed to load Glyph '{}'", c);
+      if (FT_Load_Char(face, charCode, FT_LOAD_RENDER) != 0) {
+        std::println(std::cerr, "FREETYTPE: Failed to load Glyph '{}'", charCode);
         continue;
       }
-      // generate texture
-      unsigned int texture;
+      // generate glyph texture
+      unsigned int texture = 0;
       glGenTextures(1, &texture);
       glBindTexture(GL_TEXTURE_2D, texture);
       glTexImage2D(
           GL_TEXTURE_2D,
           0,
           GL_RED,
-          face->glyph->bitmap.width,
-          face->glyph->bitmap.rows,
+          narrow<GLsizei>(face->glyph->bitmap.width),
+          narrow<GLsizei>(face->glyph->bitmap.rows),
           0,
           GL_RED,
           GL_UNSIGNED_BYTE,
@@ -119,14 +135,14 @@ private:
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      // now store character for later use
-      Character character = {
+
+      const Character character = {
           texture,
-          Vec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-          Vec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+          Vec2(narrow<float>(face->glyph->bitmap.width), narrow<float>(face->glyph->bitmap.rows)),
+          Vec2(narrow<float>(face->glyph->bitmap_left), narrow<float>(face->glyph->bitmap_top)),
           static_cast<unsigned int>(face->glyph->advance.x)
       };
-      characters.insert(std::pair<char, Character>(c, character));
+      characters.insert(std::pair(charCode, character));
     }
   }
 
@@ -169,12 +185,12 @@ private:
     glGenBuffers(1, &VBO);
   }
 
-  void bindBuffers() {
+  void bindBuffers() const {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * GLYPH_VERTS_NUMBER * 4, nullptr, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
   }
 
   void unbindBuffers() {
@@ -183,59 +199,61 @@ private:
   }
 
   void renderStats(std::span<const std::string> lines, float x, float y) {
-    if (lines.size() == 0) {
+    if (lines.empty()) {
       return;
     }
 
-    const float startY = y + (lines.size() - 1) * LINE_HEIGHT;
+    const float startY = y + narrow<float>((lines.size() - 1) * LINE_HEIGHT);
     for (size_t i = 0; i < lines.size(); ++i) {
-      renderStatLine(lines[i], x, startY - i * LINE_HEIGHT * 1.05f);
+      renderStatLine(lines[i], x, startY - narrow<float>(i * LINE_HEIGHT) * LINE_MULTIPLIER);
     }
   }
 
   void renderStatLine(std::string_view text, float x, float y) {
-    for (auto c = text.begin(); c != text.end(); c++) {
-      Character ch = characters[*c];
+    for (const auto symbol : text) {
+      const Character measures = characters[symbol];
 
-      float xpos = x + ch.bearing.x;
-      float ypos = y - (ch.size.y - ch.bearing.y);
+      const float xpos = x + measures.bearing.x;
+      const float ypos = y - (measures.size.y - measures.bearing.y);
 
-      float w = ch.size.x;
-      float h = ch.size.y;
+      const float width = measures.size.x;
+      const float height = measures.size.y;
       // update VBO for each character
-      float vertices[6][4] = {
-          {xpos, ypos + h, 0.0f, 0.0f},
-          {xpos, ypos, 0.0f, 1.0f},
-          {xpos + w, ypos, 1.0f, 1.0f},
+      std::array<float, GLYPH_VBO_SIZE> vertices = {
+          // clang-format off
+        xpos,         ypos + height, 0.0F, 0.0F,
+        xpos,         ypos,          0.0F, 1.0F,
+        xpos + width, ypos,          1.0F, 1.0F,
 
-          {xpos, ypos + h, 0.0f, 0.0f},
-          {xpos + w, ypos, 1.0f, 1.0f},
-          {xpos + w, ypos + h, 1.0f, 0.0f}
+        xpos,         ypos + height, 0.0F, 0.0F,
+        xpos + width, ypos,          1.0F, 1.0F,
+        xpos + width, ypos + height, 1.0F, 0.0F
+          // clang-format on
       };
       // render glyph texture over quad
-      glBindTexture(GL_TEXTURE_2D, ch.textureID);
+      glBindTexture(GL_TEXTURE_2D, measures.textureID);
       // update content of VBO memory
       glBindBuffer(GL_ARRAY_BUFFER, VBO);
-      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data());
       glBindBuffer(GL_ARRAY_BUFFER, 0);
       // render quad
-      glDrawArrays(GL_TRIANGLES, 0, 6);
+      glDrawArrays(GL_TRIANGLES, 0, GLYPH_VERTS_NUMBER);
       // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-      x += (ch.advance >> 6); // bitshift by 6 to get value in pixels (2^6 = 64)
+      x += narrow<float>(measures.advance >> MUL_64_SHIFT); // bitshift by 6 to get value in pixels (2^6 = 64)
     }
   }
 
   void updateFPS(float dt) {
     frames.push_back(dt);
-    float sum = std::accumulate(frames.begin(), frames.end(), 0.0f);
-    auto secondExtra = sum - 1.0f;
+    const float sum = std::accumulate(frames.begin(), frames.end(), 0.0F);
+    auto secondExtra = sum - 1.0F;
     if (secondExtra <= 0) {
       return;
     }
 
     int oldCount = 0;
-    float oldSum = 0.f;
-    for (auto &frame: frames) {
+    float oldSum = 0.F;
+    for (auto &frame : frames) {
       oldSum += frame;
       ++oldCount;
       if (oldSum >= secondExtra) {

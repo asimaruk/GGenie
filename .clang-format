@@ -107,18 +107,14 @@ IfMacros:
   - KJ_IF_MAYBE
 IncludeBlocks:   Preserve
 IncludeCategories:
-  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
-    Priority:        2
-    SortPriority:    0
-    CaseSensitive:   false
-  - Regex:           '^(<|"(gtest|gmock|isl|json)/)'
-    Priority:        3
-    SortPriority:    0
-    CaseSensitive:   false
-  - Regex:           '.*'
-    Priority:        1
-    SortPriority:    0
-    CaseSensitive:   false
+  - Regex:    '^<[^\/]+\.h>'
+    Priority: 3              # Системные заголовки (например, <stdio.h>)
+  - Regex:    '^".*"'
+    Priority: 1              # Локальные заголовки (например, "my_header.h")
+  - Regex:    '^<(__ostream)\/.*\.h>'
+    Priority: 2              # Системные заголовки (например, <stdio.h>)
+  # - Regex:    '^<[^\/.>]+(\/[^\/]+)+\.h(pp)?>$'
+  #   Priority: 2              # Системные заголовки (например, <stdio.h>)
 IncludeIsMainRegex: '(Test)?$'
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false

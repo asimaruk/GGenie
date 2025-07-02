@@ -21,7 +21,7 @@ public:
   Entity createEntity() noexcept override;
   Entity copyEntity(Entity source) noexcept override;
   void removeEntity(const Entity entity) noexcept override;
-  void registerSystem(std::shared_ptr<System> system) noexcept override;
+  void registerSystem(std::shared_ptr<System> system) override;
   std::optional<std::shared_ptr<System>> getSystem(SystemID systemId) const override;
-  void update(float dt) noexcept override;
+  void update(float dt) override;
 };

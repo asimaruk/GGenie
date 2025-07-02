@@ -22,7 +22,7 @@ private:
 public:
   static constexpr float DEFAULT_SESIVITY = 0.001;
 
-  explicit Impl(std::shared_ptr<ComponentRegistry> registry) : registry(registry) {}
+  explicit Impl(std::shared_ptr<ComponentRegistry> registry) : registry(std::move(registry)) {}
 
   void setControlledEntity(Entity entity) noexcept {
     controlledEntity = entity;

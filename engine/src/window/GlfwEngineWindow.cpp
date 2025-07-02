@@ -35,6 +35,7 @@ void GlfwEngineWindow::initialize(int width, int height, const char *title) {
 
 void GlfwEngineWindow::swapBuffers() {
   if (window != nullptr) {
+    glfwSwapInterval(0); // immediate swapping fpr unlimited FPS
     glfwSwapBuffers(window);
   }
 }
@@ -54,8 +55,8 @@ auto GlfwEngineWindow::getWidth() const -> int {
   if (window == nullptr) {
     return 0;
   }
-  int width;
-  glfwGetWindowSize(window, &width, NULL);
+  int width = 0;
+  glfwGetWindowSize(window, &width, nullptr);
   return width;
 }
 
@@ -63,7 +64,7 @@ auto GlfwEngineWindow::getHeight() const -> int {
   if (window == nullptr) {
     return 0;
   }
-  int height;
-  glfwGetWindowSize(window, NULL, &height);
+  int height = 0;
+  glfwGetWindowSize(window, nullptr, &height);
   return height;
 }

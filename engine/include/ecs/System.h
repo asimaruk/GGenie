@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
+#include <string_view>
 
-using SystemID = std::string;
+using SystemID = std::string_view;
 
 class System {
 protected:

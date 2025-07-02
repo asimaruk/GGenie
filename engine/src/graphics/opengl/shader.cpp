@@ -2,7 +2,7 @@
 #include "glad.h"
 #include <string_view>
 
-unsigned int graphics::compileShader(std::string_view vertex, std::string_view fragment) {
+auto graphics::compileShader(std::string_view vertex, std::string_view fragment) -> unsigned int {
   unsigned int const vertexShader = glCreateShader(GL_VERTEX_SHADER);
   const char *vertexShaderSource = vertex.data();
   glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);

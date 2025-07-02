@@ -10,6 +10,7 @@
 #include "graphics/shader.h"
 #include "math/algebras.h"
 #include "utils/hash_utils.h"
+#include "utils/narrow.h"
 #include <cstddef>
 #include <cstdio>
 #include <functional>
@@ -140,9 +141,14 @@ void RenderSystem::render(
   auto vertices = mesh.vertices;
   auto indices = mesh.indices;
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, narrow<GLsizeiptr>(sizeof(float) * vertices.size()), vertices.data(), GL_STATIC_DRAW);
 
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
+  glBufferData(
+      GL_ELEMENT_ARRAY_BUFFER,
+      narrow<GLsizeiptr>(sizeof(unsigned int) * indices.size()),
+      indices.data(),
+      GL_STATIC_DRAW
+  );
 
   for (const auto &attr : shader.attrs) {
     glVertexAttribPointer(
@@ -181,9 +187,9 @@ void RenderSystem::render(
   model = glm::scale(model, toGlmVec3(transform.scale));                      // scale
 
   // Передача матриц в шейдер
-  unsigned int const modelLoc = glGetUniformLocation(shaderProgram, "model");
-  unsigned int const viewLoc = glGetUniformLocation(shaderProgram, "view");
-  unsigned int const projLoc = glGetUniformLocation(shaderProgram, "projection");
+  GLint const modelLoc = glGetUniformLocation(shaderProgram, "model");
+  GLint const viewLoc = glGetUniformLocation(shaderProgram, "view");
+  GLint const projLoc = glGetUniformLocation(shaderProgram, "projection");
 
   glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
@@ -191,7 +197,7 @@ void RenderSystem::render(
 
   // Отрисовка куба
   glBindVertexArray(VAO);
-  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+  glDrawElements(GL_TRIANGLES, narrow<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
 }
 
 void RenderSystem::compileShader(const Shader &shader) {

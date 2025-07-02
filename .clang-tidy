@@ -39,8 +39,9 @@ CheckOptions:
   readability-function-size.LineThreshold: '100' # Flag functions exceeding this number of lines.
   readability-function-size.StatementThreshold: '800' # Flag functions exceeding this number of statements.
   readability-function-size.NestingThreshold: '3' # Flag compound statements which create next nesting level after NestingThreshold.
-  readability-identifier-length.IgnoredParameterNames: '^([abinqtv]|id|dt)$'
+  readability-identifier-length.IgnoredParameterNames: '^([abinqtvxyz]|id|dt)$'
   performance-unnecessary-value-param.AllowedTypes: '.*shared_ptr.*'
+  hicpp-signed-bitwise.IgnorePositiveIntegerLiterals: 'true'
 SystemHeaders:   false
 ...
 

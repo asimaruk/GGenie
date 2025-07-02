@@ -7,7 +7,7 @@
 struct Config {
     std::string resPath;
 
-    std::ostream& operator<<(std::ostream& os) const;
+    std::ostream &operator<<(std::ostream &ostream) const;
 };
 
 template<>

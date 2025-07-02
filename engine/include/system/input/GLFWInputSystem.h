@@ -12,7 +12,7 @@ private:
 
 public:
   static constexpr auto ID = "GLFWInputSystemID";
-  GLFWInputSystem(SystemID id, int priority, GLFWwindow *glfwWindow, std::shared_ptr<EventSystem> eventSystem) noexcept;
+  GLFWInputSystem(SystemID id, int priority, std::shared_ptr<EventSystem> eventSystem) noexcept;
   ~GLFWInputSystem();
   virtual void start() override;
   virtual void update(float dt) override;

@@ -1,15 +1,20 @@
 #include "component/Mesh.h"
+#include <initializer_list>
 #include <utility>
 #include <vector>
 
-Mesh::Mesh(std::vector<float> &&vertices, std::vector<unsigned int> &&indices) noexcept
-    : vertices(std::forward<std::vector<float>>(vertices))
-    , indices(std::forward<std::vector<unsigned int>>(indices)) {}
+Mesh::Mesh(std::vector<float> verts, std::vector<unsigned int> idxs) noexcept
+    : vertices(std::move(verts))
+    , indices(std::move(idxs)) {}
 
-auto Mesh::cube() noexcept -> Mesh {
-  // clang-format off
-  // NOLINTBEGIN(readability-magic-numbers)
+Mesh::Mesh(std::initializer_list<float> verts, std::initializer_list<unsigned int> idxs)
+    : vertices(verts)
+    , indices(idxs) {}
+
+auto Mesh::cube() -> Mesh {
   return Mesh(
+      // clang-format off
+    // NOLINTBEGIN(readability-magic-numbers)
     {
     // Positions          // Colors
     -0.5F, -0.5F, -0.5F,  1.0F, 0.0F, 0.0F,
@@ -29,7 +34,7 @@ auto Mesh::cube() noexcept -> Mesh {
     3, 2, 6,  3, 6, 7,  // top face
     0, 1, 5,  0, 5, 4   // bottom face
     } 
+    // NOLINTEND(readability-magic-numbers)
+        // clang-format on
   );
-  // NOLINTEND(readability-magic-numbers)
-  // clang-format on
 }
