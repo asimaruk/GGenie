@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WINDOW_GLFWENGINEWINDOW_H
+#define WINDOW_GLFWENGINEWINDOW_H
 
 #include "EngineWindow.h"
 #include <GLFW/glfw3.h>
@@ -16,3 +17,5 @@ public:
   int getHeight() const override;
   GLFWwindow *getGlfwWindow() const;
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_EVENT_EVENTSYSTEM_HPP
+#define SYSTEM_EVENT_EVENTSYSTEM_HPP
 
 #include "ecs/System.h"
 #include "Event.h"
@@ -35,3 +36,5 @@ public:
 private:
   std::unordered_map<std::type_index, std::vector<EventListener>> listeners;
 };
+
+#endif

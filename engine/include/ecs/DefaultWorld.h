@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECS_DEFAULTWORLD_H
+#define ECS_DEFAULTWORLD_H
 
 #include "ComponentRegistry.hpp"
 #include "Entity.h"
@@ -25,3 +26,5 @@ public:
   std::optional<std::shared_ptr<System>> getSystem(SystemID systemId) const override;
   void update(float dt) override;
 };
+
+#endif

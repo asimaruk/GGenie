@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_INPUT_GLFWINPUTSYSTEM_H
+#define SYSTEM_INPUT_GLFWINPUTSYSTEM_H
 
 #include "ecs/System.h"
 #include "system/event/EventSystem.hpp"
@@ -17,3 +18,5 @@ public:
   virtual void start() override;
   virtual void update(float dt) override;
 };
+
+#endif

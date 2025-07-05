@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef MATH_LERP_HPP
+#define MATH_LERP_HPP
 
 #include "math/algebras.h"
 #include <algorithm>
@@ -40,3 +41,5 @@ inline Quat slerp(const Quat &a, const Quat &b, float t) {
 }
 
 } // namespace math
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_STATS_CHARACTER_H
+#define SYSTEM_STATS_CHARACTER_H
 
 #include "math/algebras.h"
 
@@ -8,3 +9,5 @@ struct Character {
   Vec2 bearing;           // Offset from baseline to left/top of glyph
   unsigned int advance;   // Offset to advance to next glyph
 };
+
+#endif

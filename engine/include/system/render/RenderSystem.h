@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_RENDER_RENDERSYSTEM_H
+#define SYSTEM_RENDER_RENDERSYSTEM_H
 
 #include "component/Camera.h"
 #include "component/Mesh.h"
@@ -40,3 +41,5 @@ public:
   void start() override;
   void update(float dt) override;
 };
+
+#endif

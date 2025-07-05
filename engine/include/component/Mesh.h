@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMPONENT_MESH_H
+#define COMPONENT_MESH_H
 
 #include <initializer_list>
 #include <vector>
@@ -12,3 +13,5 @@ struct Mesh {
 
   static Mesh cube();
 };
+
+#endif

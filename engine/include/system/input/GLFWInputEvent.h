@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_INPUT_GLFWINPUTEVENT_H
+#define SYSTEM_INPUT_GLFWINPUTEVENT_H
 
 struct GLFWKeyboardEvent {
   int key;
@@ -26,3 +27,5 @@ struct GLFWScrollEvent {
 struct GLFWCursorEnterEvent {
   int entered;
 };
+
+#endif

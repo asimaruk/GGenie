@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_STATS_STATSSYSTEM_H
+#define SYSTEM_STATS_STATSSYSTEM_H
 
 #include "config/Config.h"
 #include "ecs/ComponentRegistry.hpp"
@@ -18,3 +19,5 @@ private:
   class Impl;
   std::unique_ptr<Impl> pimpl;
 };
+
+#endif

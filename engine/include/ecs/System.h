@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECS_SYSTEM_H
+#define ECS_SYSTEM_H
 
 #include <string_view>
 
@@ -19,3 +20,5 @@ public:
   virtual void start() = 0;
   virtual void update(float dt) = 0;
 };
+
+#endif

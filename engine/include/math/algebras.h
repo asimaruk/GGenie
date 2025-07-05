@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MATH_ALGEBRAS_H
+#define MATH_ALGEBRAS_H
 
 struct Vec2;
 struct Vec3;
@@ -52,3 +53,5 @@ struct Quat {
   bool operator==(const Quat &q) const noexcept;
   bool operator!=(const Quat &q) const noexcept;
 };
+
+#endif

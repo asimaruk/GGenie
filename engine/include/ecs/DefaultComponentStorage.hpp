@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECS_DEFAULTCOMPONENTSTORAGE_HPP
+#define ECS_DEFAULTCOMPONENTSTORAGE_HPP
 
 #include "ComponentStorage.h"
 #include <optional>
@@ -76,3 +77,5 @@ public:
     }
   }
 };
+
+#endif

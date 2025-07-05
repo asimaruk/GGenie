@@ -1,3 +1,6 @@
+#ifndef UTILS_NARROW_H
+#define UTILS_NARROW_H
+
 #include <concepts>
 #include <utility>
 
@@ -14,3 +17,5 @@ template <std::integral T, std::integral V> auto narrow(V value) -> T {
 template <std::floating_point T, Arithmetic V> auto narrow(V value) -> T {
   return static_cast<T>(value);
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMPONENT_SHADER_H
+#define COMPONENT_SHADER_H
 
 #include <span>
 #include <string_view>
@@ -29,3 +30,5 @@ struct Shader {
 
   Shader(std::string_view vertexSource, std::string_view fragmentSource, std::span<const Attributes> attrs) noexcept;
 };
+
+#endif

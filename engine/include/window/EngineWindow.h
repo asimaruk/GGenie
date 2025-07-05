@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef WINDOW_ENGINEWINDOW_H
+#define WINDOW_ENGINEWINDOW_H
 
 class EngineWindow {
 public:

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMPONENT_TRANSFORM_H
+#define COMPONENT_TRANSFORM_H
 
 #include "math/algebras.h"
 
@@ -14,3 +15,5 @@ struct Transform {
   Transform operator*(const float value) const;
   Transform operator/(const float value) const;
 };
+
+#endif

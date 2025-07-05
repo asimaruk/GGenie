@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_CONTROL_FIRSTPERSONVIEWCONTROLSYSTEM_H
+#define SYSTEM_CONTROL_FIRSTPERSONVIEWCONTROLSYSTEM_H
 
 #include "ecs/ComponentRegistry.hpp"
 #include "ecs/Entity.h"
@@ -25,3 +26,5 @@ public:
   void update(float dt) override;
   void setControlledEntity(Entity entity) noexcept;
 };
+
+#endif

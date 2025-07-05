@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CONFIG_CONFIG_H
+#define CONFIG_CONFIG_H
 
 #include <string>
 #include <iostream>
@@ -26,3 +27,5 @@ struct std::formatter<Config> {
             c.resPath);
     }
 };
+
+#endif

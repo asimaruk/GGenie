@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECS_WORLD_H
+#define ECS_WORLD_H
 
 #include "Entity.h"
 #include "System.h"
@@ -16,3 +17,5 @@ public:
   virtual std::optional<std::shared_ptr<System>> getSystem(SystemID id) const = 0;
   virtual void update(float dt) = 0;
 };
+
+#endif

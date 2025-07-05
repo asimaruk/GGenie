@@ -1,3 +1,6 @@
+#ifndef SYSTEM_CONTROL_FPVEVENT_H
+#define SYSTEM_CONTROL_FPVEVENT_H
+
 #include "math/algebras.h"
 
 struct FPVMoveEvent {
@@ -7,3 +10,5 @@ struct FPVMoveEvent {
 struct FPVViewEvent {
   float xViewDiff, yViewDiff;
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECS_COMPONENTSTORAGE_H
+#define ECS_COMPONENTSTORAGE_H
 
 #include "Entity.h"
 
@@ -8,3 +9,5 @@ public:
   virtual void remove(Entity e) noexcept = 0;
   virtual void copyComponent(Entity source, Entity target) noexcept = 0;
 };
+
+#endif

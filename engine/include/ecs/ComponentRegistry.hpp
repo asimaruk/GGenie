@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ECS_COMPONENTREGISTRY_HPP
+#define ECS_COMPONENTREGISTRY_HPP
 
 #include "ComponentStorage.h"
 #include "DefaultComponentStorage.hpp"
@@ -53,3 +54,5 @@ public:
     }
   }
 };
+
+#endif

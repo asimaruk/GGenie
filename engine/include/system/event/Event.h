@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SYSTEM_EVENT_EVENT_H
+#define SYSTEM_EVENT_EVENT_H
 
 #include <typeindex>
 #include <utility>
@@ -18,3 +19,5 @@ struct TypedEvent : public Event {
         return typeid(T);
     }
 };
+
+#endif
