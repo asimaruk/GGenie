@@ -29,8 +29,8 @@ ImplementationFileExtensions:
   - cc
   - cpp
   - cxx
-HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
+HeaderFilterRegex: .*
+ExcludeHeaderFilterRegex: .*glad.*
 FormatStyle:     file
 User:            asimaruk
 CheckOptions:

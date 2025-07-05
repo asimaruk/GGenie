@@ -17,6 +17,7 @@
 #include "system/render/RenderSystem.h"
 #include "system/stats/StatsSystem.h"
 #include "system/tween/Tween.hpp"
+#include "system/tween/TweenBuilder.hpp"
 #include "system/tween/TweenSystem.hpp"
 #include "window/GlfwEngineWindow.h"
 #include <filesystem>
@@ -103,8 +104,7 @@ int main(int argc, char **argv) {
   if (cubeTransform.has_value()) {
     tweenSystem->tween(
         cube,
-        Tween<Transform>(
-            5,
+        TweenBuilder(
             Transform{
                 .translation = cubeTransform->get().translation,
                 .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 0.001),
@@ -116,6 +116,8 @@ int main(int argc, char **argv) {
                 .scale = cubeTransform->get().scale,
             }
         )
+            .duration(5)
+            .create()
     );
   }
 

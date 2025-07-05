@@ -12,23 +12,25 @@ public:
 
 template <math::Lerpable T> class Tween : public TweenBase {
 private:
-  const float duration;
+  const float duration = 0;
   const T start, end;
-  const Interpolator interpolator;
+  const Interpolator interpolator = Interpolator::LinearInterpolator;
   float time = 0;
 
 public:
-  Tween<T>(float duration, T start, T end,
-           const Interpolator &interpolator =
-               Interpolator::LinearInterpolator) noexcept
-      : duration(duration), start(start), end(end), interpolator(interpolator) {
-  }
+  Tween<T>(float duration, T start, T end, const Interpolator &interpolator = Interpolator::LinearInterpolator) noexcept
+      : duration(duration)
+      , start(start)
+      , end(end)
+      , interpolator(interpolator) {}
 
   void update(float dt) override {
     time += dt;
   }
 
-  bool isComplete() const override { return time >= duration; }
+  bool isComplete() const override {
+    return time >= duration;
+  }
 
   T getValue() {
     auto t = std::min(1.f, time / duration);

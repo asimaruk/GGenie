@@ -57,7 +57,7 @@ clang-tidy and clang-format used for linting and formating
 They should be installed and available with commands `clang-tidy` and `clang-format`
 One way to get them is build from sources([Getting the Source Code and Building LLVM](https://llvm.org/docs/GettingStarted.html#getting-the-source-code-and-building-llvm)):
 1. Clone [llvm-project](https://github.com/llvm/llvm-project)
-2. Checkout the right version (as your local clang compiler if you have one). For example `git checkout llvmorg-17.0.6`
+2. Checkout the right version (as your local clang compiler if you have one). For example `git checkout llvmorg-20.1.7`
 3. Install [Ninja](https://ninja-build.org/)
 4. Build base llvm and install it to some local dir, for example $HOME/clang-tools
     ```
@@ -80,7 +80,7 @@ One way to get them is build from sources([Getting the Source Code and Building 
     ```
 6. Add builded tools to your path. Add them to the end of PATH if you don't want to override system clang install
     ```
-    export PATH="$PATH:$HOME/clang-tools/bin"
+    export PATH="$HOME/clang-tools/bin:$PATH"
     ```
 7. Also use this Perplexity [thread](https://www.perplexity.ai/search/kak-sobrat-iz-iskhodnikov-i-us-SPQWh9bMTpyArh4ZtVP.EA) if you have troubles building from source 
 ## Usage

@@ -108,13 +108,11 @@ IfMacros:
 IncludeBlocks:   Preserve
 IncludeCategories:
   - Regex:    '^<[^\/]+\.h>'
-    Priority: 3              # Системные заголовки (например, <stdio.h>)
+    Priority: 3
   - Regex:    '^".*"'
-    Priority: 1              # Локальные заголовки (например, "my_header.h")
+    Priority: 1
   - Regex:    '^<(__ostream)\/.*\.h>'
-    Priority: 2              # Системные заголовки (например, <stdio.h>)
-  # - Regex:    '^<[^\/.>]+(\/[^\/]+)+\.h(pp)?>$'
-  #   Priority: 2              # Системные заголовки (например, <stdio.h>)
+    Priority: 2
 IncludeIsMainRegex: '(Test)?$'
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false

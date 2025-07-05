@@ -8,3 +8,6 @@ tidy-report.yaml
 
 // pyenv
 .python-version
+
+// vim
+*.swp
