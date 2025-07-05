@@ -4,7 +4,7 @@
 #include <string_view>
 
 namespace graphics {
-unsigned int compileShader(std::string_view vertex, std::string_view fragment);
+auto compileShader(std::string_view vertex, std::string_view fragment) -> unsigned int;
 }
 
 #endif

@@ -12,10 +12,10 @@ public:
   ~GlfwEngineWindow() override;
   void initialize(int width, int height, const char *title) override;
   void swapBuffers() override;
-  bool shouldClose() const override;
-  int getWidth() const override;
-  int getHeight() const override;
-  GLFWwindow *getGlfwWindow() const;
+  [[nodiscard]] auto shouldClose() const -> bool override;
+  [[nodiscard]] auto getWidth() const -> int override;
+  [[nodiscard]] auto getHeight() const -> int override;
+  [[nodiscard]] auto getGlfwWindow() const -> GLFWwindow *;
 };
 
 #endif

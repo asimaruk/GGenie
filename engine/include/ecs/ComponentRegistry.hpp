@@ -11,7 +11,7 @@ class ComponentRegistry final {
 private:
   std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>> storages;
 
-  template <typename T> std::shared_ptr<DefaultComponentStorage<T>> getStorage() noexcept {
+  template <typename T> auto getStorage() noexcept -> std::shared_ptr<DefaultComponentStorage<T>> {
     auto it = storages.find(typeid(T));
     if (it != storages.end()) {
       return std::dynamic_pointer_cast<DefaultComponentStorage<T>>(it->second);
@@ -30,7 +30,7 @@ public:
     getStorage<T>()->replace(e, component);
   }
 
-  template <typename T> std::optional<std::reference_wrapper<T>> get(Entity e) noexcept {
+  template <typename T> auto get(Entity e) noexcept -> std::optional<std::reference_wrapper<T>> {
     return getStorage<T>()->get(e);
   }
 
@@ -44,7 +44,7 @@ public:
     }
   }
 
-  template <typename T> EntityComponentRange<T> auto getAll() {
+  template <typename T> auto getAll() -> EntityComponentRange<T> auto {
     return getStorage<T>()->all();
   }
 

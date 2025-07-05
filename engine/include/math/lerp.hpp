@@ -24,12 +24,12 @@ concept HasArithmeticOps = requires(const T &a, const T &b, float t) {
 template <typename T>
 concept Lerpable = HasLerpMethod<T> || HasArithmeticOps<T>;
 
-template <Lerpable T> T lerp(const T &a, const T &b, float t) {
+template <Lerpable T> auto lerp(const T &a, const T &b, float t) -> T {
   return a + (b - a) * t;
 }
 
 // https://en.wikipedia.org/wiki/Slerp
-inline Quat slerp(const Quat &a, const Quat &b, float t) {
+inline auto slerp(const Quat &a, const Quat &b, float t) -> Quat {
   float cosTheta = a.dot(b);
   float theta = std::acos(std::clamp(cosTheta, -1.0f, 1.0f));
   float sinTheta = std::sin(theta);

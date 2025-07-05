@@ -6,7 +6,7 @@
 
 struct Event {
     virtual ~Event() = default;
-    virtual std::type_index get_type() const = 0;
+    [[nodiscard]] virtual auto get_type() const -> std::type_index = 0;
 };
 
 template<typename T>
@@ -14,9 +14,9 @@ struct TypedEvent : public Event {
     T data;
     
     explicit TypedEvent(T&& data) : data(std::forward<T>(data)) {}
-    
-    std::type_index get_type() const override {
-        return typeid(T);
+
+    [[nodiscard]] auto get_type() const -> std::type_index override {
+      return typeid(T);
     }
 };
 

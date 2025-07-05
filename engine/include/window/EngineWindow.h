@@ -12,10 +12,10 @@ public:
   virtual void swapBuffers() = 0;
 
   // Check if the window should close
-  virtual bool shouldClose() const = 0;
+  [[nodiscard]] virtual auto shouldClose() const -> bool = 0;
 
-  virtual int getWidth() const = 0;
-  virtual int getHeight() const = 0;
+  [[nodiscard]] virtual auto getWidth() const -> int = 0;
+  [[nodiscard]] virtual auto getHeight() const -> int = 0;
 };
 
-#endif // WINDOW_H
+#endif // WINDOW_ENGINEWINDOW_H

@@ -11,7 +11,7 @@ struct Mesh {
   Mesh(std::vector<float> verts, std::vector<unsigned int> idxs) noexcept;
   Mesh(std::initializer_list<float> verts, std::initializer_list<unsigned int> idxs);
 
-  static Mesh cube();
+  static auto cube() -> Mesh;
 };
 
 #endif

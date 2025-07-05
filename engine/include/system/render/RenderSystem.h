@@ -19,8 +19,8 @@ private:
   std::unordered_map<size_t, unsigned int> compiledShaders;
   unsigned int VBO, VAO, EBO;
 
-  std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>>
-  getOtherComponents(Entity entity);
+  auto getOtherComponents(Entity entity)
+      -> std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>>;
   void render(
       const Camera &camera,
       const Transform &cameraTransform,
@@ -29,7 +29,7 @@ private:
       const Transform &transform
   );
   void compileShader(const Shader &shader);
-  bool isCompiledShader(const Shader &shader);
+  auto isCompiledShader(const Shader &shader) -> bool;
   void clear();
 
 public:

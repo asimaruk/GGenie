@@ -19,11 +19,11 @@ private:
 public:
   DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept;
 
-  Entity createEntity() noexcept override;
-  Entity copyEntity(Entity source) noexcept override;
+  auto createEntity() noexcept -> Entity override;
+  auto copyEntity(Entity source) noexcept -> Entity override;
   void removeEntity(const Entity entity) noexcept override;
   void registerSystem(std::shared_ptr<System> system) override;
-  std::optional<std::shared_ptr<System>> getSystem(SystemID systemId) const override;
+  [[nodiscard]] auto getSystem(SystemID systemId) const -> std::optional<std::shared_ptr<System>> override;
   void update(float dt) override;
 };
 

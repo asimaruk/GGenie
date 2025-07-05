@@ -31,7 +31,7 @@ public:
     add(entity, component);
   }
 
-  std::optional<std::reference_wrapper<T>> get(Entity entity) noexcept {
+  auto get(Entity entity) noexcept -> std::optional<std::reference_wrapper<T>> {
     auto it = entity2index.find(entity);
     if (it == entity2index.end()) {
       return std::nullopt;
@@ -60,7 +60,7 @@ public:
     entity2index.erase(entity);
   }
 
-  EntityComponentRange<T> auto all() const {
+  [[nodiscard]] auto all() const -> EntityComponentRange<T> auto {
     return std::views::iota(0u, components.size()) |
            std::views::transform(
                [this](size_t index)

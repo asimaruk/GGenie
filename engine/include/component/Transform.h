@@ -8,12 +8,12 @@ struct Transform {
   Quat rotation = Quat::IDENTITY;
   Vec3 scale = Vec3::ONE;
 
-  Transform lerp(const Transform& other, float t) const;
+  [[nodiscard]] auto lerp(const Transform &other, float t) const -> Transform;
 
-  Transform operator+(const Transform &other) const;
-  Transform operator-(const Transform &other) const;
-  Transform operator*(const float value) const;
-  Transform operator/(const float value) const;
+  auto operator+(const Transform &other) const -> Transform;
+  auto operator-(const Transform &other) const -> Transform;
+  auto operator*(const float value) const -> Transform;
+  auto operator/(const float value) const -> Transform;
 };
 
 #endif

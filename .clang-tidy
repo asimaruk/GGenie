@@ -42,6 +42,7 @@ CheckOptions:
   readability-identifier-length.IgnoredParameterNames: '^([abinqtvxyz]|id|dt)$'
   performance-unnecessary-value-param.AllowedTypes: '.*shared_ptr.*'
   hicpp-signed-bitwise.IgnorePositiveIntegerLiterals: 'true'
+  misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic: 'true'
 SystemHeaders:   false
 ...
 

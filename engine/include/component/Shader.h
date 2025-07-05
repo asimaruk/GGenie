@@ -5,7 +5,7 @@
 #include <string_view>
 
 struct Shader {
-  enum VertexType {
+  enum VertexType : std::int8_t {
     BYTE,
     UNSIGNED_BYTE,
     SHORT,
