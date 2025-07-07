@@ -1,31 +1,29 @@
 #ifndef CONFIG_CONFIG_H
 #define CONFIG_CONFIG_H
 
-#include <string>
-#include <iostream>
 #include <format>
+#include <iostream>
+#include <string>
 
 struct Config {
-    std::string resPath;
+  std::string resPath;
 
-    auto operator<<(std::ostream &ostream) const -> std::ostream &;
+  auto operator<<(std::ostream &ostream) const -> std::ostream &;
 };
 
-template<>
-struct std::formatter<Config> {
-    constexpr auto parse(std::format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}') {
-            throw std::format_error("invalid format specifier for Config");
-        }
-        return it;
+template <> struct std::formatter<Config> {
+  constexpr auto parse(std::format_parse_context &ctx) {
+    const auto *iter = ctx.begin();
+    const auto *end = ctx.end();
+    if (iter != end && *iter != '}') {
+      throw std::format_error("invalid format specifier for Config");
     }
+    return iter;
+  }
 
-    auto format(const Config& c, std::format_context& ctx) const {
-        return std::format_to(ctx.out(),
-            "{{resPath: {}}}",
-            c.resPath);
-    }
+  auto format(const Config &config, std::format_context &ctx) const {
+    return std::format_to(ctx.out(), "{{resPath: {}}}", config.resPath);
+  }
 };
 
 #endif

@@ -7,7 +7,6 @@
 #include "system/stats/Character.h"
 #include "utils/narrow.h"
 #include "window/EngineWindow.h"
-#include <__ostream/print.h>
 #include <array>
 #include <cstddef>
 #include <filesystem>
@@ -19,6 +18,7 @@
 #include <iostream>
 #include <map>
 #include <numeric>
+#include <print>
 #include <span>
 #include <string>
 #include <string_view>
@@ -100,13 +100,13 @@ private:
   FT_Face face = nullptr;
   const Config &config;
   const EngineWindow &window;
-  std::map<char, Character> characters{};
+  std::map<char, Character> characters;
   unsigned int shaderProgram = 0;
   int textColorUniformLoc = 0;
   int projectionUniformLoc = 0;
   unsigned int VAO{}, VBO{};
   const Vec3 textColor = Vec3(1.0F, 1.0F, 1.0F);
-  std::vector<float> frames{};
+  std::vector<float> frames;
 
   void createCharacters() {
     for (unsigned char charCode = 0; charCode < CHARACTERS_COUNT; charCode++) {
@@ -137,10 +137,10 @@ private:
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
       const Character character = {
-          texture,
-          Vec2(narrow<float>(face->glyph->bitmap.width), narrow<float>(face->glyph->bitmap.rows)),
-          Vec2(narrow<float>(face->glyph->bitmap_left), narrow<float>(face->glyph->bitmap_top)),
-          static_cast<unsigned int>(face->glyph->advance.x)
+          .textureID = texture,
+          .size = Vec2(narrow<float>(face->glyph->bitmap.width), narrow<float>(face->glyph->bitmap.rows)),
+          .bearing = Vec2(narrow<float>(face->glyph->bitmap_left), narrow<float>(face->glyph->bitmap_top)),
+          .advance = static_cast<unsigned int>(face->glyph->advance.x)
       };
       characters.insert(std::pair(charCode, character));
     }
@@ -205,7 +205,7 @@ private:
 
     const float startY = y + narrow<float>((lines.size() - 1) * LINE_HEIGHT);
     for (size_t i = 0; i < lines.size(); ++i) {
-      renderStatLine(lines[i], x, startY - narrow<float>(i * LINE_HEIGHT) * LINE_MULTIPLIER);
+      renderStatLine(lines[i], x, startY - (narrow<float>(i * LINE_HEIGHT) * LINE_MULTIPLIER));
     }
   }
 

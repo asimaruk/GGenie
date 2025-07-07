@@ -39,19 +39,19 @@ public:
     switch (event.key) {
     case GLFW_KEY_W:
     case GLFW_KEY_UP:
-      keyboardDirection += Vec3{0, 0, -1};
+      keyboardDirection += Vec3{.x = 0, .y = 0, .z = -1};
       break;
     case GLFW_KEY_S:
     case GLFW_KEY_DOWN:
-      keyboardDirection += Vec3{0, 0, 1};
+      keyboardDirection += Vec3{.x = 0, .y = 0, .z = 1};
       break;
     case GLFW_KEY_A:
     case GLFW_KEY_LEFT:
-      keyboardDirection += Vec3{-1, 0, 0};
+      keyboardDirection += Vec3{.x = -1, .y = 0, .z = 0};
       break;
     case GLFW_KEY_D:
     case GLFW_KEY_RIGHT:
-      keyboardDirection += Vec3{1, 0, 0};
+      keyboardDirection += Vec3{.x = 1, .y = 0, .z = 0};
       break;
     default:
       break;

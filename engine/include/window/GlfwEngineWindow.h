@@ -6,10 +6,17 @@
 
 class GlfwEngineWindow : public EngineWindow {
 private:
-  GLFWwindow *window;
+  GLFWwindow *window{nullptr};
 
 public:
+  GlfwEngineWindow();
+  GlfwEngineWindow(const GlfwEngineWindow &) = delete;
+  GlfwEngineWindow(GlfwEngineWindow &&) = delete;
   ~GlfwEngineWindow() override;
+
+  auto operator=(const GlfwEngineWindow &) -> GlfwEngineWindow & = delete;
+  auto operator=(GlfwEngineWindow &&) -> GlfwEngineWindow & = delete;
+
   void initialize(int width, int height, const char *title) override;
   void swapBuffers() override;
   [[nodiscard]] auto shouldClose() const -> bool override;

@@ -3,7 +3,13 @@
 
 class EngineWindow {
 public:
+  EngineWindow() = default;
+  EngineWindow(const EngineWindow &) = delete;
+  EngineWindow(EngineWindow &&) = delete;
   virtual ~EngineWindow() = default;
+
+  auto operator=(const EngineWindow &) -> EngineWindow & = delete;
+  auto operator=(EngineWindow &&) -> EngineWindow & = delete;
 
   // Initialize the window
   virtual void initialize(int width, int height, const char *title) = 0;

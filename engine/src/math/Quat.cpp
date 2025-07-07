@@ -22,25 +22,25 @@ auto Quat::fromEuler(float pitch, float yaw, float roll) noexcept -> Quat {
 
   // Комбинирование вращений (Z-Y-X)
   return {
-      .w = cr * cp * cy + sr * sp * sy,
-      .x = cr * cy * sp - sr * sy * cp,
-      .y = cr * sy * cp + sr * cy * sp,
-      .z = sr * cy * cp - cr * sy * sp
+      .w = (cr * cp * cy) + (sr * sp * sy),
+      .x = (cr * cy * sp) - (sr * sy * cp),
+      .y = (cr * sy * cp) + (sr * cy * sp),
+      .z = (sr * cy * cp) - (cr * sy * sp)
   };
 }
 
 auto Quat::normalized() const -> Quat {
-  float const len = sqrt(w * w + x * x + y * y + z * z);
+  float const len = sqrt((w * w) + (x * x) + (y * y) + (z * z));
   return Quat(w / len, x / len, y / len, z / len);
 }
 
 auto Quat::inverse() const -> Quat {
-  float const norm = w * w + x * x + y * y + z * z;
+  float const norm = (w * w) + (x * x) + (y * y) + (z * z);
   return Quat{.w = w / norm, .x = -x / norm, .y = -y / norm, .z = -z / norm};
 }
 
 auto Quat::dot(const Quat &q) const noexcept -> float {
-  return w * q.w + x * q.x + y * q.y + z * q.z;
+  return (w * q.w) + (x * q.x) + (y * q.y) + (z * q.z);
 }
 
 auto Quat::operator+(const Quat &q) const noexcept -> Quat {
@@ -53,10 +53,10 @@ auto Quat::operator-(const Quat &q) const noexcept -> Quat {
 
 auto Quat::operator*(const Quat &q) const noexcept -> Quat {
   return Quat{
-      .w = w * q.w - x * q.x - y * q.y - z * q.z,
-      .x = w * q.x + x * q.w + y * q.z - z * q.y,
-      .y = w * q.y - x * q.z + y * q.w + z * q.x,
-      .z = w * q.z + x * q.y - y * q.x + z * q.w
+      .w = (w * q.w) - (x * q.x) - (y * q.y) - (z * q.z),
+      .x = (w * q.x) + (x * q.w) + (y * q.z) - (z * q.y),
+      .y = (w * q.y) - (x * q.z) + (y * q.w) + (z * q.x),
+      .z = (w * q.z) + (x * q.y) - (y * q.x) + (z * q.w)
   };
 }
 

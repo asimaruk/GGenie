@@ -17,11 +17,11 @@ private:
   std::vector<std::shared_ptr<System>> sortedSystems;
 
 public:
-  DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept;
+  explicit DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept;
 
   auto createEntity() noexcept -> Entity override;
   auto copyEntity(Entity source) noexcept -> Entity override;
-  void removeEntity(const Entity entity) noexcept override;
+  void removeEntity(Entity entity) noexcept override;
   void registerSystem(std::shared_ptr<System> system) override;
   [[nodiscard]] auto getSystem(SystemID systemId) const -> std::optional<std::shared_ptr<System>> override;
   void update(float dt) override;

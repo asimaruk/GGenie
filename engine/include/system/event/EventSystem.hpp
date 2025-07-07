@@ -1,8 +1,8 @@
 #ifndef SYSTEM_EVENT_EVENTSYSTEM_HPP
 #define SYSTEM_EVENT_EVENTSYSTEM_HPP
 
-#include "ecs/System.h"
 #include "Event.h"
+#include "ecs/System.h"
 #include <functional>
 #include <typeindex>
 #include <unordered_map>
@@ -14,10 +14,10 @@ using EventListener = std::function<void(const Event &)>;
 class EventSystem {
 public:
   template <typename T> void dispatch(T &&eventData) {
-    TypedEvent<T> event(std::forward<T>(eventData));
+    const TypedEvent<T> event(std::forward<T>(eventData));
     auto type = event.get_type();
-    if (auto it = listeners.find(type); it != listeners.end()) {
-      for (auto &listener : it->second) {
+    if (auto iter = listeners.find(type); iter != listeners.end()) {
+      for (auto &listener : iter->second) {
         listener(event);
       }
     }
@@ -30,8 +30,6 @@ public:
     };
     listeners[typeid(T)].push_back(listener);
   }
-
-  template <typename T> void off(EventListener listener) {}
 
 private:
   std::unordered_map<std::type_index, std::vector<EventListener>> listeners;

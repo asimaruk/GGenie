@@ -14,9 +14,15 @@ private:
 public:
   static constexpr auto ID = "GLFWInputSystemID";
   GLFWInputSystem(SystemID id, int priority, std::shared_ptr<EventSystem> eventSystem) noexcept;
-  ~GLFWInputSystem();
-  virtual void start() override;
-  virtual void update(float dt) override;
+  GLFWInputSystem(const GLFWInputSystem &) = delete;
+  GLFWInputSystem(GLFWInputSystem &&) = delete;
+  ~GLFWInputSystem() override;
+
+  auto operator=(const GLFWInputSystem &) -> GLFWInputSystem & = delete;
+  auto operator=(GLFWInputSystem &&) -> GLFWInputSystem & = delete;
+
+  void start() override;
+  void update(float dt) override;
 };
 
 #endif

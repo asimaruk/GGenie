@@ -17,7 +17,7 @@ class RenderSystem : public System {
 private:
   std::shared_ptr<ComponentRegistry> registry;
   std::unordered_map<size_t, unsigned int> compiledShaders;
-  unsigned int VBO, VAO, EBO;
+  unsigned int VBO{}, VAO{}, EBO{};
 
   auto getOtherComponents(Entity entity)
       -> std::tuple<std::optional<std::reference_wrapper<Shader>>, std::optional<std::reference_wrapper<Transform>>>;
@@ -36,7 +36,12 @@ public:
   static constexpr auto ID = "RenderSystemID";
 
   RenderSystem(SystemID id, int priority, std::shared_ptr<ComponentRegistry> registry) noexcept;
-  ~RenderSystem();
+  RenderSystem(const RenderSystem &) = delete;
+  RenderSystem(RenderSystem &&) = delete;
+  ~RenderSystem() override;
+
+  auto operator=(const RenderSystem &) -> RenderSystem & = delete;
+  auto operator=(RenderSystem &&) -> RenderSystem & = delete;
 
   void start() override;
   void update(float dt) override;

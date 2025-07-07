@@ -36,8 +36,8 @@ public:
       return;
     }
 
-    auto yaw = Quat::fromAxisAngle(Vec3{0, 1, 0}, -xViewDiff * sensivity);
-    auto pitch = Quat::fromAxisAngle(Vec3{1, 0, 0}, -yViewDiff * sensivity);
+    auto yaw = Quat::fromAxisAngle(Vec3{.x = 0, .y = 1, .z = 0}, -xViewDiff * sensivity);
+    auto pitch = Quat::fromAxisAngle(Vec3{.x = 1, .y = 0, .z = 0}, -yViewDiff * sensivity);
     auto rotation = yaw * transform->get().rotation * pitch;
     auto moveVector = direction.normalize().rotate(rotation);
     auto translation = transform->get().translation + moveVector * move->get().speed * dt;

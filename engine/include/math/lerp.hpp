@@ -25,18 +25,22 @@ template <typename T>
 concept Lerpable = HasLerpMethod<T> || HasArithmeticOps<T>;
 
 template <Lerpable T> auto lerp(const T &a, const T &b, float t) -> T {
-  return a + (b - a) * t;
+  return a + ((b - a) * t);
 }
 
 // https://en.wikipedia.org/wiki/Slerp
 inline auto slerp(const Quat &a, const Quat &b, float t) -> Quat {
-  float cosTheta = a.dot(b);
-  float theta = std::acos(std::clamp(cosTheta, -1.0f, 1.0f));
-  float sinTheta = std::sin(theta);
-  float wa = std::sin((1 - t) * theta) / sinTheta;
-  float wb = std::sin(t * theta) / sinTheta;
-  return Quat{wa * a.w + wb * b.w, wa * a.x + wb * b.x, wa * a.y + wb * b.y,
-              wa * a.z + wb * b.z}
+  const float cosTheta = a.dot(b);
+  const float theta = std::acos(std::clamp(cosTheta, -1.0F, 1.0F));
+  const float sinTheta = std::sin(theta);
+  const float wa = std::sin((1 - t) * theta) / sinTheta; // NOLINT(readability-identifier-length)
+  const float wb = std::sin(t * theta) / sinTheta;       // NOLINT(readability-identifier-length)
+  return Quat{
+      .w = (wa * a.w) + (wb * b.w),
+      .x = (wa * a.x) + (wb * b.x),
+      .y = (wa * a.y) + (wb * b.y),
+      .z = (wa * a.z) + (wb * b.z)
+  }
       .normalized();
 }
 

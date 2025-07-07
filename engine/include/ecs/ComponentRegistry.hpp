@@ -11,10 +11,10 @@ class ComponentRegistry final {
 private:
   std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>> storages;
 
-  template <typename T> auto getStorage() noexcept -> std::shared_ptr<DefaultComponentStorage<T>> {
-    auto it = storages.find(typeid(T));
-    if (it != storages.end()) {
-      return std::dynamic_pointer_cast<DefaultComponentStorage<T>>(it->second);
+  template <typename T> auto getStorage() -> std::shared_ptr<DefaultComponentStorage<T>> {
+    auto iter = storages.find(typeid(T));
+    if (iter != storages.end()) {
+      return std::dynamic_pointer_cast<DefaultComponentStorage<T>>(iter->second);
     }
     auto storage = std::make_shared<DefaultComponentStorage<T>>();
     storages[typeid(T)] = storage;
@@ -22,25 +22,25 @@ private:
   }
 
 public:
-  template <typename T> void add(Entity e, const T &component) noexcept {
-    getStorage<T>()->add(e, component);
+  template <typename T> void add(Entity entity, const T &component) noexcept {
+    getStorage<T>()->add(entity, component);
   }
 
-  template <typename T> void replace(Entity e, const T &component) noexcept {
-    getStorage<T>()->replace(e, component);
+  template <typename T> void replace(Entity entity, const T &component) {
+    getStorage<T>()->replace(entity, component);
   }
 
-  template <typename T> auto get(Entity e) noexcept -> std::optional<std::reference_wrapper<T>> {
-    return getStorage<T>()->get(e);
+  template <typename T> auto get(Entity entity) noexcept -> std::optional<std::reference_wrapper<T>> {
+    return getStorage<T>()->get(entity);
   }
 
-  template <typename T> void remove(Entity e) noexcept {
-    return getStorage<T>()->remove(e);
+  template <typename T> void remove(Entity entity) noexcept {
+    return getStorage<T>()->remove(entity);
   }
 
-  void removeAll(Entity e) noexcept {
-    for (const auto &[_, storage] : storages) {
-      storage->remove(e);
+  void removeAll(Entity entity) noexcept {
+    for (const auto &[/*unused*/ _, storage] : storages) {
+      storage->remove(entity);
     }
   }
 

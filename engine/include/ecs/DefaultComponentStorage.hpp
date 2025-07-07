@@ -19,34 +19,34 @@ private:
   std::vector<Entity> index2entity;
 
 public:
-  void add(Entity entity, const T &component) noexcept {
-    size_t index = components.size();
+  void add(Entity entity, const T &component) {
+    const size_t index = components.size();
     entity2index[entity] = index;
     index2entity.push_back(entity);
     components.push_back(component);
   }
 
-  void replace(Entity entity, const T &component) noexcept {
+  void replace(Entity entity, const T &component) {
     remove(entity);
     add(entity, component);
   }
 
   auto get(Entity entity) noexcept -> std::optional<std::reference_wrapper<T>> {
-    auto it = entity2index.find(entity);
-    if (it == entity2index.end()) {
+    auto iter = entity2index.find(entity);
+    if (iter == entity2index.end()) {
       return std::nullopt;
     }
-    return components[it->second];
+    return components[iter->second];
   }
 
   void remove(Entity entity) noexcept override {
-    auto it = entity2index.find(entity);
-    if (it == entity2index.end()) {
+    auto iter = entity2index.find(entity);
+    if (iter == entity2index.end()) {
       return;
     }
 
-    size_t index = it->second;
-    size_t lastIndex = components.size() - 1;
+    const size_t index = iter->second;
+    const size_t lastIndex = components.size() - 1;
 
     if (index != lastIndex) {
       components[index] = std::move(components.back());
@@ -61,7 +61,7 @@ public:
   }
 
   [[nodiscard]] auto all() const -> EntityComponentRange<T> auto {
-    return std::views::iota(0u, components.size()) |
+    return std::views::iota(0U, components.size()) |
            std::views::transform(
                [this](size_t index)
                {
@@ -70,7 +70,7 @@ public:
            );
   }
 
-  void copyComponent(Entity source, Entity target) noexcept override {
+  void copyComponent(Entity source, Entity target) override {
     auto comp = get(source);
     if (comp.has_value()) {
       add(target, comp.value());

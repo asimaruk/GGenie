@@ -12,8 +12,8 @@ struct Transform {
 
   auto operator+(const Transform &other) const -> Transform;
   auto operator-(const Transform &other) const -> Transform;
-  auto operator*(const float value) const -> Transform;
-  auto operator/(const float value) const -> Transform;
+  auto operator*(float value) const -> Transform;
+  auto operator/(float value) const -> Transform;
 };
 
 #endif

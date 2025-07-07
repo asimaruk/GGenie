@@ -2,8 +2,8 @@
 #include "ecs/System.h"
 #include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputEvent.h"
-#include <cassert>
 #include <GLFW/glfw3.h>
+#include <cassert>
 #include <memory>
 #include <utility>
 

@@ -3,6 +3,8 @@
 #include <OpenGL/gl.h>
 #include <stdexcept>
 
+GlfwEngineWindow::GlfwEngineWindow() = default;
+
 GlfwEngineWindow::~GlfwEngineWindow() {
   if (window != nullptr) {
     glfwDestroyWindow(window);

@@ -21,7 +21,13 @@ public:
       std::shared_ptr<ComponentRegistry> registry,
       std::shared_ptr<EventSystem> eventSystem
   );
-  ~FirstPersonViewControlSystem();
+  FirstPersonViewControlSystem(const FirstPersonViewControlSystem &) = delete;
+  FirstPersonViewControlSystem(FirstPersonViewControlSystem &&) = delete;
+  ~FirstPersonViewControlSystem() override;
+
+  auto operator=(const FirstPersonViewControlSystem &) -> FirstPersonViewControlSystem & = delete;
+  auto operator=(FirstPersonViewControlSystem &&) -> FirstPersonViewControlSystem & = delete;
+
   void start() override;
   void update(float dt) override;
   void setControlledEntity(Entity entity) noexcept;

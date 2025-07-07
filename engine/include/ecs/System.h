@@ -16,6 +16,13 @@ public:
   static constexpr auto NO_PRIORITY = -1;
   const SystemID id;
   const int priority;
+
+  System(const System &) = delete;
+  System(System &&) = delete;
+
+  auto operator=(const System &) -> System & = delete;
+  auto operator=(System &&) -> System & = delete;
+
   virtual ~System() = default;
   virtual void start() = 0;
   virtual void update(float dt) = 0;

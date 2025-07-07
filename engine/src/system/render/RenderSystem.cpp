@@ -64,17 +64,14 @@ auto toGlType(const Shader::VertexType &type) {
 
 RenderSystem::RenderSystem(SystemID id, int priority, std::shared_ptr<ComponentRegistry> registry) noexcept
     : System(id, priority)
-    , registry(std::move(registry))
-    , VBO{}
-    , VAO{}
-    , EBO{} {}
+    , registry(std::move(registry)) {}
 
 RenderSystem::~RenderSystem() {
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
   glDeleteBuffers(1, &EBO);
 
-  for (auto &[_, shaderProgram] : compiledShaders) {
+  for (auto &[/*unused*/ _, shaderProgram] : compiledShaders) {
     glDeleteProgram(shaderProgram);
   }
 }

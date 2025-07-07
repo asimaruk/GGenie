@@ -28,9 +28,8 @@ void DefaultWorld::registerSystem(std::shared_ptr<System> system) {
   std::println("Register system {}", system->id);
   systems[system->id] = system;
   sortedSystems.push_back(system);
-  std::sort(
-      sortedSystems.begin(),
-      sortedSystems.end(),
+  std::ranges::sort(
+      sortedSystems,
       [](const auto &a, const auto &b)
       {
         return a->priority < b->priority;

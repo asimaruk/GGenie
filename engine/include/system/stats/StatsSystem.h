@@ -11,7 +11,13 @@ class StatsSystem : public System {
 public:
   static constexpr auto ID = "StatsSystemID";
   StatsSystem(SystemID id, int priority, const Config &config, const EngineWindow &window);
-  ~StatsSystem();
+  StatsSystem(const StatsSystem &) = delete;
+  StatsSystem(StatsSystem &&) = delete;
+  ~StatsSystem() override;
+
+  auto operator=(const StatsSystem &) -> StatsSystem & = delete;
+  auto operator=(StatsSystem &&) -> StatsSystem & = delete;
+
   void start() override;
   void update(float dt) override;
 

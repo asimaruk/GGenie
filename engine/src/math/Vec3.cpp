@@ -2,7 +2,7 @@
 #include <cmath>
 
 auto Vec3::length() const noexcept -> float {
-  return std::sqrt(x * x + y * y + z * z);
+  return std::sqrt((x * x) + (y * y) + (z * z));
 }
 
 auto Vec3::normalize() const noexcept -> Vec3 {
@@ -62,5 +62,5 @@ auto Vec3::operator!=(const Vec3 &other) const noexcept -> bool {
   return !(*this == other);
 }
 
-const Vec3 Vec3::ZERO = Vec3{0, 0, 0};
-const Vec3 Vec3::ONE = Vec3{1, 1, 1};
+const Vec3 Vec3::ZERO = Vec3{.x = 0, .y = 0, .z = 0};
+const Vec3 Vec3::ONE = Vec3{.x = 1, .y = 1, .z = 1};
