@@ -4,6 +4,7 @@
 #include "ComponentStorage.h"
 #include "DefaultComponentStorage.hpp"
 #include "Entity.h"
+#include <memory>
 #include <typeindex>
 #include <unordered_map>
 

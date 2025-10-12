@@ -6,8 +6,12 @@
 // https://easings.net
 namespace easing {
 
-const auto LINEAR = [](float t) { return t; };
-const auto EASE_OUT_SIN = [](float t) {
+const auto LINEAR = [](float t)
+{
+  return t;
+};
+const auto EASE_OUT_SIN = [](float t)
+{
   return std::sin((t * std::numbers::pi) / 2);
 };
 

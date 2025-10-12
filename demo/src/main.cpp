@@ -4,6 +4,7 @@
 #include "component/Move.h"
 #include "component/Shader.h"
 #include "component/Transform.h"
+#include "component/TransformTween.h"
 #include "config/Config.h"
 #include "ecs/ComponentRegistry.hpp"
 #include "ecs/DefaultWorld.h"
@@ -13,17 +14,16 @@
 #include "system/control/FirstPersonViewControlSystem.h"
 #include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputSystem.h"
-#include "system/render/defaultshaders.h"
 #include "system/render/RenderSystem.h"
+#include "system/render/defaultshaders.h"
 #include "system/stats/StatsSystem.h"
-#include "system/tween/Tween.hpp"
-#include "system/tween/TweenBuilder.hpp"
-#include "system/tween/TweenSystem.hpp"
+#include "system/tween/TweenSystem.h"
 #include "window/GlfwEngineWindow.h"
-#include <filesystem>
 #include <GLFW/glfw3.h>
+#include <filesystem>
 #include <iostream>
 #include <memory>
+#include <numbers>
 #include <print>
 #include <random>
 
@@ -102,22 +102,24 @@ int main(int argc, char **argv) {
 
   auto cubeTransform = registry->get<Transform>(cube);
   if (cubeTransform.has_value()) {
-    tweenSystem->tween(
+    registry->add(
         cube,
-        TweenBuilder(
-            Transform{
-                .translation = cubeTransform->get().translation,
-                .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 0.001),
-                .scale = cubeTransform->get().scale,
-            },
-            Transform{
-                .translation = cubeTransform->get().translation,
-                .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 2),
-                .scale = cubeTransform->get().scale,
-            }
-        )
-            .duration(5)
-            .create()
+        TransformTween{
+            .duration = 5.f,
+            .from =
+                Transform{
+                    .translation = cubeTransform->get().translation,
+                    .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 0.001),
+                    .scale = cubeTransform->get().scale,
+                },
+            .to =
+                Transform{
+                    .translation = cubeTransform->get().translation,
+                    .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 2),
+                    .scale = cubeTransform->get().scale,
+                },
+            .time = 0.f,
+        }
     );
   }
 

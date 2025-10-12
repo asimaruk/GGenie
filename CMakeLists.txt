@@ -21,7 +21,11 @@ add_library(glad STATIC glad/glad.c)
 
 file(GLOB_RECURSE ENGINE_SOURCES 
     "engine/src/**/*.cpp"
+    "engine/include/**/*.hpp"
+    "engine/include/**/*.h"
 )
+
+file(GLOB_RECURSE DEMO_SOURCES "demo/src/**/*.cpp")
 
 file(GLOB_RECURSE ENGINE_TESTS 
     "engine/test/**/*.test.cpp"
@@ -31,7 +35,7 @@ if(CLANG_FORMAT)
     message("Adding format target")
     add_custom_target(
         format
-        COMMAND ${CLANG_FORMAT} -i --style=file ${ENGINE_SOURCES} ${ENGINE_TESTS}
+        COMMAND ${CLANG_FORMAT} -i --style=file ${ENGINE_SOURCES} ${ENGINE_TESTS} ${DEMO_SOURCES}
         COMMENT "Running clang-format on C++ files"
     )
 else()
@@ -57,14 +61,14 @@ if(CLANG_TIDY)
     endif()
     add_custom_target(
         tidy
-        COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES}
+        COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES} ${DEMO_SOURCES}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Running git clang-tidy on C++ files"
     )
 
     add_custom_target(
         tidy-report
-        COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES} --export-fixes=tidy-report.yaml
+        COMMAND ${CLANG_TIDY} -p build/${CMAKE_BUILD_TYPE} ${ENGINE_SOURCES} ${DEMO_SOURCES} --export-fixes=tidy-report.yaml
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Running git clang-tidy with fixes reported in tidy-report.yaml"
     )

@@ -78,13 +78,12 @@ TEST_CASE("Quat arithmetic operators", "[quat]") {
   REQUIRE(a * 2.0f == Quat{2, 4, 6, 8});
   REQUIRE(a / 2.0f == Quat{0.5f, 1.0f, 1.5f, 2.0f});
   REQUIRE(
-      a * b ==
-      Quat{
-          1 * 5 - 2 * 6 - 3 * 7 - 4 * 8,
-          1 * 6 + 2 * 5 + 3 * 8 - 4 * 7,
-          1 * 7 - 2 * 8 + 3 * 5 + 4 * 6,
-          1 * 8 + 2 * 7 - 3 * 6 + 4 * 5
-      }
+      a * b == Quat{
+                   1 * 5 - 2 * 6 - 3 * 7 - 4 * 8,
+                   1 * 6 + 2 * 5 + 3 * 8 - 4 * 7,
+                   1 * 7 - 2 * 8 + 3 * 5 + 4 * 6,
+                   1 * 8 + 2 * 7 - 3 * 6 + 4 * 5
+               }
   );
   // a / b == a * b.inverse()
   Quat binv = b.inverse();

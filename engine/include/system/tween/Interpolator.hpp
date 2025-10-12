@@ -12,11 +12,11 @@ private:
 
 public:
   static const Interpolator LinearInterpolator;
+  static const Interpolator EaseOutSinInterpolator;
 
   Interpolator(std::function<float(float)> ease) : ease(ease) {};
 
-  template <math::Lerpable T>
-  T operator()(const T &a, const T &b, float t) const {
+  template <math::Lerpable T> T operator()(const T &a, const T &b, float t) const {
     if constexpr (math::HasLerpMethod<T>) {
       return a.lerp(b, ease(t));
     } else {
@@ -29,5 +29,5 @@ public:
   }
 };
 
-inline const Interpolator Interpolator::LinearInterpolator =
-    Interpolator(easing::LINEAR);
+inline const Interpolator Interpolator::LinearInterpolator = Interpolator(easing::LINEAR);
+inline const Interpolator Interpolator::EaseOutSinInterpolator = Interpolator(easing::EASE_OUT_SIN);
