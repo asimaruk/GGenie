@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 
   // Systems setup
   auto eventSystem = std::make_shared<EventSystem>();
-  auto glfwEventsEdapter = GLFWEventsAdapter();
+  auto glfwEventsEdapter = GLFWEventsAdapter(false);
   glfwEventsEdapter.attach(eventSystem);
   auto renderSystem = std::make_shared<RenderSystem>(RenderSystem::ID, System::PRIORITY_LOW, registry);
   auto tweenSystem = std::make_shared<TweenSystem>(TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
                     .scale = cubeTransform->get().scale,
                 },
             .time = 0.f,
+            .repeat = TransformTween::INFINITY_REPEAT,
         }
     );
   }

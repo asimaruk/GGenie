@@ -4,9 +4,11 @@
 #include "Transform.h"
 
 struct TransformTween {
-    Transform from, to;
-    float duration;
-    float time;
+  static constexpr int INFINITY_REPEAT = -1;
+  Transform from, to;
+  float duration;
+  float time;
+  int repeat;
 };
 
 #endif

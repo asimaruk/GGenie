@@ -75,6 +75,7 @@
         "__assert": "cpp",
         "chrono": "cpp",
         "cstddef": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "thread": "cpp"
     },
 }

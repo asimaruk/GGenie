@@ -11,7 +11,7 @@ class TweenSystem : public System {
 private:
   class Impl;
   std::unique_ptr<Impl> pimpl;
-  
+
 public:
   static constexpr auto ID = "TweenSystemID";
 

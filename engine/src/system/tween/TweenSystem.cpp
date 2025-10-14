@@ -1,5 +1,5 @@
-#include "component/TransformTween.h"
 #include "system/tween/TweenSystem.h"
+#include "component/TransformTween.h"
 #include "ecs/ComponentRegistry.hpp"
 #include "system/tween/Interpolator.hpp"
 #include <algorithm>
@@ -11,19 +11,28 @@ private:
   std::shared_ptr<ComponentRegistry> registry;
 
   void updateTransformTweens(float dt) {
-    for (const auto [entity, tweenRef]: registry->getAll<TransformTween>()) {
+    for (const auto [entity, tweenRef] : registry->getAll<TransformTween>()) {
       auto tween = tweenRef.get();
-      TransformTween updateTween {
-        .duration = tween.duration,
-        .from = tween.from,
-        .to = tween.to,
-        .time = tween.time + dt,
-      };
-      const auto t = std::min(1.f, updateTween.time / updateTween.duration);
-      const auto tweenedTransform = Interpolator::LinearInterpolator(updateTween.from, updateTween.to, t);
+      if (tween.repeat == 0) {
+        registry->remove<TransformTween>(entity);
+        continue;
+      }
+      auto updateTime = tween.time + dt;
+      auto repeatRound = std::floor(updateTime / tween.duration);
+      const auto timeNorm = (updateTime / tween.duration) - repeatRound;
+      const auto tweenedTransform = Interpolator::LinearInterpolator(tween.from, tween.to, timeNorm);
       registry->replace(entity, tweenedTransform);
-      if (updateTween.time < updateTween.duration) {
-        registry->replace(entity, updateTween);
+      if (repeatRound < tween.repeat || tween.repeat == TransformTween::INFINITY_REPEAT) {
+        registry->replace(
+            entity,
+            TransformTween{
+                .duration = tween.duration,
+                .from = tween.from,
+                .to = tween.to,
+                .time = updateTime,
+                .repeat = tween.repeat,
+            }
+        );
       } else {
         registry->remove<TransformTween>(entity);
       }

@@ -4,18 +4,38 @@
 #include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputEvent.h"
 #include <GLFW/glfw3.h>
+#include <format>
 #include <memory>
 #include <print>
+#include <string>
 
 class GLFWEventsAdapter::Impl {
+private:
+  Vec3 lastCursorPosition = Vec3::ZERO;
+  Vec3 direction = Vec3::ZERO;
+  bool isLogOn;
+
+  void log(const std::string message) {
+    if (!isLogOn) {
+      return;
+    }
+    std::println("{}", message);
+  }
+
 public:
+  Impl(const bool logging) : isLogOn(logging) {}
+
   void onGLFWCursorEnterEvent(const GLFWCursorEnterEvent &event) {
-    std::println("GLFWEventsAdapter::onGLFWCursorEnterEvent {{ entered={} }}", event.entered != 0);
+    log(std::format("GLFWEventsAdapter::onGLFWCursorEnterEvent {{ entered={} }}", event.entered != 0));
     lastCursorPosition = Vec3::ZERO;
   }
 
   auto onGLFWCursorPositionEvent(const GLFWCursorPositionEvent &event) -> FPVViewEvent {
-    std::println("GLFWEventsAdapter::onGLFWCursorPositionEvent {{ xpos={:.2f}, ypos={:.2f} }}", event.xpos, event.ypos);
+    log(std::format(
+        "GLFWEventsAdapter::onGLFWCursorPositionEvent {{ xpos={:.2f}, ypos={:.2f} }}",
+        event.xpos,
+        event.ypos
+    ));
     auto pos = Vec3{.x = static_cast<float>(event.xpos), .y = static_cast<float>(event.ypos), .z = 0};
     if (lastCursorPosition == Vec3::ZERO) {
       lastCursorPosition = pos;
@@ -27,13 +47,13 @@ public:
   }
 
   auto onGLFWKeyboardEvent(const GLFWKeyboardEvent &event) -> FPVMoveEvent {
-    std::println(
+    log(std::format(
         "GLFWEventsAdapter::onGLFWKeyboardEvent {{ key={}, scancode={}, action={}, mods={} }}",
         event.key,
         event.scancode,
         event.action,
         event.mods
-    );
+    ));
 
     Vec3 keyboardDirection = Vec3::ZERO;
     switch (event.key) {
@@ -72,28 +92,24 @@ public:
   }
 
   void onGLFWMouseButtonEvent(const GLFWMouseButtonEvent &event) {
-    std::println(
+    log(std::format(
         "GLFWEventsAdapter::onGLFWMouseButtonEvent {{ button={}, action={}, mods={} }}",
         event.button,
         event.action,
         event.mods
-    );
+    ));
   }
 
   void onGLFWScrollEvent(const GLFWScrollEvent &event) {
-    std::println(
+    log(std::format(
         "GLFWEventsAdapter::onGLFWCursorPositionEvent {{ xoffset={:.2f}, yoffset={:.2f} }}",
         event.xoffset,
         event.yoffset
-    );
+    ));
   }
-
-private:
-  Vec3 lastCursorPosition = Vec3::ZERO;
-  Vec3 direction = Vec3::ZERO;
 };
 
-GLFWEventsAdapter::GLFWEventsAdapter() : pimpl(new Impl()) {}
+GLFWEventsAdapter::GLFWEventsAdapter(const bool logging) : pimpl(new Impl(logging)) {}
 
 void GLFWEventsAdapter::attach(std::shared_ptr<EventSystem> eventSystem) {
   eventSystem->on<GLFWCursorPositionEvent>(

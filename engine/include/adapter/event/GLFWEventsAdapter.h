@@ -10,7 +10,7 @@ private:
   std::unique_ptr<Impl> pimpl;
 
 public:
-  GLFWEventsAdapter();
+  GLFWEventsAdapter(const bool logging);
   GLFWEventsAdapter(const GLFWEventsAdapter &) = delete;
   GLFWEventsAdapter(GLFWEventsAdapter &&) = delete;
 
