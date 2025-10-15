@@ -80,27 +80,9 @@ int main(int argc, char **argv) {
   world->registerSystem(statsSystem);
 
   // Entities and component setup
-  auto cube = world->createEntity();
-  registry->add(cube, Mesh::cube());
-  registry->add(cube, Shader(shaders::DEFAULT_VERTEX, shaders::DEFAULT_FRAGMENT, shaders::DEFAULT_ATTRS));
-  registry->add(cube, Transform());
-
-  std::uniform_real_distribution<float> coordinatesDistr(-25.f, 25.f);
-  for (int i = 0; i < 1000; ++i) {
-    auto cubeCopy = world->copyEntity(cube);
-    registry->replace(
-        cubeCopy,
-        Transform{
-            .translation{randomDist(coordinatesDistr), randomDist(coordinatesDistr), randomDist(coordinatesDistr)}
-        }
-    );
-    addInfiniteRandomRotationTween(registry, cubeCopy);
-  }
-
-  addInfiniteRandomRotationTween(registry, cube);
-
+  setupCubes(world, registry);
   auto camera = world->createEntity();
-  auto cameraTransform = Transform{.translation{0, 1, 5}};
+  auto cameraTransform = Transform{.translation{0, 2, 5}};
   registry->add(camera, cameraTransform);
   registry->add(camera, Camera(windowWidth, windowHeight, 45, 0.1, 100));
   registry->add(camera, Move{.speed = 10});
