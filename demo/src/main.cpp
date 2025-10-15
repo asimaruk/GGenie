@@ -18,6 +18,8 @@
 #include "system/render/defaultshaders.h"
 #include "system/stats/StatsSystem.h"
 #include "system/tween/TweenSystem.h"
+#include "utils.cpp"
+#include "utils/random.hpp"
 #include "window/GlfwEngineWindow.h"
 #include <GLFW/glfw3.h>
 #include <filesystem>
@@ -83,13 +85,19 @@ int main(int argc, char **argv) {
   registry->add(cube, Shader(shaders::DEFAULT_VERTEX, shaders::DEFAULT_FRAGMENT, shaders::DEFAULT_ATTRS));
   registry->add(cube, Transform());
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_real_distribution<float> dist(-25.f, 25.f);
-  for (int i = 0; i < 100; ++i) {
+  std::uniform_real_distribution<float> coordinatesDistr(-25.f, 25.f);
+  for (int i = 0; i < 1000; ++i) {
     auto cubeCopy = world->copyEntity(cube);
-    registry->replace(cubeCopy, Transform{.translation{dist(gen), dist(gen), dist(gen)}});
+    registry->replace(
+        cubeCopy,
+        Transform{
+            .translation{randomDist(coordinatesDistr), randomDist(coordinatesDistr), randomDist(coordinatesDistr)}
+        }
+    );
+    addInfiniteRandomRotationTween(registry, cubeCopy);
   }
+
+  addInfiniteRandomRotationTween(registry, cube);
 
   auto camera = world->createEntity();
   auto cameraTransform = Transform{.translation{0, 1, 5}};
@@ -99,30 +107,6 @@ int main(int argc, char **argv) {
   controlSystem->setControlledEntity(camera);
 
   std::println("World setup");
-
-  auto cubeTransform = registry->get<Transform>(cube);
-  if (cubeTransform.has_value()) {
-    registry->add(
-        cube,
-        TransformTween{
-            .duration = 5.f,
-            .from =
-                Transform{
-                    .translation = cubeTransform->get().translation,
-                    .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 0.001),
-                    .scale = cubeTransform->get().scale,
-                },
-            .to =
-                Transform{
-                    .translation = cubeTransform->get().translation,
-                    .rotation = Quat::fromAxisAngle({0, 1, 0}, std::numbers::pi * 2),
-                    .scale = cubeTransform->get().scale,
-                },
-            .time = 0.f,
-            .repeat = TransformTween::INFINITY_REPEAT,
-        }
-    );
-  }
 
   float lastTime = glfwGetTime();
   while (!window.shouldClose()) {

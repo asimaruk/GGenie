@@ -13,7 +13,7 @@ private:
   void updateTransformTweens(float dt) {
     for (const auto [entity, tweenRef] : registry->getAll<TransformTween>()) {
       auto tween = tweenRef.get();
-      if (tween.repeat == 0) {
+      if (tween.repeat == 0 || tween.duration <= 0) {
         registry->remove<TransformTween>(entity);
         continue;
       }
