@@ -65,9 +65,12 @@ void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry>
     auto cube = world->createEntity();
     registry->add(cube, mesh);
     registry->add(cube, shader);
-    auto x = minPos + ((i % size) / static_cast<float>(size)) * len;
-    auto y = minPos + (std::floor(static_cast<float>(i % doubleSize) / size) / size) * len;
-    auto z = minPos + (std::floor(i / static_cast<float>(doubleSize)) / size) * len;
+    auto xStep = i % size;
+    auto yStep = std::floor(static_cast<float>(i % doubleSize) / size);
+    auto zStep = std::floor(i / static_cast<float>(doubleSize));
+    auto x = minPos + (xStep / static_cast<float>(size)) * len;
+    auto y = minPos + (yStep / size) * len;
+    auto z = minPos + (zStep / size) * len;
     registry->add(
         cube,
         Transform{.translation{
@@ -76,6 +79,9 @@ void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry>
             .z = z,
         }}
     );
-    addInfiniteRandomRotationTween(registry, cube);
+    std::println("Cube xStep%2={}, yStep%2={}", static_cast<int>(xStep) % 2, static_cast<int>(yStep) % 2);
+    if (static_cast<int>(xStep + yStep + zStep) % 2 == 1) {
+      addInfiniteRandomRotationTween(registry, cube);
+    }
   }
 }
