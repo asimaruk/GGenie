@@ -10,6 +10,9 @@
 #include "ecs/DefaultWorld.h"
 #include "ecs/System.h"
 #include "glad.h"
+#include "logging/Formatter.h"
+#include "logging/Logg.h"
+#include "logging/Logger.h"
 #include "math/algebras.h"
 #include "resources/Loader.h"
 #include "resources/Resources.h"
@@ -23,6 +26,7 @@
 #include "utils.cpp"
 #include "utils/random.hpp"
 #include "window/GlfwEngineWindow.h"
+#include <config.h>
 #include <GLFW/glfw3.h>
 #include <filesystem>
 #include <iostream>
@@ -32,11 +36,11 @@
 #include <random>
 
 int main(int argc, char **argv) {
-
-#ifdef NDEBUG
-  std::println("Release configuration!");
-#else
-  std::println("Debug configuration!");
+  GGenie::log::Logg::setDefault(
+      std::make_shared<GGenie::log::Logger>(std::make_shared<GGenie::log::Formatter>(GGenie::PROJECT_ROOT))
+  );
+#ifndef NDEBUG
+  GGenie::log::Logg::info("Debug configuration!");
 #endif
 
   GGenie::GlfwEngineWindow window = GGenie::GlfwEngineWindow();

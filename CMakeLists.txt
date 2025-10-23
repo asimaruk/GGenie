@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # clang-tidy needs compile_commands.json
 project(GGenie)
 
+configure_file(
+    "${CMAKE_SOURCE_DIR}/demo/include/config.h.in"
+    "${CMAKE_BINARY_DIR}/config.h"
+    @ONLY
+)
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -110,6 +116,9 @@ add_executable(GGenie
 target_link_libraries(GGenie 
     ggenie_deps 
     ggenie_includes
+)
+target_include_directories(GGenie PUBLIC # to include config.h
+    "${PROJECT_BINARY_DIR}"
 )
 
 message("ENGINE_TESTS", ${ENGINE_TESTS})

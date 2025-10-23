@@ -1,0 +1,7 @@
+#pragma once
+
+#define PROJECT_ROOT_DIR "@CMAKE_SOURCE_DIR@"
+
+namespace GGenie {
+    constexpr const char* PROJECT_ROOT = PROJECT_ROOT_DIR;
+}
