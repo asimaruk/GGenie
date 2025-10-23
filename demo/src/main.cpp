@@ -1,8 +1,8 @@
 #include "adapter/event/GLFWEventsAdapter.h"
 #include "component/Camera.h"
+#include "component/Material.h"
 #include "component/Mesh.h"
 #include "component/Move.h"
-#include "component/Shader.h"
 #include "component/Transform.h"
 #include "component/TransformTween.h"
 #include "config/Config.h"
@@ -11,6 +11,8 @@
 #include "ecs/System.h"
 #include "glad.h"
 #include "math/algebras.h"
+#include "resources/Loader.h"
+#include "resources/Resources.h"
 #include "system/control/FirstPersonViewControlSystem.h"
 #include "system/event/EventSystem.hpp"
 #include "system/input/GLFWInputSystem.h"
@@ -50,10 +52,14 @@ int main(int argc, char **argv) {
 
   auto curPath = std::filesystem::current_path();
   auto exePath = (curPath / argv[0] / "../resources").lexically_normal();
-  auto config = Config{
+  auto config = std::make_shared<Config>(Config{
       .resPath = exePath.string(),
-  };
-  std::println("Config {}", config);
+  });
+  std::println("Config {}", *config.get());
+
+  // Resources and loaders setup
+  auto loader = std::make_shared<Loader>(config);
+  auto resources = std::make_shared<Resources>(loader);
 
   // ECS world setup
   auto registry = std::make_shared<ComponentRegistry>();
@@ -63,7 +69,7 @@ int main(int argc, char **argv) {
   auto eventSystem = std::make_shared<EventSystem>();
   auto glfwEventsEdapter = GLFWEventsAdapter(false);
   glfwEventsEdapter.attach(eventSystem);
-  auto renderSystem = std::make_shared<RenderSystem>(RenderSystem::ID, System::PRIORITY_LOW, registry);
+  auto renderSystem = std::make_shared<RenderSystem>(RenderSystem::ID, System::PRIORITY_LOW, registry, resources);
   auto tweenSystem = std::make_shared<TweenSystem>(TweenSystem::ID, System::PRIORITY_MEDIUM, registry);
   auto inputSystem = std::make_shared<GLFWInputSystem>(GLFWInputSystem::ID, System::PRIORITY_HIGH, eventSystem);
   auto controlSystem = std::make_shared<FirstPersonViewControlSystem>(

@@ -1,5 +1,5 @@
+#include "component/Material.h"
 #include "component/Mesh.h"
-#include "component/Shader.h"
 #include "component/Transform.h"
 #include "component/TransformTween.h"
 #include "ecs/ComponentRegistry.hpp"
@@ -53,7 +53,7 @@ void addInfiniteRandomRotationTween(std::shared_ptr<ComponentRegistry> registry,
 void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry> registry) {
   auto cube = world->createEntity();
   auto mesh = Mesh::cube();
-  auto shader = Shader(shaders::DEFAULT_VERTEX, shaders::DEFAULT_FRAGMENT, shaders::DEFAULT_ATTRS);
+  auto material = Material(shaders::DEFAULT_VERTEX, shaders::DEFAULT_FRAGMENT, shaders::VERTEX_COLOR_ATTRIBUTES);
 
   static auto minPos = -25.f;
   static auto maxPos = 25.f;
@@ -64,7 +64,7 @@ void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry>
   for (int i = 0; i < tripleSize; ++i) {
     auto cube = world->createEntity();
     registry->add(cube, mesh);
-    registry->add(cube, shader);
+    registry->add(cube, material);
     auto xStep = i % size;
     auto yStep = std::floor(static_cast<float>(i % doubleSize) / size);
     auto zStep = std::floor(i / static_cast<float>(doubleSize));
@@ -79,7 +79,6 @@ void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry>
             .z = z,
         }}
     );
-    std::println("Cube xStep%2={}, yStep%2={}", static_cast<int>(xStep) % 2, static_cast<int>(yStep) % 2);
     if (static_cast<int>(xStep + yStep + zStep) % 2 == 1) {
       addInfiniteRandomRotationTween(registry, cube);
     }

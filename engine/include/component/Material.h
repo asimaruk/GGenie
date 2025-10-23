@@ -1,10 +1,10 @@
-#ifndef COMPONENT_SHADER_H
-#define COMPONENT_SHADER_H
+#ifndef COMPONENT_MATERIAL_H
+#define COMPONENT_MATERIAL_H
 
 #include <span>
 #include <string_view>
 
-struct Shader {
+struct Material {
   enum VertexType : std::int8_t {
     BYTE,
     UNSIGNED_BYTE,
@@ -28,7 +28,7 @@ struct Shader {
   std::string_view fragmentSource;
   std::span<const Attributes> attrs;
 
-  Shader(std::string_view vertexSource, std::string_view fragmentSource, std::span<const Attributes> attrs) noexcept;
+  Material(std::string_view vertexSource, std::string_view fragmentSource, std::span<const Attributes> attrs) noexcept;
 };
 
 #endif

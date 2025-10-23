@@ -17,6 +17,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <print>
 #include <span>
@@ -30,7 +31,7 @@ using namespace std::string_literals;
 // https://learnopengl.com/In-Practice/Text-Rendering
 class StatsSystem::Impl {
 public:
-  Impl(const Config &config, const EngineWindow &window) : config(config), window(window) {}
+  Impl(std::shared_ptr<Config> config, const EngineWindow &window) : config(config), window(window) {}
   Impl(const Impl &) = delete;
   Impl(Impl &&) = delete;
   ~Impl() = default;
@@ -43,7 +44,7 @@ public:
       std::println(std::cerr, "FREETYPE: Could not init FreeType Library, error {}", error);
       return -1;
     }
-    auto fontPath = std::filesystem::path(config.resPath) / "fonts/Michroma-Regular.ttf";
+    auto fontPath = std::filesystem::path(config->resPath) / "fonts/Michroma-Regular.ttf";
     if (auto error = FT_New_Face(ft, fontPath.c_str(), 0, &face) != 0) {
       std::println(std::cerr, "FREETYPE: Failed to load font, error {}", error);
       return -1;
@@ -98,7 +99,7 @@ private:
 
   FT_Library ft = nullptr;
   FT_Face face = nullptr;
-  const Config &config;
+  std::shared_ptr<Config> config;
   const EngineWindow &window;
   std::map<char, Character> characters;
   unsigned int shaderProgram = 0;
@@ -264,7 +265,7 @@ private:
   }
 };
 
-StatsSystem::StatsSystem(SystemID id, int priority, const Config &config, const EngineWindow &window)
+StatsSystem::StatsSystem(SystemID id, int priority, std::shared_ptr<Config> config, const EngineWindow &window)
     : System(id, priority)
     , pimpl(new Impl(config, window)) {}
 

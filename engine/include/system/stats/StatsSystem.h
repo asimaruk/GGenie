@@ -10,7 +10,7 @@
 class StatsSystem : public System {
 public:
   static constexpr auto ID = "StatsSystemID";
-  StatsSystem(SystemID id, int priority, const Config &config, const EngineWindow &window);
+  StatsSystem(SystemID id, int priority, std::shared_ptr<Config> config, const EngineWindow &window);
   StatsSystem(const StatsSystem &) = delete;
   StatsSystem(StatsSystem &&) = delete;
   ~StatsSystem() override;
