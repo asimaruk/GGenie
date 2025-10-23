@@ -1,6 +1,8 @@
 #ifndef MATH_ALGEBRAS_H
 #define MATH_ALGEBRAS_H
 
+namespace GGenie {
+
 struct Vec2;
 struct Vec3;
 struct Quat;
@@ -53,5 +55,7 @@ struct Quat {
   auto operator==(const Quat &q) const noexcept -> bool;
   auto operator!=(const Quat &q) const noexcept -> bool;
 };
+
+} // namespace GGenie
 
 #endif

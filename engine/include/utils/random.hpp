@@ -3,6 +3,8 @@
 
 #include <random>
 
+namespace GGenie {
+
 template <typename T> auto random_0_to_1() -> T {
   static std::random_device rd;
   static std::mt19937 gen(rd());
@@ -14,5 +16,7 @@ template <typename T> auto randomDist(std::uniform_real_distribution<T> distr) -
   static std::mt19937 gen(rd());
   return distr(gen);
 }
+
+} // namespace GGenie
 
 #endif

@@ -3,6 +3,8 @@
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 
+using namespace GGenie;
+
 auto Approximately(const Quat &expected, float epsilon = std::numeric_limits<float>::epsilon() * 100) {
   return Catch::Matchers::Predicate<Quat>(
       [expected, epsilon](const Quat &actual)

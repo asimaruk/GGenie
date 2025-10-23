@@ -7,6 +7,8 @@
 #include <cmath>
 #include <concepts>
 
+namespace GGenie {
+
 namespace math {
 
 template <typename T>
@@ -45,5 +47,7 @@ inline auto slerp(const Quat &a, const Quat &b, float t) -> Quat {
 }
 
 } // namespace math
+
+} // namespace GGenie
 
 #endif

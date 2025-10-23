@@ -9,6 +9,8 @@
 #include <print>
 #include <string>
 
+using namespace GGenie;
+
 class GLFWEventsAdapter::Impl {
 private:
   Vec3 lastCursorPosition = Vec3::ZERO;

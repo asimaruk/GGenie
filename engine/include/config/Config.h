@@ -5,13 +5,17 @@
 #include <iostream>
 #include <string>
 
+namespace GGenie {
+
 struct Config {
   std::string resPath;
 
   auto operator<<(std::ostream &ostream) const -> std::ostream &;
 };
 
-template <> struct std::formatter<Config> {
+} // namespace GGenie
+
+template <> struct std::formatter<GGenie::Config> {
   constexpr auto parse(std::format_parse_context &ctx) {
     const auto *iter = ctx.begin();
     const auto *end = ctx.end();
@@ -21,7 +25,7 @@ template <> struct std::formatter<Config> {
     return iter;
   }
 
-  auto format(const Config &config, std::format_context &ctx) const {
+  auto format(const GGenie::Config &config, std::format_context &ctx) const {
     return std::format_to(ctx.out(), "{{resPath: {}}}", config.resPath);
   }
 };

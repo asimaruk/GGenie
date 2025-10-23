@@ -1,6 +1,8 @@
 #include "math/algebras.h"
 #include <cmath>
 
+using namespace GGenie;
+
 const Quat Quat::IDENTITY = {.w = 1.0F, .x = 0.0F, .y = 0.0F, .z = 0.0F};
 
 auto Quat::fromAxisAngle(const Vec3 &axis, float radians) noexcept -> Quat {

@@ -6,6 +6,8 @@
 #include <sstream>
 #include <string>
 
+using namespace GGenie;
+
 class Loader::Impl {
 public:
   Impl(std::shared_ptr<Config> config) : config(config) {}

@@ -6,6 +6,8 @@
 #include <memory>
 #include <optional>
 
+namespace GGenie {
+
 class World {
 public:
   World();
@@ -23,5 +25,7 @@ public:
   [[nodiscard]] virtual auto getSystem(SystemID id) const -> std::optional<std::shared_ptr<System>> = 0;
   virtual void update(float dt) = 0;
 };
+
+} // namespace GGenie
 
 #endif

@@ -3,6 +3,8 @@
 #include <utility>
 #include <vector>
 
+using namespace GGenie;
+
 Mesh::Mesh(std::vector<float> verts, std::vector<unsigned int> idxs) noexcept
     : vertices(std::move(verts))
     , indices(std::move(idxs)) {}

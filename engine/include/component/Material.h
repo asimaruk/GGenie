@@ -4,6 +4,8 @@
 #include <span>
 #include <string_view>
 
+namespace GGenie {
+
 struct Material {
   enum VertexType : std::int8_t {
     BYTE,
@@ -30,5 +32,7 @@ struct Material {
 
   Material(std::string_view vertexSource, std::string_view fragmentSource, std::span<const Attributes> attrs) noexcept;
 };
+
+} // namespace GGenie
 
 #endif

@@ -1,6 +1,8 @@
 #include "component/Transform.h"
 #include "math/lerp.hpp"
 
+using namespace GGenie;
+
 auto Transform::lerp(const Transform &other, float t) const -> Transform {
   return {
       .translation = math::lerp(translation, other.translation, t),

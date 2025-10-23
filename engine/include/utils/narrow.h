@@ -4,6 +4,8 @@
 #include <concepts>
 #include <utility>
 
+namespace GGenie {
+
 template <typename T>
 concept Arithmetic = std::integral<T> || std::floating_point<T>;
 
@@ -17,5 +19,7 @@ template <std::integral T, std::integral V> auto narrow(V value) -> T {
 template <std::floating_point T, Arithmetic V> auto narrow(V value) -> T {
   return static_cast<T>(value);
 }
+
+} // namespace GGenie
 
 #endif

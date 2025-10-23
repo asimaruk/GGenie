@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+namespace GGenie {
+
 class Loader {
 public:
   Loader(std::shared_ptr<Config> config);
@@ -21,5 +23,7 @@ private:
   class Impl;
   std::unique_ptr<Impl> pimpl;
 };
+
+} // namespace GGenie
 
 #endif

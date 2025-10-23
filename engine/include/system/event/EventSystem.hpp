@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+namespace GGenie {
+
 using EventListener = std::function<void(const Event &)>;
 
 class EventSystem {
@@ -34,5 +36,7 @@ public:
 private:
   std::unordered_map<std::type_index, std::vector<EventListener>> listeners;
 };
+
+} // namespace GGenie
 
 #endif

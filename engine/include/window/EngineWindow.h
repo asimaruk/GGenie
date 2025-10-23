@@ -1,6 +1,8 @@
 #ifndef WINDOW_ENGINEWINDOW_H
 #define WINDOW_ENGINEWINDOW_H
 
+namespace GGenie {
+
 class EngineWindow {
 public:
   EngineWindow() = default;
@@ -23,5 +25,7 @@ public:
   [[nodiscard]] virtual auto getWidth() const -> int = 0;
   [[nodiscard]] virtual auto getHeight() const -> int = 0;
 };
+
+} // namespace GGenie
 
 #endif // WINDOW_ENGINEWINDOW_H

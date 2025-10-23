@@ -8,6 +8,8 @@
 #include <typeindex>
 #include <unordered_map>
 
+namespace GGenie {
+
 class ComponentRegistry final {
 private:
   std::unordered_map<std::type_index, std::shared_ptr<ComponentStorage>> storages;
@@ -55,5 +57,7 @@ public:
     }
   }
 };
+
+} // namespace GGenie
 
 #endif

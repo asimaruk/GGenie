@@ -3,6 +3,8 @@
 #include <OpenGL/gl.h>
 #include <stdexcept>
 
+using namespace GGenie;
+
 GlfwEngineWindow::GlfwEngineWindow() = default;
 
 GlfwEngineWindow::~GlfwEngineWindow() {

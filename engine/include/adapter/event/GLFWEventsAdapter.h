@@ -4,6 +4,8 @@
 #include "system/event/EventSystem.hpp"
 #include <memory>
 
+namespace GGenie {
+
 class GLFWEventsAdapter {
 private:
   class Impl;
@@ -22,5 +24,7 @@ public:
   void attach(std::shared_ptr<EventSystem> eventSystem);
   void detach(std::shared_ptr<EventSystem> eventSystem);
 };
+
+} // namespace GGenie
 
 #endif

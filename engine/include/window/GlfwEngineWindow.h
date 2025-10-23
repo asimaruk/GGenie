@@ -4,6 +4,8 @@
 #include "EngineWindow.h"
 #include <GLFW/glfw3.h>
 
+namespace GGenie {
+
 class GlfwEngineWindow : public EngineWindow {
 private:
   GLFWwindow *window{nullptr};
@@ -24,5 +26,7 @@ public:
   [[nodiscard]] auto getHeight() const -> int override;
   [[nodiscard]] auto getGlfwWindow() const -> GLFWwindow *;
 };
+
+} // namespace GGenie
 
 #endif

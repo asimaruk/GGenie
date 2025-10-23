@@ -26,6 +26,7 @@
 #include <utility>
 #include <vector>
 
+using namespace GGenie;
 using namespace std::string_literals;
 
 // https://learnopengl.com/In-Practice/Text-Rendering

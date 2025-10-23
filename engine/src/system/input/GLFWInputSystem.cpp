@@ -7,6 +7,8 @@
 #include <memory>
 #include <utility>
 
+using namespace GGenie;
+
 class GLFWInputSystem::Impl {
 private:
   std::shared_ptr<EventSystem> eventSystem;

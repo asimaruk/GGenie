@@ -1,6 +1,8 @@
 #ifndef SYSTEM_INPUT_GLFWINPUTEVENT_H
 #define SYSTEM_INPUT_GLFWINPUTEVENT_H
 
+namespace GGenie {
+
 struct GLFWKeyboardEvent {
   int key;
   int scancode;
@@ -27,5 +29,7 @@ struct GLFWScrollEvent {
 struct GLFWCursorEnterEvent {
   int entered;
 };
+
+} // namespace GGenie
 
 #endif

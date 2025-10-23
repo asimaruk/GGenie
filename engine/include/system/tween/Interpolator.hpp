@@ -6,6 +6,8 @@
 #include <__ostream/print.h>
 #include <functional>
 
+namespace GGenie {
+
 class Interpolator {
 private:
   const std::function<float(float)> ease;
@@ -31,3 +33,5 @@ public:
 
 inline const Interpolator Interpolator::LinearInterpolator = Interpolator(easing::LINEAR);
 inline const Interpolator Interpolator::EaseOutSinInterpolator = Interpolator(easing::EASE_OUT_SIN);
+
+} // namespace GGenie

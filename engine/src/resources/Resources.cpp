@@ -2,6 +2,8 @@
 #include "resources/Loader.h"
 #include <memory>
 
+using namespace GGenie;
+
 class Resources::Impl {
 public:
   Impl(std::shared_ptr<Loader> loader) : loader(loader) {}

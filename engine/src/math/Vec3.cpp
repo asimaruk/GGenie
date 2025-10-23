@@ -1,6 +1,8 @@
 #include "math/algebras.h"
 #include <cmath>
 
+using namespace GGenie;
+
 auto Vec3::length() const noexcept -> float {
   return std::sqrt((x * x) + (y * y) + (z * z));
 }

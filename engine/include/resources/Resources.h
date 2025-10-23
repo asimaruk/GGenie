@@ -6,6 +6,8 @@
 #include <memory>
 #include <string>
 
+namespace GGenie {
+
 class Resources {
 public:
   Resources(std::shared_ptr<Loader> loader);
@@ -22,5 +24,7 @@ private:
   class Impl;
   std::unique_ptr<Impl> pimpl;
 };
+
+} // namespace GGenie
 
 #endif

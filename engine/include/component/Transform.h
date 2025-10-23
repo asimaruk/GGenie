@@ -3,6 +3,8 @@
 
 #include "math/algebras.h"
 
+namespace GGenie {
+
 struct Transform {
   Vec3 translation = Vec3::ZERO;
   Quat rotation = Quat::IDENTITY;
@@ -15,5 +17,7 @@ struct Transform {
   auto operator*(float value) const -> Transform;
   auto operator/(float value) const -> Transform;
 };
+
+} // namespace GGenie
 
 #endif

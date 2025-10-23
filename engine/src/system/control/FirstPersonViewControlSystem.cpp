@@ -10,6 +10,8 @@
 #include <memory>
 #include <utility>
 
+using namespace GGenie;
+
 class FirstPersonViewControlSystem::Impl {
 private:
   std::shared_ptr<ComponentRegistry> registry;

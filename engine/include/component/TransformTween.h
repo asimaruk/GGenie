@@ -3,6 +3,8 @@
 
 #include "Transform.h"
 
+namespace GGenie {
+
 struct TransformTween {
   static constexpr int INFINITY_REPEAT = -1;
   Transform from, to;
@@ -10,5 +12,7 @@ struct TransformTween {
   float time;
   int repeat;
 };
+
+} // namespace GGenie
 
 #endif

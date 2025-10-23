@@ -8,6 +8,8 @@
 #include "system/event/EventSystem.hpp"
 #include <memory>
 
+namespace GGenie {
+
 class FirstPersonViewControlSystem : public System {
 private:
   class Impl;
@@ -32,5 +34,7 @@ public:
   void update(float dt) override;
   void setControlledEntity(Entity entity) noexcept;
 };
+
+} // namespace GGenie
 
 #endif

@@ -8,6 +8,8 @@
 #include <print>
 #include <utility>
 
+using namespace GGenie;
+
 DefaultWorld::DefaultWorld(std::shared_ptr<ComponentRegistry> registry) noexcept : registry(std::move(registry)) {}
 
 auto DefaultWorld::createEntity() noexcept -> Entity {

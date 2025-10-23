@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace GGenie {
+
 template <typename R, typename T>
 concept EntityComponentRange = std::ranges::input_range<R> && requires(R range) {
   { *std::ranges::begin(range) } -> std::convertible_to<std::pair<Entity, std::reference_wrapper<const T>>>;
@@ -77,5 +79,7 @@ public:
     }
   }
 };
+
+} // namespace GGenie
 
 #endif

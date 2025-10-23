@@ -7,6 +7,8 @@
 #include "window/EngineWindow.h"
 #include <memory>
 
+namespace GGenie {
+
 class StatsSystem : public System {
 public:
   static constexpr auto ID = "StatsSystemID";
@@ -25,5 +27,7 @@ private:
   class Impl;
   std::unique_ptr<Impl> pimpl;
 };
+
+} // namespace GGenie
 
 #endif

@@ -7,6 +7,8 @@
 #include <utility>
 #include <vector>
 
+namespace GGenie {
+
 class TweenSystem : public System {
 private:
   class Impl;
@@ -26,3 +28,5 @@ public:
   void start() override;
   void update(float dt) override;
 };
+
+} // namespace GGenie

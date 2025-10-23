@@ -30,6 +30,8 @@
 #include <tuple>
 #include <utility>
 
+using namespace GGenie;
+
 namespace {
 auto materialHash(const Material &material) -> size_t {
   return hash_combined(material.vertexSource, material.fragmentSource);

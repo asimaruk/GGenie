@@ -4,6 +4,8 @@
 #include <typeindex>
 #include <utility>
 
+namespace GGenie {
+
 struct Event {
   Event() = default;
   Event(const Event &) = delete;
@@ -33,5 +35,7 @@ template <typename T> struct TypedEvent : public Event {
     return typeid(T);
   }
 };
+
+} // namespace GGenie
 
 #endif

@@ -3,6 +3,8 @@
 
 #include "math/algebras.h"
 
+namespace GGenie {
+
 struct FPVMoveEvent {
   Vec3 direction;
 };
@@ -10,5 +12,7 @@ struct FPVMoveEvent {
 struct FPVViewEvent {
   float xViewDiff, yViewDiff;
 };
+
+} // namespace GGenie
 
 #endif

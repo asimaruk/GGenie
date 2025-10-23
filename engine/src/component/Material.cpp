@@ -2,6 +2,8 @@
 #include <span>
 #include <string_view>
 
+using namespace GGenie;
+
 Material::Material(
     std::string_view vertexSource, std::string_view fragmentSource, std::span<const Attributes> attrs
 ) noexcept

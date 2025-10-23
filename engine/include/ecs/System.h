@@ -5,6 +5,8 @@
 
 using SystemID = std::string_view;
 
+namespace GGenie {
+
 class System {
 protected:
   System(SystemID id, int priority) noexcept;
@@ -27,5 +29,7 @@ public:
   virtual void start() = 0;
   virtual void update(float dt) = 0;
 };
+
+} // namespace GGenie
 
 #endif

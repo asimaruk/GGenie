@@ -2,6 +2,8 @@
 #include "glad.h"
 #include <string_view>
 
+using namespace GGenie;
+
 auto graphics::compileShader(std::string_view vertex, std::string_view fragment) -> unsigned int {
   unsigned int const vertexShader = glCreateShader(GL_VERTEX_SHADER);
   const char *vertexShaderSource = vertex.data();

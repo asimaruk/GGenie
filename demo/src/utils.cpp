@@ -11,49 +11,56 @@
 #include <numbers>
 #include <print>
 
-auto createInfiniteRotationTween(const Vec3 &translation, const Vec3 &scale, const Vec3 &axis, float duration) -> TransformTween {
-  return TransformTween{
+auto createInfiniteRotationTween(
+    const GGenie::Vec3 &translation, const GGenie::Vec3 &scale, const GGenie::Vec3 &axis, float duration
+) -> GGenie::TransformTween {
+  return GGenie::TransformTween{
       .duration = duration,
       .from =
-          Transform{
+          GGenie::Transform{
               .translation = translation,
-              .rotation = Quat::fromAxisAngle(axis, std::numbers::pi * 0.001),
+              .rotation = GGenie::Quat::fromAxisAngle(axis, std::numbers::pi * 0.001),
               .scale = scale,
           },
       .to =
-          Transform{
+          GGenie::Transform{
               .translation = translation,
-              .rotation = Quat::fromAxisAngle(axis, std::numbers::pi * 2),
+              .rotation = GGenie::Quat::fromAxisAngle(axis, std::numbers::pi * 2),
               .scale = scale,
           },
       .time = 0.f,
-      .repeat = TransformTween::INFINITY_REPEAT,
+      .repeat = GGenie::TransformTween::INFINITY_REPEAT,
   };
 }
 
-void addInfiniteRandomRotationTween(std::shared_ptr<ComponentRegistry> registry, const Entity entity) {
-  auto transformRef = registry->get<Transform>(entity);
+void addInfiniteRandomRotationTween(std::shared_ptr<GGenie::ComponentRegistry> registry, const GGenie::Entity entity) {
+  auto transformRef = registry->get<GGenie::Transform>(entity);
   if (transformRef.has_value()) {
     static std::uniform_real_distribution<float> durationDistr(0.3, 30);
     auto transform = transformRef->get();
     auto tween = createInfiniteRotationTween(
         transform.translation,
         transform.scale,
-        Vec3{
-            .x = random_0_to_1<float>(),
-            .y = random_0_to_1<float>(),
-            .z = random_0_to_1<float>(),
-        }.normalize(),
-        randomDist(durationDistr)
+        GGenie::Vec3{
+            .x = GGenie::random_0_to_1<float>(),
+            .y = GGenie::random_0_to_1<float>(),
+            .z = GGenie::random_0_to_1<float>(),
+        }
+            .normalize(),
+        GGenie::randomDist(durationDistr)
     );
     registry->add(entity, tween);
   }
 }
 
-void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry> registry) {
+void setupCubes(std::shared_ptr<GGenie::World> world, std::shared_ptr<GGenie::ComponentRegistry> registry) {
   auto cube = world->createEntity();
-  auto mesh = Mesh::cube();
-  auto material = Material(shaders::DEFAULT_VERTEX, shaders::DEFAULT_FRAGMENT, shaders::VERTEX_COLOR_ATTRIBUTES);
+  auto mesh = GGenie::Mesh::cube();
+  auto material = GGenie::Material(
+      GGenie::shaders::DEFAULT_VERTEX,
+      GGenie::shaders::DEFAULT_FRAGMENT,
+      GGenie::shaders::VERTEX_COLOR_ATTRIBUTES
+  );
 
   static auto minPos = -25.f;
   static auto maxPos = 25.f;
@@ -73,7 +80,7 @@ void setupCubes(std::shared_ptr<World> world, std::shared_ptr<ComponentRegistry>
     auto z = minPos + (zStep / size) * len;
     registry->add(
         cube,
-        Transform{.translation{
+        GGenie::Transform{.translation{
             .x = x,
             .y = y,
             .z = z,

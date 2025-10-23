@@ -4,6 +4,8 @@
 #include <initializer_list>
 #include <vector>
 
+namespace GGenie {
+
 struct Mesh {
   std::vector<float> vertices;
   std::vector<unsigned int> indices;
@@ -13,5 +15,7 @@ struct Mesh {
 
   static auto cube() -> Mesh;
 };
+
+} // namespace GGenie
 
 #endif

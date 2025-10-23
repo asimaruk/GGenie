@@ -6,6 +6,8 @@
 #include <memory>
 #include <utility>
 
+using namespace GGenie;
+
 class TweenSystem::Impl {
 private:
   std::shared_ptr<ComponentRegistry> registry;

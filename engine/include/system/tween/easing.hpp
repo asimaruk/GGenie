@@ -3,6 +3,8 @@
 #include <cmath>
 #include <numbers>
 
+namespace GGenie {
+
 // https://easings.net
 namespace easing {
 
@@ -16,3 +18,4 @@ const auto EASE_OUT_SIN = [](float t)
 };
 
 } // namespace easing
+} // namespace GGenie

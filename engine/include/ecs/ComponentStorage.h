@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+namespace GGenie {
+
 class ComponentStorage {
 public:
   ComponentStorage() = default;
@@ -16,5 +18,7 @@ public:
   virtual void remove(Entity entity) noexcept = 0;
   virtual void copyComponent(Entity source, Entity target) = 0;
 };
+
+} // namespace GGenie
 
 #endif

@@ -9,6 +9,8 @@
 #include <optional>
 #include <unordered_map>
 
+namespace GGenie {
+
 class DefaultWorld final : public World {
 private:
   std::shared_ptr<ComponentRegistry> registry;
@@ -26,5 +28,7 @@ public:
   [[nodiscard]] auto getSystem(SystemID systemId) const -> std::optional<std::shared_ptr<System>> override;
   void update(float dt) override;
 };
+
+} // namespace GGenie
 
 #endif

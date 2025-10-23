@@ -3,6 +3,10 @@
 
 #include <string_view>
 
+namespace GGenie {
+
 auto hash_combined(std::string_view a, std::string_view b) -> size_t;
+
+}
 
 #endif

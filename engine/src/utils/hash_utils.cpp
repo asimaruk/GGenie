@@ -3,7 +3,7 @@
 #include <functional>
 #include <string_view>
 
-auto hash_combined(std::string_view a, std::string_view b) -> size_t {
+auto GGenie::hash_combined(std::string_view a, std::string_view b) -> size_t {
   size_t const hash1 = std::hash<std::string_view>{}(a);
   size_t const hash2 = std::hash<std::string_view>{}(b);
 

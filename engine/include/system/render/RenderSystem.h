@@ -14,6 +14,8 @@
 #include <tuple>
 #include <unordered_map>
 
+namespace GGenie {
+
 class RenderSystem : public System {
 private:
   class Impl;
@@ -35,5 +37,7 @@ public:
   void start() override;
   void update(float dt) override;
 };
+
+} // namespace GGenie
 
 #endif

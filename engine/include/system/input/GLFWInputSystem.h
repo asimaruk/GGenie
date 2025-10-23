@@ -6,6 +6,8 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 
+namespace GGenie {
+
 class GLFWInputSystem final : public System {
 private:
   class Impl;
@@ -24,5 +26,7 @@ public:
   void start() override;
   void update(float dt) override;
 };
+
+} // namespace GGenie
 
 #endif
