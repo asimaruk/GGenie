@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
   // Инициализация GLAD
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::println(std::cerr, "GLAD error!");
+    GGenie::log::Logg::info("GLAD error!");
     return -1;
   }
 
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
   auto config = std::make_shared<GGenie::Config>(GGenie::Config{
       .resPath = exePath.string(),
   });
-  std::println("Config {}", *config.get());
+  GGenie::log::Logg::info(std::format("Config {}", *config.get()));
 
   // Resources and loaders setup
   auto loader = std::make_shared<GGenie::Loader>(config);
@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
   registry->add(camera, GGenie::Move{.speed = 10});
   controlSystem->setControlledEntity(camera);
 
-  std::println("World setup");
+  GGenie::log::Logg::info("World setup");
 
   float lastTime = glfwGetTime();
   while (!window.shouldClose()) {

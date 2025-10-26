@@ -8,6 +8,7 @@
 #include "ecs/System.h"
 #include "glad.h"
 #include "graphics/shader.h"
+#include "logging/Logg.h"
 #include "math/algebras.h"
 #include "resources/Resources.h"
 #include "utils/hash_utils.h"
@@ -87,7 +88,7 @@ public:
   auto operator=(Impl &&) -> Impl & = delete;
 
   void start() {
-    std::println("RenderSystem.start()");
+    log::Logg::info("RenderSystem.start()");
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -99,14 +100,14 @@ public:
     clear();
     auto cameraIter = registry->getAll<Camera>();
     if (cameraIter.size() == 0) {
-      std::println(stderr, "No camera components for renderring");
+      log::Logg::error("No camera components for renderring");
       return;
     }
 
     auto [camEntity, camera] = cameraIter[0];
     auto cameraTransform = registry->get<Transform>(camEntity);
     if (!cameraTransform) {
-      std::println(stderr, "Camera entity has no transform");
+      log::Logg::error("Camera entity has no transform");
       return;
     }
 

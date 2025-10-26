@@ -2,7 +2,9 @@
 #include "ecs/ComponentRegistry.hpp"
 #include "ecs/Entity.h"
 #include "ecs/System.h"
+#include "logging/Logg.h"
 #include <algorithm>
+#include <format>
 #include <memory>
 #include <optional>
 #include <print>
@@ -27,7 +29,7 @@ void DefaultWorld::removeEntity(Entity entity) noexcept {
 }
 
 void DefaultWorld::registerSystem(std::shared_ptr<System> system) {
-  std::println("Register system {}", system->id);
+  log::Logg::info(std::format("Register system {}", system->id));
   systems[system->id] = system;
   sortedSystems.push_back(system);
   std::ranges::sort(
@@ -38,7 +40,7 @@ void DefaultWorld::registerSystem(std::shared_ptr<System> system) {
       }
   );
   system->start();
-  std::println("System {} started", system->id);
+  log::Logg::info(std::format("System {} started", system->id));
 }
 
 auto DefaultWorld::getSystem(SystemID systemId) const -> std::optional<std::shared_ptr<System>> {

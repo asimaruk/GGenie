@@ -3,6 +3,7 @@
 #include "ecs/System.h"
 #include "glad.h"
 #include "graphics/shader.h"
+#include "logging/Logg.h"
 #include "math/algebras.h"
 #include "system/stats/Character.h"
 #include "utils/narrow.h"
@@ -42,12 +43,12 @@ public:
 
   auto init() -> int {
     if (auto error = FT_Init_FreeType(&ft) != 0) {
-      std::println(std::cerr, "FREETYPE: Could not init FreeType Library, error {}", error);
+      log::Logg::error(std::format("FREETYPE: Could not init FreeType Library, error {}", error));
       return -1;
     }
     auto fontPath = std::filesystem::path(config->resPath) / "fonts/Michroma-Regular.ttf";
     if (auto error = FT_New_Face(ft, fontPath.c_str(), 0, &face) != 0) {
-      std::println(std::cerr, "FREETYPE: Failed to load font, error {}", error);
+      log::Logg::error(std::format("FREETYPE: Failed to load font, error {}", error));
       return -1;
     }
 
@@ -114,7 +115,7 @@ private:
     for (unsigned char charCode = 0; charCode < CHARACTERS_COUNT; charCode++) {
       // load character glyph
       if (FT_Load_Char(face, charCode, FT_LOAD_RENDER) != 0) {
-        std::println(std::cerr, "FREETYTPE: Failed to load Glyph '{}'", charCode);
+        log::Logg::error(std::format("FREETYTPE: Failed to load Glyph '{}'", charCode));
         continue;
       }
       // generate glyph texture

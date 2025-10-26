@@ -1,4 +1,5 @@
 #include "adapter/event/GLFWEventsAdapter.h"
+#include "logging/Logg.h"
 #include "math/algebras.h"
 #include "system/control/FPVEvent.h"
 #include "system/event/EventSystem.hpp"
@@ -21,7 +22,7 @@ private:
     if (!isLogOn) {
       return;
     }
-    std::println("{}", message);
+    log::Logg::info(message);
   }
 
 public:
