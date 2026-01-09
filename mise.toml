@@ -1,0 +1,53 @@
+[settings]
+# experimental for postinstall hook
+experimental = true
+
+[tools]
+cmake = "latest"
+python = "3"
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+BUILD_TYPE_CAP = { required = true }
+BUILD_TYPE_LOWER = { required = true }
+
+[tasks.python-reqs]
+description = "Install python requirements"
+run = ["pip install -r requirements.txt"]
+
+[tasks.conan-setup]
+description = "Conan profile setup"
+depends = ["python-reqs"]
+run = ["conan profile detect -e"]
+
+[tasks.conan-deps]
+description = "Install conan dependencies"
+depends = ["conan-setup"]
+run = ["conan install . -pr ./conanprofile -s build_type={{env.BUILD_TYPE_CAP}} --build=missing"]
+
+[tasks.setup-python3]
+description = "Create python3.exe in venv Scripts. Git for windows wants python3 command."
+sources = [".venv/Scripts/python.exe"]
+outputs = [".venv/Scripts/python3.exe"]
+run_windows = ["copy .venv\\Scripts\\python.exe .venv\\Scripts\\python3.exe"]
+
+
+[tasks.setup]
+description = "Setup all requirements and dependencies"
+run = [
+  { tasks = ["python-reqs", "conan-setup", "conan-deps", "setup-python3"] }
+]
+
+[tasks.configurate]
+description = "Build configuration"
+sources = ["CMakeLists.txt", "conanfile.py"]
+outputs = ["build/{{env.BUILD_TYPE_CAP}}/CMakeCache.txt"]
+run = ["cmake --preset=conan-{{env.BUILD_TYPE_LOWER}}"]
+
+[tasks.build]
+description = "Build"
+depends = ["configurate"]
+run = ["cmake --build --preset conan-{{env.BUILD_TYPE_LOWER}}"]
+
+[hooks]
+postinstall = ["mise run setup"]

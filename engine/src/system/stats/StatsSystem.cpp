@@ -47,7 +47,7 @@ public:
       return -1;
     }
     auto fontPath = std::filesystem::path(config->resPath) / "fonts/Michroma-Regular.ttf";
-    if (auto error = FT_New_Face(ft, fontPath.c_str(), 0, &face) != 0) {
+    if (auto error = FT_New_Face(ft, fontPath.string().c_str(), 0, &face) != 0) {
       log::Logg::error(std::format("FREETYPE: Failed to load font, error {}", error));
       return -1;
     }

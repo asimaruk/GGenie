@@ -13,7 +13,7 @@ class GgenieRecipe(ConanFile):
         self.requires("freetype/2.13.3")
 
     def build_requirements(self):
-        self.tool_requires("cmake/3.23.5")
+        self.tool_requires("cmake/4.2.1")
         self.test_requires("catch2/3.8.1")
 
     def layout(self):

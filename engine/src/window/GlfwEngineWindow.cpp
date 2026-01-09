@@ -1,6 +1,12 @@
 #include "window/GlfwEngineWindow.h"
 #include <GLFW/glfw3.h>
-#include <OpenGL/gl.h>
+#ifdef _WIN32
+#include <windows.h> // обязательно до gl.h на Windows
+#include <GL/gl.h>
+#else
+#include <OpenGL/gl.h> // macOS
+#endif
+
 #include <stdexcept>
 
 using namespace GGenie;

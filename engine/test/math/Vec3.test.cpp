@@ -2,6 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
+#include <numbers>
 
 using namespace GGenie;
 
@@ -90,10 +91,10 @@ TEST_CASE("Vec3 rotate with quaternion", "[vec3]") {
   REQUIRE(v.rotate(Quat::IDENTITY) == v);
 
   // 360 degree rotation around Z axis
-  Quat rot360 = Quat::fromAxisAngle({0, 0, 1}, 2 * M_PI);
+  Quat rot360 = Quat::fromAxisAngle({0, 0, 1}, 2 * std::numbers::pi_v<float>);
   REQUIRE_THAT(v.rotate(rot360), Approximately(v));
 
   // 180 degree rotation around X axis
-  Quat rot180 = Quat::fromAxisAngle({1, 0, 0}, M_PI);
+  Quat rot180 = Quat::fromAxisAngle({1, 0, 0}, std::numbers::pi_v<float>);
   REQUIRE_THAT(Vec3(1, 2, 3).rotate(rot180), Approximately({.x = 1, .y = -2, .z = -3}));
 }

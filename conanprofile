@@ -1,0 +1,5 @@
+{% if os.path.exists(profile_dir + "./conanprofilelocal") %}
+include(./conanprofilelocal)
+{% else %}
+include(default)
+{% endif %}

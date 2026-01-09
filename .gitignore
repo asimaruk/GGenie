@@ -11,3 +11,9 @@ tidy-report.yaml
 
 // vim
 *.swp
+
+// conan
+conanprofilelocal
+
+// cmake
+CMakeUserPresets.json

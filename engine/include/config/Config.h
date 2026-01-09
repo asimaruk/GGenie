@@ -17,8 +17,8 @@ struct Config {
 
 template <> struct std::formatter<GGenie::Config> {
   constexpr auto parse(std::format_parse_context &ctx) {
-    const auto *iter = ctx.begin();
-    const auto *end = ctx.end();
+    const auto iter = ctx.begin();
+    const auto end = ctx.end();
     if (iter != end && *iter != '}') {
       throw std::format_error("invalid format specifier for Config");
     }

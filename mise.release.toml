@@ -1,0 +1,3 @@
+[env]
+BUILD_TYPE_CAP = 'Release'
+BUILD_TYPE_LOWER = 'release'

@@ -3,8 +3,8 @@
 #include "easing.hpp"
 #include "math/algebras.h"
 #include "math/lerp.hpp"
-#include <__ostream/print.h>
 #include <functional>
+#include <print>
 
 namespace GGenie {
 

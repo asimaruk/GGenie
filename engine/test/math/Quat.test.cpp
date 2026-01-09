@@ -2,6 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
+#include <numbers>
 
 using namespace GGenie;
 
@@ -32,14 +33,14 @@ TEST_CASE("Quat identity constant", "[quat]") {
 
 TEST_CASE("Quat fromAxisAngle 360 degrees returns identity", "[quat]") {
   Vec3 axis{0, 1, 0};
-  float radians = 2 * M_PI;
+  float radians = 2 * std::numbers::pi_v<float>;
   REQUIRE_THAT(Quat::fromAxisAngle(axis, radians), Approximately({.w = -1, .x = 0, .y = 0, .z = 0}));
 }
 
 TEST_CASE("Quats for axis of different lenghts", "[quat]") {
   Vec3 axis1{0, 1, 0};
   Vec3 axis2{0, 2, 0};
-  float radians = M_PI_2;
+  float radians = std::numbers::pi_v<float> / 2;
   Quat q1 = Quat::fromAxisAngle(axis1, radians);
   Quat q2 = Quat::fromAxisAngle(axis2, radians);
   REQUIRE(q1 == q2);
@@ -50,11 +51,11 @@ TEST_CASE("Quat fromEuler", "[quat]") {
   Quat q = Quat::fromEuler(0, 0, 0);
   REQUIRE(q == Quat::IDENTITY);
   // 180 degree rotation around X
-  REQUIRE_THAT(Quat::fromEuler(M_PI, 0, 0), Approximately({.w = 0, .x = 1, .y = 0, .z = 0}));
+  REQUIRE_THAT(Quat::fromEuler(std::numbers::pi_v<float>, 0, 0), Approximately({.w = 0, .x = 1, .y = 0, .z = 0}));
   // 180 degree rotation around Y
-  REQUIRE_THAT(Quat::fromEuler(0, M_PI, 0), Approximately({.w = 0, .x = 0, .y = 1, .z = 0}));
+  REQUIRE_THAT(Quat::fromEuler(0, std::numbers::pi_v<float>, 0), Approximately({.w = 0, .x = 0, .y = 1, .z = 0}));
   // 180 degree rotation around Z
-  REQUIRE_THAT(Quat::fromEuler(0, 0, M_PI), Approximately({.w = 0, .x = 0, .y = 0, .z = 1}));
+  REQUIRE_THAT(Quat::fromEuler(0, 0, std::numbers::pi_v<float>), Approximately({.w = 0, .x = 0, .y = 0, .z = 1}));
 }
 
 TEST_CASE("Quat normalized", "[quat]") {

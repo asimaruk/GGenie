@@ -1,0 +1,3 @@
+[env]
+BUILD_TYPE_CAP = "Debug"
+BUILD_TYPE_LOWER = "debug"

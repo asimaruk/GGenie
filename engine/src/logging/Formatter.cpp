@@ -1,9 +1,10 @@
 #include "logging/Formatter.h"
 #include "logging/LogLevel.h"
-#include <string>
+#include <array>
+#include <filesystem>
 #include <format>
 #include <source_location>
-#include <filesystem>
+#include <string>
 
 using namespace GGenie;
 using namespace GGenie::log;
@@ -20,11 +21,11 @@ Formatter::Formatter(std::string_view rootDir) : rootDir(rootDir) {}
 auto Formatter::format(LogLevel level, std::string_view message, const std::source_location& location) -> std::string {
   auto relativePath = std::filesystem::relative(location.file_name(), rootDir);
   return std::format(
-    "[{}][{}:{}:{}] {}", 
-    getLevelString(level), 
-    relativePath.c_str(),
-    location.line(), 
-    location.column(),
-    message
+      "[{}][{}:{}:{}] {}",
+      getLevelString(level),
+      relativePath.string().c_str(),
+      location.line(),
+      location.column(),
+      message
   );
 }
