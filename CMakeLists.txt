@@ -2,14 +2,6 @@ cmake_minimum_required(VERSION 3.23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # clang-tidy needs compile_commands.json
 project(GGenie)
 
-if(WIN32)
-    set(FORCE_SUCCESS "|| exit /b 0")
-else()
-    set(FORCE_SUCCESS "|| true")
-endif()
-
-separate_arguments(FORCE_SUCCESS_LIST UNIX_COMMAND "${FORCE_SUCCESS}")
-
 configure_file(
     "${CMAKE_SOURCE_DIR}/demo/include/config.h.in"
     "${CMAKE_BINARY_DIR}/config.h"
